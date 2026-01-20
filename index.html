@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Valentine Journey</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        /* ====== Global Styles ====== */
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+            transition: background-color 0.8s ease;
+        }
+
+        .day-section {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        .day-section.active { display: flex; }
+
+        h1 { font-family: 'Dancing Script', cursive; font-size: 3.5rem; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.2); }
+        h2 { font-size: 1.4rem; font-weight: 300; max-width: 600px; margin-bottom: 30px; line-height: 1.5; }
+
+        /* ====== Interaction Elements ====== */
+        .interaction-container {
+            position: relative;
+            min-height: 300px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .media-box img {
+            width: 250px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .btn-group {
+            position: relative;
+            height: 100px;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        button {
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.3s;
+            font-weight: 600;
+        }
+
+        .yes-btn {
+            background-color: #2ecc71;
+            color: white;
+            box-shadow: 0 4px 15px rgba(46, 204, 113, 0.4);
+            z-index: 10;
+        }
+
+        .no-btn {
+            background-color: #e74c3c;
+            color: white;
+            position: absolute;
+            transition: all 0.2s ease;
+        }
+
+        /* ====== Specific Day Colors ====== */
+        #day1 { background-color: #8B0000; color: white; } /* Deep Red */
+        #day1 .yes-btn { background-color: #ff3385; }
+
+        #day2 { background-color: #4B0082; color: white; } /* Royal Purple */
+        #day3 { background-color: #3E2723; color: #D7CCC8; } /* Chocolate Brown */
+        #day4 { background-color: #F5F5DC; color: #5D4037; } /* Teddy Beige */
+        #day5 { background-color: #87CEEB; color: #01579B; } /* Sky Blue */
+        #day6 { background-color: #FF8A65; color: #BF360C; } /* Warm Peach */
+        #day7 { background-color: #C2185B; color: white; } /* Kiss Crimson */
+        #day8 { background-color: #FF1493; color: white; } /* Valentine Pink */
+
+        /* ====== Draggable Items (Day 1) ====== */
+        .rose-assets { display: flex; gap: 10px; margin-top: 20px; }
+        .rose { width: 60px; cursor: grab; }
+        .vase { width: 120px; margin-top: 20px; }
+        
+        /* ====== Particles ====== */
+        .particle {
+            position: fixed;
+            pointer-events: none;
+            z-index: 99;
+            animation: floatUp 4s linear forwards;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body onload="init()">
+
+    <section class="day-section active" id="day1">
+        <h1>Rose Day</h1>
+        <h2>"Will you accept these roses as a symbol of my eternal love?"</h2>
+        <div class="interaction-container">
+            <img src="images/rose_main.gif" alt="Roses" style="width:200px">
+            <div class="btn-group">
+                <button class="yes-btn" onclick="nextDay(2)">YES!</button>
+                <button class="no-btn" id="no1" onmouseover="runAway(this)">No</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="day-section" id="day2">
+        <h1>Propose Day</h1>
+        <h2>"Will you make me the luckiest person alive and say 'Yes' to being mine?"</h2>
+        <div class="interaction-container">
+            <img src="images/propose_main.gif" alt="Propose">
+            <div class="btn-group" id="group2">
+                <button class="yes-btn" id="yes2" onclick="nextDay(3)">YES</button>
+                <button class="no-btn" id="no2" onmouseover="swapButtons(2)">No</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="day-section" id="day3">
+        <h1>Chocolate Day</h1>
+        <h2>"Can I sweeten your life forever with a love as rich as chocolate?"</h2>
+        <div class="interaction-container">
+            <img src="images/choco_main.gif" alt="Chocolate">
+            <div class="btn-group">
+                <button class="yes-btn" onclick="nextDay(4)">ABSOLUTELY</button>
+                <button class="no-btn" id="no3" onclick="shrinkNo(this)">No</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="day-section" id="day4">
+        <h1>Teddy Day</h1>
+        <h2>"Will you let me be your teddy bear to hug whenever you need comfort?"</h2>
+        <div class="interaction-container">
+            <img src="images/teddy_main.gif" alt="Teddy">
+            <div class="btn-group">
+                <button class="yes-btn" onclick="nextDay(5)">YES, PLEASE</button>
+                <button class="no-btn" id="no4" onclick="guiltTrip()">No</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="day-section" id="day5">
+        <h1>Promise Day</h1>
+        <h2>"Will you promise to stay by my side through every sunrise and sunset?"</h2>
+        <div class="interaction-container">
+            <img src="images/promise_main.gif" alt="Promise">
+            <div class="btn-group">
+                <button class="yes-btn" onclick="nextDay(6)">I PROMISE</button>
+                <button class="no-btn" id="no5" style="opacity: 0.5; cursor: not-allowed;" onclick="shakeNo(this)">No</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="day-section" id="day6">
+        <h1>Hug Day</h1>
+        <h2>"Can I keep you warm in my arms for the rest of our lives?"</h2>
+        <div class="interaction-container">
+            <img src="images/hug_main.gif" alt="Hug">
+            <div class="btn-group">
+                <button class="yes-btn" onclick="nextDay(7)">BIG HUGS YES</button>
+                <button class="no-btn" id="no6" onmouseover="floatAround(this)">No</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="day-section" id="day7">
+        <h1>Kiss Day</h1>
+        <h2>"Will you let my love be the sweetest kiss you've ever known?"</h2>
+        <div class="interaction-container">
+            <img src="images/kiss_main.gif" alt="Kiss">
+            <div class="btn-group">
+                <button class="yes-btn" onclick="nextDay(8)">MUWAH (YES)</button>
+                <button class="no-btn" id="no7" onmouseover="kissAttack(this)">No</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="day-section" id="day8">
+        <h1>Happy Valentine's Day!</h1>
+        <h2>"Will you be my Valentine today, tomorrow, and every day after?"</h2>
+        <div class="interaction-container">
+            <img src="images/final_main.gif" alt="Love">
+            <div class="btn-group">
+                <button class="yes-btn" style="width: 200px;" onclick="celebrate()">FOREVER YES! ❤️</button>
+                <button class="no-btn" id="no8" onclick="transformNo(this)">No</button>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        function init() {
+            // Setup particles
+            setInterval(createParticle, 300);
+        }
+
+        function nextDay(num) {
+            document.querySelectorAll('.day-section').forEach(s => s.classList.remove('active'));
+            document.getElementById('day' + num).classList.add('active');
+        }
+
+        // --- PRANK LOGIC ---
+
+        // Day 1: Runaway
+        function runAway(btn) {
+            const x = Math.random() * (window.innerWidth - btn.clientWidth);
+            const y = Math.random() * (window.innerHeight - btn.clientHeight);
+            btn.style.position = 'fixed';
+            btn.style.left = x + 'px';
+            btn.style.top = y + 'px';
+        }
+
+        // Day 2: Swap
+        function swapButtons(day) {
+            const group = document.getElementById('group2');
+            const yes = document.getElementById('yes2');
+            const no = document.getElementById('no2');
+            const tempX = yes.offsetLeft;
+            yes.style.position = 'absolute';
+            no.style.position = 'absolute';
+            yes.style.left = no.offsetLeft + 'px';
+            no.style.left = tempX + 'px';
+        }
+
+        // Day 3: Shrink
+        let size = 1;
+        function shrinkNo(btn) {
+            size -= 0.2;
+            if (size <= 0.1) {
+                btn.style.display = 'none';
+            } else {
+                btn.style.transform = `scale(${size})`;
+            }
+        }
+
+        // Day 4: Guilt Trip
+        function guiltTrip() {
+            alert("A tiny teddy bear just shed a tear because you clicked 'No'. Are you sure? 🥺");
+        }
+
+        // Day 5: Shake
+        function shakeNo(btn) {
+            btn.animate([
+                { transform: 'translateX(0)' },
+                { transform: 'translateX(10px)' },
+                { transform: 'translateX(-10px)' },
+                { transform: 'translateX(0)' }
+            ], { duration: 200, iterations: 3 });
+        }
+
+        // Day 6: Float
+        function floatAround(btn) {
+            btn.style.transition = "all 2s linear";
+            const x = Math.sin(Date.now() / 1000) * 100;
+            const y = Math.cos(Date.now() / 1000) * 100;
+            btn.style.transform = `translate(${x}px, ${y}px)`;
+        }
+
+        // Day 7: Kiss Attack
+        function kissAttack(btn) {
+            btn.innerHTML = "💋";
+            setTimeout(() => { btn.innerHTML = "No"; }, 500);
+            runAway(btn);
+        }
+
+        // Day 8: Transform
+        function transformNo(btn) {
+            btn.innerHTML = "YES! 🎉";
+            btn.classList.remove('no-btn');
+            btn.classList.add('yes-btn');
+            btn.onclick = celebrate;
+        }
+
+        function createParticle() {
+            const p = document.createElement('div');
+            p.classList.add('particle');
+            p.innerHTML = ['❤️', '💖', '✨', '🌹'][Math.floor(Math.random() * 4)];
+            p.style.left = Math.random() * 100 + 'vw';
+            p.style.fontSize = (Math.random() * 20 + 10) + 'px';
+            document.body.appendChild(p);
+            setTimeout(() => p.remove(), 4000);
+        }
+
+        function celebrate() {
+            alert("YAY! You are officially my Valentine! Let the love story continue! ❤️🎉");
+            for(let i=0; i<100; i++) {
+                setTimeout(createParticle, i * 20);
+            }
+        }
+    </script>
+</body>
+</html>
