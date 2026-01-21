@@ -1,322 +1,375 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Our Valentine Journey</title>
-<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Valentine Journey</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body, html { margin: 0; padding: 0; font-family: 'Poppins', sans-serif; overflow-x: hidden; transition: background 0.8s; }
+        .day-section { display: none; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; text-align: center; padding: 20px; }
+        .day-section.active { display: flex; }
+        h1 { font-family: 'Dancing Script', cursive; font-size: 3.5rem; color: #ff2d55; margin-bottom: 10px; }
 
-<style>
-/* PRESERVED ORIGINAL CUTE STYLE */
-body, html { margin: 0; padding: 0; font-family: 'Poppins', sans-serif; overflow-x: hidden; transition: background-color 0.8s ease; }
-.day-section { display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; min-height: 100vh; position: relative; }
-.day-section.active { display: flex; }
-h1 { font-family: 'Dancing Script', cursive; font-size: 3rem; margin-bottom: 10px; color: #d63384; }
+        /* QUESTION STYLING */
+        .q-area { margin-bottom: 30px; z-index: 10; }
+        .q-text { font-size: 1.4rem; font-weight: 600; color: #444; margin-bottom: 20px; }
+        .btn-group { display: flex; gap: 15px; justify-content: center; position: relative; height: 50px; }
+        button { padding: 10px 30px; border-radius: 50px; border: none; font-weight: bold; cursor: pointer; transition: 0.2s; }
+        .yes-btn { background: #ff2d55; color: white; }
+        .no-btn { background: #eee; color: #888; position: relative; }
 
-/* QUESTION BOX */
-.question-container { background: white; padding: 30px; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); max-width: 350px; z-index: 10; border: 2px dashed #ffb3c1; }
-.btn-group { display: flex; gap: 15px; justify-content: center; margin-top: 20px; }
-button { padding: 10px 25px; border: none; border-radius: 50px; cursor: pointer; font-weight: bold; transition: 0.3s; font-family: 'Poppins', sans-serif; }
-.btn-yes { background: #ff2d55; color: white; box-shadow: 0 4px 15px rgba(255,45,85,0.3); }
-.btn-no { background: #f8f9fa; color: #555; border: 1px solid #ddd; }
-.prank-text { color: #ff2d55; font-weight: 600; margin-top: 15px; display: none; animation: shake 0.5s; }
-@keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+        /* GREETING CARD */
+        .gift-wrap { display: none; flex-direction: column; align-items: center; animation: zoomIn 0.5s ease; }
+        @keyframes zoomIn { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .card { width: 310px; height: 170px; perspective: 1000px; cursor: pointer; margin: 20px 0; }
+        .card-inner { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; transition: transform 0.8s; }
+        .card.flipped .card-inner { transform: rotateY(180deg); }
+        .card-front, .card-back { position: absolute; inset: 0; border-radius: 20px; backface-visibility: hidden; display: flex; align-items: center; justify-content: center; font-family: 'Dancing Script', cursive; font-size: 1.5rem; padding: 20px; }
+        .card-back { transform: rotateY(180deg); background: white; color: #333; overflow: hidden; }
+        .scratch-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; border-radius: 20px; }
 
-/* GREETING CARD */
-.card-wrapper { display: none; flex-direction: column; align-items: center; animation: zoomIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-@keyframes zoomIn { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        /* HEART METER */
+        .love-meter { margin-top: 20px; display: flex; flex-direction: column; align-items: center; }
+        .heart-icon { font-size: 3.5rem; cursor: pointer; animation: heartbeat 1.5s infinite; user-select: none; }
+        @keyframes heartbeat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
+        .bar-bg { width: 160px; height: 10px; background: #ddd; border-radius: 10px; margin-top: 10px; overflow: hidden; }
+        .bar-fill { width: 0%; height: 100%; background: #ff2d55; transition: width 0.1s linear; }
 
-.card { width: 300px; height: 160px; perspective: 1000px; cursor: pointer; margin-bottom: 20px; }
-.card-inner { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; transition: transform 0.8s; }
-.card.flipped .card-inner { transform: rotateY(180deg); }
-.card-front, .card-back { position: absolute; inset: 0; border-radius: 22px; backface-visibility: hidden; display: flex; align-items: center; justify-content: center; padding: 20px; font-family: 'Dancing Script', cursive; font-size: 1.5rem; }
-.card-back { transform: rotateY(180deg); position: relative; overflow: hidden; background: white; color: #333; }
-
-/* SCRATCH & METER */
-.scratch-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; border-radius: 22px; }
-.love-meter-container { margin-top: 20px; display: flex; flex-direction: column; align-items: center; }
-.hold-heart { font-size: 3.5rem; cursor: pointer; user-select: none; animation: heartbeat 1.5s infinite; filter: drop-shadow(0 0 5px rgba(255,45,85,0.4)); }
-@keyframes heartbeat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
-.progress-bar { width: 160px; height: 10px; background: rgba(0,0,0,0.1); border-radius: 10px; overflow: hidden; margin-top: 10px; border: 1px solid rgba(255,255,255,0.5); }
-.progress-fill { width: 0%; height: 100%; background: #ff2d55; transition: width 0.1s linear; }
-
-/* THEMES */
-body.bg-1 { background-color: #fff0f3; } body.bg-2 { background-color: #f3e5f5; }
-body.bg-3 { background-color: #efebe9; } body.bg-4 { background-color: #fff8e1; }
-body.bg-5 { background-color: #e8f5e9; } body.bg-6 { background-color: #fce4ec; }
-body.bg-7 { background-color: #ffebee; } body.bg-8 { background-color: #fffde7; }
-
-.particle { position: fixed; pointer-events: none; z-index: 99; }
-</style>
+        /* THEME BACKGROUNDS */
+        body.bg-1 { background: #fff0f3; } body.bg-2 { background: #f3e5f5; }
+        body.bg-3 { background: #efebe9; } body.bg-4 { background: #fff8e1; }
+        body.bg-5 { background: #e8f5e9; } body.bg-6 { background: #fce4ec; }
+        body.bg-7 { background: #ffebee; } body.bg-8 { background: #fffde7; }
+        .particle { position: fixed; pointer-events: none; z-index: 100; color: #ffb3c1; }
+    </style>
 </head>
 <body onload="init()" class="bg-1">
 
 <section class="day-section active" id="day1">
     <h1>Rose Day</h1>
-    <div class="question-container" id="q1">
-        <p>Would you accept a rose from a person as charming as me? 😉</p>
+    <div class="q-area" id="q1">
+        <div class="q-text">"Will you accept this digital rose from me?"</div>
         <div class="btn-group">
-            <button class="btn-yes" onclick="showCard(1)">Yes, please!</button>
-            <button class="btn-no" onclick="triggerPrank(1, 'Hey! My thorns are sharp, click Yes or get poked!')">No way</button>
+            <button class="yes-btn" onclick="unlock(1)">Yes!</button>
+            <button class="no-btn" onmouseover="prank(1, this)" onclick="prank(1, this)">No</button>
         </div>
-        <p class="prank-text" id="prank1"></p>
     </div>
-    <div class="card-wrapper" id="wrapper1">
-        <div class="card" onclick="flipCard(this, 1, '#ff4d6d')">
+    <div class="gift-wrap" id="gift1">
+        <div class="card" onclick="flip(this, 1, '#ff4d6d')">
             <div class="card-inner">
-                <div class="card-front" style="background:#ff4d6d; color:white;">Tap to see my gift 🌹</div>
-                <div class="card-back" data-text="You are the most beautiful flower in my world. Happy Rose Day!">
+                <div class="card-front" style="background:#ff4d6d; color:white;">Click to Open 🌹</div>
+                <div class="card-back" data-text="A rose for the person who makes my world bloom. Happy Rose Day!">
                     <canvas class="scratch-canvas"></canvas>
                 </div>
             </div>
         </div>
-        <div class="love-meter-container"><div class="hold-heart" onmousedown="startHold(2)" ontouchstart="startHold(2)" onmouseup="stopHold()" ontouchend="stopHold()">❤</div><div class="progress-bar"><div class="progress-fill" id="fill-2"></div></div><p>Hold Heart to Next Day</p></div>
+        <div class="love-meter">
+            <div class="heart-icon" onmousedown="start(2)" ontouchstart="start(2)" onmouseup="stop()" ontouchend="stop()">❤</div>
+            <div class="bar-bg"><div class="bar-fill" id="fill2"></div></div>
+        </div>
     </div>
 </section>
 
 <section class="day-section" id="day2">
     <h1>Propose Day</h1>
-    <div class="question-container" id="q2">
-        <p>If I asked you to be my partner in crime forever, what would you say?</p>
+    <div class="q-area" id="q2">
+        <div class="q-text">"Do you want to know what's in my heart?"</div>
         <div class="btn-group">
-            <button class="btn-yes" onclick="showCard(2)">Yes!</button>
-            <button class="btn-no" onclick="triggerPrank(2, 'Police! Police! Someone is breaking my heart here!')">No</button>
+            <button class="yes-btn" onclick="unlock(2)">Yes</button>
+            <button class="no-btn" onmouseover="prank(2, this)" onclick="prank(2, this)">No</button>
         </div>
-        <p class="prank-text" id="prank2"></p>
     </div>
-    <div class="card-wrapper" id="wrapper2">
-        <div class="card" onclick="flipCard(this, 2, '#5f2c82')">
+    <div class="gift-wrap" id="gift2">
+        <div class="card" onclick="flip(this, 2, '#5f2c82')">
             <div class="card-inner">
-                <div class="card-front" style="background:#5f2c82; color:white;">A Question... 💍</div>
-                <div class="card-back" data-text="I don't just want a day with you, I want a lifetime. Will you be mine?">
+                <div class="card-front" style="background:#5f2c82; color:white;">A Secret 💍</div>
+                <div class="card-back" data-text="I want to be yours forever. Will you make me the happiest person and say yes?">
                     <canvas class="scratch-canvas"></canvas>
                 </div>
             </div>
         </div>
-        <div class="love-meter-container"><div class="hold-heart" onmousedown="startHold(3)" ontouchstart="startHold(3)" onmouseup="stopHold()" ontouchend="stopHold()">❤</div><div class="progress-bar"><div class="progress-fill" id="fill-3"></div></div></div>
+        <div class="love-meter">
+            <div class="heart-icon" onmousedown="start(3)" ontouchstart="start(3)" onmouseup="stop()" ontouchend="stop()">❤</div>
+            <div class="bar-bg"><div class="bar-fill" id="fill3"></div></div>
+        </div>
     </div>
 </section>
 
 <section class="day-section" id="day3">
     <h1>Chocolate Day</h1>
-    <div class="question-container" id="q3">
-        <p>Do you think you are sweeter than this chocolate? 🍫</p>
+    <div class="q-area" id="q3">
+        <div class="q-text">"Are you ready for something sweet?"</div>
         <div class="btn-group">
-            <button class="btn-yes" onclick="showCard(3)">Yes, I am!</button>
-            <button class="btn-no" onclick="triggerPrank(3, 'Correct! Because you are salty! Just kidding, try again.')">No</button>
+            <button class="yes-btn" onclick="unlock(3)">Yes, I am!</button>
+            <button class="no-btn" onmouseover="prank(3, this)" onclick="prank(3, this)">No</button>
         </div>
-        <p class="prank-text" id="prank3"></p>
     </div>
-    <div class="card-wrapper" id="wrapper3">
-        <div class="card" onclick="flipCard(this, 3, '#3e2723')">
+    <div class="gift-wrap" id="gift3">
+        <div class="card" onclick="flip(this, 3, '#3e2723')">
             <div class="card-inner">
-                <div class="card-front" style="background:#3e2723; color:#ffecb3;">For my Sweetheart 🍫</div>
-                <div class="card-back" data-text="Actually, you are the sweetest part of my life. Happy Chocolate Day!">
+                <div class="card-front" style="background:#3e2723; color:#ffecb3;">Sweetness 🍫</div>
+                <div class="card-back" data-text="You are sweeter than any chocolate in the world. I'm so lucky to have you!">
                     <canvas class="scratch-canvas"></canvas>
                 </div>
             </div>
         </div>
-        <div class="love-meter-container"><div class="hold-heart" onmousedown="startHold(4)" ontouchstart="startHold(4)" onmouseup="stopHold()" ontouchend="stopHold()">❤</div><div class="progress-bar"><div class="progress-fill" id="fill-4"></div></div></div>
+        <div class="love-meter">
+            <div class="heart-icon" onmousedown="start(4)" ontouchstart="start(4)" onmouseup="stop()" ontouchend="stop()">❤</div>
+            <div class="bar-bg"><div class="bar-fill" id="fill4"></div></div>
+        </div>
     </div>
 </section>
 
 <section class="day-section" id="day4">
     <h1>Teddy Day</h1>
-    <div class="question-container" id="q4">
-        <p>Would you like a hug from a giant fluffy teddy bear?</p>
+    <div class="q-area" id="q4">
+        <div class="q-text">"Can I give you a big warm hug?"</div>
         <div class="btn-group">
-            <button class="btn-yes" onclick="showCard(4)">Yes, please!</button>
-            <button class="btn-no" onclick="triggerPrank(4, 'Fine, the teddy said he didn\'t want to hug you either! (He lied)')">No</button>
+            <button class="yes-btn" onclick="unlock(4)">Yes!</button>
+            <button class="no-btn" onmouseover="prank(4, this)" onclick="prank(4, this)">No</button>
         </div>
-        <p class="prank-text" id="prank4"></p>
     </div>
-    <div class="card-wrapper" id="wrapper4">
-        <div class="card" onclick="flipCard(this, 4, '#e0c3a0')">
+    <div class="gift-wrap" id="gift4">
+        <div class="card" onclick="flip(this, 4, '#e0c3a0')">
             <div class="card-inner">
-                <div class="card-front" style="background:#e0c3a0; color:#5d4037;">Cuddle Time 🧸</div>
-                <div class="card-back" data-text="You are my favorite person to cuddle with. Happy Teddy Day!">
+                <div class="card-front" style="background:#e0c3a0; color:#5d4037;">Cuddle 🧸</div>
+                <div class="card-back" data-text="You're as cute as a teddy bear, but much better to hold. Happy Teddy Day!">
                     <canvas class="scratch-canvas"></canvas>
                 </div>
             </div>
         </div>
-        <div class="love-meter-container"><div class="hold-heart" onmousedown="startHold(5)" ontouchstart="startHold(5)" onmouseup="stopHold()" ontouchend="stopHold()">❤</div><div class="progress-bar"><div class="progress-fill" id="fill-5"></div></div></div>
+        <div class="love-meter">
+            <div class="heart-icon" onmousedown="start(5)" ontouchstart="start(5)" onmouseup="stop()" ontouchend="stop()">❤</div>
+            <div class="bar-bg"><div class="bar-fill" id="fill5"></div></div>
+        </div>
     </div>
 </section>
 
 <section class="day-section" id="day5">
     <h1>Promise Day</h1>
-    <div class="question-container" id="q5">
-        <p>Do you promise to always share your snacks with me?</p>
+    <div class="q-area" id="q5">
+        <div class="q-text">"Will you promise to stay by my side?"</div>
         <div class="btn-group">
-            <button class="btn-yes" onclick="showCard(5)">I promise!</button>
-            <button class="btn-no" onclick="triggerPrank(5, 'Breaking a snack-promise is a crime in 50 countries!')">No</button>
+            <button class="yes-btn" onclick="unlock(5)">I Promise</button>
+            <button class="no-btn" onmouseover="prank(5, this)" onclick="prank(5, this)">No</button>
         </div>
-        <p class="prank-text" id="prank5"></p>
     </div>
-    <div class="card-wrapper" id="wrapper5">
-        <div class="card" onclick="flipCard(this, 5, '#1b5e20')">
+    <div class="gift-wrap" id="gift5">
+        <div class="card" onclick="flip(this, 5, '#1b5e20')">
             <div class="card-inner">
                 <div class="card-front" style="background:#1b5e20; color:white;">My Vow 🤝</div>
-                <div class="card-back" data-text="I promise to be your biggest fan and your best friend forever.">
+                <div class="card-back" data-text="I promise to love you, support you, and make you laugh every day.">
                     <canvas class="scratch-canvas"></canvas>
                 </div>
             </div>
         </div>
-        <div class="love-meter-container"><div class="hold-heart" onmousedown="startHold(6)" ontouchstart="startHold(6)" onmouseup="stopHold()" ontouchend="stopHold()">❤</div><div class="progress-bar"><div class="progress-fill" id="fill-6"></div></div></div>
+        <div class="love-meter">
+            <div class="heart-icon" onmousedown="start(6)" ontouchstart="start(6)" onmouseup="stop()" ontouchend="stop()">❤</div>
+            <div class="bar-bg"><div class="bar-fill" id="fill6"></div></div>
+        </div>
     </div>
 </section>
 
 <section class="day-section" id="day6">
     <h1>Hug Day</h1>
-    <div class="question-container" id="q6">
-        <p>Are you feeling a bit cold right now?</p>
+    <div class="q-area" id="q6">
+        <div class="q-text">"Do you need a hug right now?"</div>
         <div class="btn-group">
-            <button class="btn-yes" onclick="showCard(6)">A little bit...</button>
-            <button class="btn-no" onclick="triggerPrank(6, 'Liars don\'t get warm hugs. Try again!')">No</button>
+            <button class="yes-btn" onclick="unlock(6)">Yes, please</button>
+            <button class="no-btn" onmouseover="prank(6, this)" onclick="prank(6, this)">No</button>
         </div>
-        <p class="prank-text" id="prank6"></p>
     </div>
-    <div class="card-wrapper" id="wrapper6">
-        <div class="card" onclick="flipCard(this, 6, '#ff9a9e')">
+    <div class="gift-wrap" id="gift6">
+        <div class="card" onclick="flip(this, 6, '#ff9a9e')">
             <div class="card-inner">
-                <div class="card-front" style="background:#ff9a9e; color:#880e4f;">A Warm Squeeze 🤗</div>
-                <div class="card-back" data-text="Sending you a virtual hug that never ends. I love you!">
+                <div class="card-front" style="background:#ff9a9e; color:#880e4f;">Warmth 🤗</div>
+                <div class="card-back" data-text="A virtual hug for you! One day I'll hold you and never let go.">
                     <canvas class="scratch-canvas"></canvas>
                 </div>
             </div>
         </div>
-        <div class="love-meter-container"><div class="hold-heart" onmousedown="startHold(7)" ontouchstart="startHold(7)" onmouseup="stopHold()" ontouchend="stopHold()">❤</div><div class="progress-bar"><div class="progress-fill" id="fill-7"></div></div></div>
+        <div class="love-meter">
+            <div class="heart-icon" onmousedown="start(7)" ontouchstart="start(7)" onmouseup="stop()" ontouchend="stop()">❤</div>
+            <div class="bar-bg"><div class="bar-fill" id="fill7"></div></div>
+        </div>
     </div>
 </section>
 
 <section class="day-section" id="day7">
     <h1>Kiss Day</h1>
-    <div class="question-container" id="q7">
-        <p>Can I borrow a kiss? I promise I'll give it back.</p>
+    <div class="q-area" id="q7">
+        <div class="q-text">"Can I send you some magic?"</div>
         <div class="btn-group">
-            <button class="btn-yes" onclick="showCard(7)">Okay!</button>
-            <button class="btn-no" onclick="triggerPrank(7, 'My heart just felt a tiny sting. Please fix it!')">No</button>
+            <button class="yes-btn" onclick="unlock(7)">Yes!</button>
+            <button class="no-btn" onmouseover="prank(7, this)" onclick="prank(7, this)">No</button>
         </div>
-        <p class="prank-text" id="prank7"></p>
     </div>
-    <div class="card-wrapper" id="wrapper7">
-        <div class="card" onclick="flipCard(this, 7, '#ff1744')">
+    <div class="gift-wrap" id="gift7">
+        <div class="card" onclick="flip(this, 7, '#ff1744')">
             <div class="card-inner">
-                <div class="card-front" style="background:#ff1744; color:white;">Pure Magic ✨</div>
-                <div class="card-back" data-text="You are the magic I always dreamed of. Happy Kiss Day!">
+                <div class="card-front" style="background:#ff1744; color:white;">Magic ✨</div>
+                <div class="card-back" data-text="Your love is the magic that keeps me going. Happy Kiss Day, my love!">
                     <canvas class="scratch-canvas"></canvas>
                 </div>
             </div>
         </div>
-        <div class="love-meter-container"><div class="hold-heart" onmousedown="startHold(8)" ontouchstart="startHold(8)" onmouseup="stopHold()" ontouchend="stopHold()">❤</div><div class="progress-bar"><div class="progress-fill" id="fill-8"></div></div></div>
+        <div class="love-meter">
+            <div class="heart-icon" onmousedown="start(8)" ontouchstart="start(8)" onmouseup="stop()" ontouchend="stop()">❤</div>
+            <div class="bar-bg"><div class="bar-fill" id="fill8"></div></div>
+        </div>
     </div>
 </section>
 
 <section class="day-section" id="day8">
     <h1>Valentine's Day</h1>
-    <div class="question-container" id="q8">
-        <p>So... will you be my Valentine today and for all the years to come?</p>
+    <div class="q-area" id="q8">
+        <div class="q-text">"Will you be my Valentine forever?"</div>
         <div class="btn-group">
-            <button class="btn-yes" onclick="showCard(8)">YES! YES! YES!</button>
-            <button class="btn-no" onclick="triggerPrank(8, 'Button broken. Only Yes is allowed today!')">No</button>
+            <button class="yes-btn" onclick="unlock(8)">Yes! Forever!</button>
+            <button class="no-btn" onmouseover="prank(8, this)" onclick="prank(8, this)">No</button>
         </div>
-        <p class="prank-text" id="prank8"></p>
     </div>
-    <div class="card-wrapper" id="wrapper8">
-        <div class="card" onclick="flipCard(this, 8, '#ffd700')">
+    <div class="gift-wrap" id="gift8">
+        <div class="card" onclick="flip(this, 8, 'gold')">
             <div class="card-inner">
-                <div class="card-front" style="background:gold; color:#5d4037;">Our Love 🌎</div>
-                <div class="card-back" data-text="You are my greatest adventure. Happy Valentine's Day!">
+                <div class="card-front" style="background:gold; color:#333;">My Everything 🌎</div>
+                <div class="card-back" data-text="You are my world, my heart, and my home. Happy Valentine's Day!">
                     <canvas class="scratch-canvas"></canvas>
                 </div>
             </div>
         </div>
-        <h2 style="font-family:'Dancing Script'">I Love You Forever</h2>
-        <button onclick="location.reload()" style="background:#ff2d55; color:white; margin-top:10px;">Replay Our Journey</button>
+        <p style="font-family:'Dancing Script'; font-size: 2rem;">I Love You!</p>
     </div>
 </section>
 
 <script>
-let holdInterval, progress = 0;
+    let holdInt, progress = 0;
 
-function triggerPrank(dayId, msg) {
-    const p = document.getElementById('prank' + dayId);
-    p.innerText = msg; p.style.display = 'block';
-}
+    function prank(day, btn) {
+        switch(day) {
+            case 1: // ROSE DAY: Teleporting (Hard to catch)
+                btn.style.position = 'fixed';
+                btn.style.left = Math.random() * 80 + 'vw';
+                btn.style.top = Math.random() * 80 + 'vh';
+                break;
 
-function showCard(dayId) {
-    document.getElementById('q' + dayId).style.display = 'none';
-    document.getElementById('wrapper' + dayId).style.display = 'flex';
-}
+            case 2: // PROPOSE DAY: Shrinking
+                let size = parseFloat(btn.style.transform.replace('scale(','')) || 1;
+                btn.style.transform = `scale(${size * 0.7})`;
+                if(size < 0.3) btn.style.display = 'none';
+                break;
 
-function flipCard(el, dayId, color) {
-    if(!el.classList.contains('flipped')) {
-        el.classList.add('flipped');
-        const back = el.querySelector('.card-back');
-        initScratch(back.querySelector('.scratch-canvas'), color);
-        typeText(back, back.dataset.text);
+            case 3: // CHOCOLATE DAY: Floating Jitter
+                btn.style.position = 'relative';
+                btn.style.transition = '0.1s';
+                btn.style.transform = `translate(${Math.random() * 100 - 50}px, ${Math.random() * 100 - 50}px)`;
+                break;
+
+            case 4: // TEDDY DAY: Guilt Trip
+                const texts = ["Are you sure?", "But why? 🥺", "Teddy is sad", "Don't click this!"];
+                btn.innerText = texts[Math.floor(Math.random()*texts.length)];
+                break;
+
+            case 5: // PROMISE DAY: Swap Position with Yes
+                const yesBtn = btn.parentElement.querySelector('.yes-btn');
+                const btnGroup = btn.parentElement;
+                if (btn.nextElementSibling === yesBtn) {
+                    btnGroup.insertBefore(yesBtn, btn);
+                } else {
+                    btnGroup.appendChild(yesBtn);
+                }
+                break;
+
+            case 6: // HUG DAY: Ghosting (Fade out)
+                let op = parseFloat(btn.style.opacity === "" ? 1 : btn.style.opacity);
+                btn.style.opacity = op - 0.2;
+                if(op <= 0.2) btn.style.pointerEvents = 'none';
+                break;
+
+            case 7: // KISS DAY: Running Horizontal
+                btn.style.position = 'relative';
+                let currentLeft = parseInt(btn.style.left) || 0;
+                btn.style.left = (currentLeft + 100) + 'px';
+                if(currentLeft > 300) btn.style.left = '-300px';
+                break;
+
+            case 8: // VALENTINE'S DAY: Becomes a Yes
+                btn.innerText = "YES! ❤️";
+                btn.className = "yes-btn";
+                btn.onclick = function() { unlock(8); };
+                break;
+        }
     }
-}
 
-function initScratch(canvas, color) {
-    const ctx = canvas.getContext('2d');
-    canvas.width = canvas.parentElement.offsetWidth;
-    canvas.height = canvas.parentElement.offsetHeight;
-    
-    // Create a cool pattern for the foil
-    ctx.fillStyle = color;
-    ctx.fillRect(0,0, canvas.width, canvas.height);
-    ctx.strokeStyle = "rgba(255,255,255,0.2)";
-    for(let i=0; i<canvas.width; i+=10) {
-        ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, canvas.height); ctx.stroke();
+    function unlock(id) {
+        document.getElementById('q' + id).style.display = 'none';
+        document.getElementById('gift' + id).style.display = 'flex';
     }
-    
-    ctx.globalCompositeOperation = 'destination-out';
-    const scratch = (e) => {
-        const rect = canvas.getBoundingClientRect();
-        const x = (e.pageX || e.touches[0].pageX) - rect.left;
-        const y = (e.pageY || e.touches[0].pageY) - rect.top;
-        ctx.beginPath(); ctx.arc(x, y, 25, 0, Math.PI * 2); ctx.fill();
-    };
-    canvas.addEventListener('mousemove', scratch);
-    canvas.addEventListener('touchmove', scratch);
-}
 
-function typeText(el, text) {
-    const node = document.createTextNode(""); el.appendChild(node);
-    let i = 0; const timer = setInterval(() => { 
-        node.textContent += text[i++]; 
-        if (i >= text.length) clearInterval(timer); 
-    }, 40);
-}
+    function flip(card, id, color) {
+        if(!card.classList.contains('flipped')) {
+            card.classList.add('flipped');
+            const back = card.querySelector('.card-back');
+            initScratch(back.querySelector('.scratch-canvas'), color);
+            type(back, back.dataset.text);
+        }
+    }
 
-function startHold(nextId) {
-    progress = 0; const fill = document.getElementById('fill-' + nextId);
-    holdInterval = setInterval(() => { 
-        progress += 2; 
-        fill.style.width = progress + '%'; 
-        if (progress >= 100) { clearInterval(holdInterval); changeDay(nextId); } 
-    }, 30);
-}
-function stopHold() { clearInterval(holdInterval); document.querySelectorAll('.progress-fill').forEach(f => f.style.width = '0%'); }
+    function initScratch(canvas, color) {
+        const ctx = canvas.getContext('2d');
+        canvas.width = canvas.parentElement.offsetWidth;
+        canvas.height = canvas.parentElement.offsetHeight;
+        
+        let grad = ctx.createLinearGradient(0,0,canvas.width, canvas.height);
+        grad.addColorStop(0, color);
+        grad.addColorStop(1, '#ffffff');
+        ctx.fillStyle = grad;
+        ctx.fillRect(0,0, canvas.width, canvas.height);
+        
+        ctx.globalCompositeOperation = 'destination-out';
+        const scratch = (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const x = (e.pageX || (e.touches ? e.touches[0].pageX : 0)) - rect.left;
+            const y = (e.pageY || (e.touches ? e.touches[0].pageY : 0)) - rect.top;
+            ctx.beginPath(); ctx.arc(x, y, 25, 0, Math.PI * 2); ctx.fill();
+        };
+        canvas.addEventListener('mousemove', scratch);
+        canvas.addEventListener('touchmove', (e) => { e.preventDefault(); scratch(e); });
+    }
 
-function changeDay(id) {
-    document.querySelectorAll('.day-section').forEach(s => s.classList.remove('active'));
-    document.getElementById('day' + id).classList.add('active');
-    document.body.className = 'bg-' + id;
-}
+    function type(el, text) {
+        const node = document.createTextNode(""); el.appendChild(node);
+        let i = 0; const timer = setInterval(() => { 
+            node.textContent += text[i++]; 
+            if (i >= text.length) clearInterval(timer); 
+        }, 40);
+    }
 
-function init() { setInterval(createParticle, 600); }
-function createParticle() {
-    const heart = document.createElement('div');
-    heart.className = 'particle'; heart.innerHTML = '❤';
-    heart.style.left = Math.random() * 100 + 'vw';
-    heart.style.color = '#ffb3c1';
-    heart.style.fontSize = Math.random() * 20 + 10 + 'px';
-    document.body.appendChild(heart);
-    heart.animate([{ transform: 'translateY(100vh) rotate(0deg)', opacity: 1 }, { transform: 'translateY(-10vh) rotate(360deg)', opacity: 0 }], { duration: 4000 });
-    setTimeout(() => heart.remove(), 4000);
-}
+    function start(nextId) {
+        progress = 0; const fill = document.getElementById('fill' + nextId);
+        holdInt = setInterval(() => {
+            progress += 2; if(fill) fill.style.width = progress + '%';
+            if(progress >= 100) { clearInterval(holdInt); changeDay(nextId); }
+        }, 30);
+    }
+    function stop() { clearInterval(holdInt); document.querySelectorAll('.bar-fill').forEach(b => b.style.width = '0%'); }
+
+    function changeDay(id) {
+        document.querySelectorAll('.day-section').forEach(s => s.classList.remove('active'));
+        const next = document.getElementById('day' + id);
+        if(next) { next.classList.add('active'); document.body.className = 'bg-' + id; }
+    }
+
+    function init() {
+        setInterval(() => {
+            const p = document.createElement('div'); p.className = 'particle'; p.innerHTML = '❤';
+            p.style.left = Math.random() * 100 + 'vw';
+            document.body.appendChild(p);
+            p.animate([{ transform: 'translateY(100vh)', opacity: 1 }, { transform: 'translateY(-10vh)', opacity: 0 }], { duration: 4000 });
+            setTimeout(() => p.remove(), 4000);
+        }, 600);
+    }
 </script>
 </body>
 </html>
