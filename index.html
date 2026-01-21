@@ -8,7 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
-/* ====== YOUR ORIGINAL STYLES (UNCHANGED) ====== */
+/* ====== ORIGINAL STYLES (PRESERVED) ====== */
 body, html {
     margin: 0;
     padding: 0;
@@ -78,19 +78,10 @@ h2 {
     font-family: 'Dancing Script', cursive;
 }
 
-.card-front {
-    font-size: 1.2rem;
-    opacity: 0.9;
-}
+.card-front { font-size: 1.3rem; opacity: 0.9; font-weight: bold; }
+.card-back { transform: rotateY(180deg); font-size: 1.3rem; position: relative; overflow: hidden; }
 
-.card-back {
-    transform: rotateY(180deg);
-    font-size: 1.35rem;
-    position: relative;
-    overflow: hidden;
-}
-
-/* Original Card Themes */
+/* Card Themes */
 .card1 { background: radial-gradient(circle at top, #ff4d6d, #8b0000); color: white; animation: rosePulse 3.5s infinite; }
 .card2 { background: linear-gradient(135deg, #5f2c82, #49a09d); color: white; }
 .card3 { background: linear-gradient(145deg, #3e2723, #795548); color: #ffecb3; animation: chocoFloat 5s ease-in-out infinite; }
@@ -101,7 +92,6 @@ h2 {
 .card8 { background: linear-gradient(135deg, #fff1c1, #ffcc80); color: #5d4037; animation: auraPulse 3s infinite; }
 
 @keyframes rosePulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.05); } }
-@keyframes shineSweep { to { transform: translateX(120%); } }
 @keyframes chocoFloat { 50% { transform: translateY(-12px); } }
 @keyframes teddyBounce { 50% { transform: translateY(-8px) scale(1.02); } }
 @keyframes promiseGlow { 70% { box-shadow: 0 0 0 18px rgba(0,255,150,0); } }
@@ -111,69 +101,19 @@ h2 {
 
 .particle { position: fixed; pointer-events: none; z-index: 99; }
 
-/* ====== NEW ADDITIONS (FUNCTIONAL & BEAUTIFUL) ====== */
-.scratch-canvas {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    cursor: crosshair;
-    z-index: 2;
-    border-radius: 22px;
-}
+/* SCRATCH & METER STYLES */
+.scratch-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; cursor: crosshair; z-index: 2; border-radius: 22px; }
+.love-meter-container { margin-top: 30px; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.hold-heart { font-size: 3.2rem; cursor: pointer; user-select: none; animation: heartbeat 1.5s infinite; filter: drop-shadow(0 0 8px rgba(255,0,0,0.3)); }
+@keyframes heartbeat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.2); } }
+.progress-bar { width: 200px; height: 10px; background: rgba(0,0,0,0.1); border-radius: 10px; overflow: hidden; border: 1px solid rgba(255,255,255,0.4); }
+.progress-fill { width: 0%; height: 100%; background: #ff2d55; transition: width 0.1s linear; }
 
-.love-meter-container {
-    margin-top: 30px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-}
-
-.hold-heart {
-    font-size: 3rem;
-    cursor: pointer;
-    user-select: none;
-    transition: transform 0.2s;
-    filter: drop-shadow(0 0 10px rgba(255,0,0,0.3));
-    animation: heartbeat 1.5s infinite;
-}
-
-.hold-heart:active { transform: scale(0.9); }
-
-@keyframes heartbeat {
-    0% { transform: scale(1); }
-    15% { transform: scale(1.3); }
-    30% { transform: scale(1); }
-    45% { transform: scale(1.15); }
-    60% { transform: scale(1); }
-}
-
-.progress-bar {
-    width: 200px;
-    height: 8px;
-    background: rgba(0,0,0,0.1);
-    border-radius: 10px;
-    overflow: hidden;
-    border: 1px solid rgba(255,255,255,0.3);
-}
-
-.progress-fill {
-    width: 0%;
-    height: 100%;
-    background: #ff2d55;
-    transition: width 0.1s linear;
-}
-
-body.bg-1 { background-color: #fff0f3; }
-body.bg-2 { background-color: #f3e5f5; }
-body.bg-3 { background-color: #efebe9; }
-body.bg-4 { background-color: #fff8e1; }
-body.bg-5 { background-color: #e8f5e9; }
-body.bg-6 { background-color: #fce4ec; }
-body.bg-7 { background-color: #ffebee; }
-body.bg-8 { background-color: #fffde7; }
+/* BG Colors */
+body.bg-1 { background-color: #fff0f3; } body.bg-2 { background-color: #f3e5f5; }
+body.bg-3 { background-color: #efebe9; } body.bg-4 { background-color: #fff8e1; }
+body.bg-5 { background-color: #e8f5e9; } body.bg-6 { background-color: #fce4ec; }
+body.bg-7 { background-color: #ffebee; } body.bg-8 { background-color: #fffde7; }
 </style>
 </head>
 
@@ -181,11 +121,11 @@ body.bg-8 { background-color: #fffde7; }
 
 <section class="day-section active" id="day1">
     <h1>Rose Day</h1>
-    <h2>"A single rose can be my garden... a single friend, my world."</h2>
+    <h2>"A flower for a flower."</h2>
     <div class="card card1">
         <div class="card-inner">
-            <div class="card-front">Tap to Reveal My Rose</div>
-            <div class="card-back" data-text="Every rose whispers how beautiful your smile is to my heart. Scratch to see my secret confession!">
+            <div class="card-front">Do you know which flower reminds me of your soul?</div>
+            <div class="card-back" data-text="A rose, because you are beautiful and rare. Happy Rose Day, my love!">
                 <canvas class="scratch-canvas"></canvas>
             </div>
         </div>
@@ -193,17 +133,17 @@ body.bg-8 { background-color: #fffde7; }
     <div class="love-meter-container">
         <div class="hold-heart" onmousedown="startHold(2)" ontouchstart="startHold(2)" onmouseup="stopHold()" ontouchend="stopHold()">❤</div>
         <div class="progress-bar"><div class="progress-fill" id="fill-2"></div></div>
-        <p>Hold the heart to go to Day 2</p>
+        <p>Hold Heart to unlock Day 2</p>
     </div>
 </section>
 
 <section class="day-section" id="day2">
     <h1>Propose Day</h1>
-    <h2>"I don't want anyone else to have your heart."</h2>
+    <h2>"My heart has a question..."</h2>
     <div class="card card2">
         <div class="card-inner">
-            <div class="card-front">I Have a Question...</div>
-            <div class="card-back" data-text="Will you make me the luckiest person and stay by my side forever? Scratch to reveal my heart!">
+            <div class="card-front">If I could spend my life anywhere, do you know where it would be?</div>
+            <div class="card-back" data-text="Right by your side, forever and always. Will you be mine?">
                 <canvas class="scratch-canvas"></canvas>
             </div>
         </div>
@@ -211,17 +151,16 @@ body.bg-8 { background-color: #fffde7; }
     <div class="love-meter-container">
         <div class="hold-heart" onmousedown="startHold(3)" ontouchstart="startHold(3)" onmouseup="stopHold()" ontouchend="stopHold()">❤</div>
         <div class="progress-bar"><div class="progress-fill" id="fill-3"></div></div>
-        <p>Hold for Chocolate Day</p>
     </div>
 </section>
 
 <section class="day-section" id="day3">
     <h1>Chocolate Day</h1>
-    <h2>"Life is sweet, but you make it sweeter."</h2>
+    <h2>"Sweeter than cocoa."</h2>
     <div class="card card3">
         <div class="card-inner">
-            <div class="card-front">Something Sweet for You</div>
-            <div class="card-back" data-text="You are more addictive than the finest cocoa. Scratch for a sweet secret!">
+            <div class="card-front">What is sweeter than the finest chocolate in the world?</div>
+            <div class="card-back" data-text="Your smile. It’s the only sweetness I’ll ever need!">
                 <canvas class="scratch-canvas"></canvas>
             </div>
         </div>
@@ -234,11 +173,11 @@ body.bg-8 { background-color: #fffde7; }
 
 <section class="day-section" id="day4">
     <h1>Teddy Day</h1>
-    <h2>"Warm, fuzzy, and always there for you."</h2>
+    <h2>"Cuddles & Comfort."</h2>
     <div class="card card4">
         <div class="card-inner">
-            <div class="card-front">A Hug in a Box</div>
-            <div class="card-back" data-text="Sending this teddy to keep you warm when I'm not around. Scratch for a cuddle!">
+            <div class="card-front">Whenever you feel lonely, do you know who is thinking of you?</div>
+            <div class="card-back" data-text="Me! And this teddy is here to give you my hugs until I see you.">
                 <canvas class="scratch-canvas"></canvas>
             </div>
         </div>
@@ -251,11 +190,11 @@ body.bg-8 { background-color: #fffde7; }
 
 <section class="day-section" id="day5">
     <h1>Promise Day</h1>
-    <h2>"Promises are the strings that bind our hearts."</h2>
+    <h2>"Words from the heart."</h2>
     <div class="card card5">
         <div class="card-inner">
-            <div class="card-front">My Vow to You</div>
-            <div class="card-back" data-text="I promise to be your strength when you are weak. Scratch to see my oath!">
+            <div class="card-front">Do you know what my favorite promise to you is?</div>
+            <div class="card-back" data-text="That I will choose you every single day, no matter what.">
                 <canvas class="scratch-canvas"></canvas>
             </div>
         </div>
@@ -268,11 +207,11 @@ body.bg-8 { background-color: #fffde7; }
 
 <section class="day-section" id="day6">
     <h1>Hug Day</h1>
-    <h2>"The best place in the world is inside your hug."</h2>
+    <h2>"A warm embrace."</h2>
     <div class="card card6">
         <div class="card-inner">
-            <div class="card-front">Safe Haven</div>
-            <div class="card-back" data-text="Your hug is my favorite armor. Scratch to feel the warmth!">
+            <div class="card-front">If you were here right now, do you know what I'd do?</div>
+            <div class="card-back" data-text="I'd hold you so tight and never let go. Sending a big hug!">
                 <canvas class="scratch-canvas"></canvas>
             </div>
         </div>
@@ -285,11 +224,11 @@ body.bg-8 { background-color: #fffde7; }
 
 <section class="day-section" id="day7">
     <h1>Kiss Day</h1>
-    <h2>"A kiss is a soul-deep connection."</h2>
+    <h2>"Sparkling moments."</h2>
     <div class="card card7">
         <div class="card-inner">
-            <div class="card-front">A Secret Message</div>
-            <div class="card-back" data-text="Every kiss from you is like a lightning bolt to my soul. Scratch it!">
+            <div class="card-front">Do you know what a kiss from you feels like?</div>
+            <div class="card-back" data-text="Like magic and a million stars exploding. You are my dream!">
                 <canvas class="scratch-canvas"></canvas>
             </div>
         </div>
@@ -302,25 +241,25 @@ body.bg-8 { background-color: #fffde7; }
 
 <section class="day-section" id="day8">
     <h1>Valentine's Day</h1>
-    <h2>"My today, my tomorrow, my everything."</h2>
+    <h2>"My whole world."</h2>
     <div class="card card8">
         <div class="card-inner">
-            <div class="card-front">The Grand Finale</div>
-            <div class="card-back" data-text="Happy Valentine's Day! You are the greatest gift I have ever received. Scratch for my final confession!">
+            <div class="card-front">After these 8 days, do you know how much I love you?</div>
+            <div class="card-back" data-text="More than words can say. Happy Valentine’s Day to my whole world!">
                 <canvas class="scratch-canvas"></canvas>
             </div>
         </div>
     </div>
     <div class="love-meter-container">
-        <div class="hold-heart" onclick="location.reload()" style="animation: none; font-size: 2rem;">Restart Love?</div>
+        <div class="hold-heart" onclick="location.reload()" style="animation:none; font-size:1.8rem;">Start Our Journey Again? ❤</div>
     </div>
 </section>
 
 <script>
-/* ====== YOUR ORIGINAL LOGIC (PRESERVED) ====== */
+let holdInterval;
+let progress = 0;
 const MAX_PARTICLES = 45;
 const HEART_COLORS = ['#ff2d55', '#ff5fa2', '#ff99cc', '#ff1744', '#ff6f91'];
-let particleTimer;
 
 function createParticle() {
     if (document.querySelectorAll('.particle').length >= MAX_PARTICLES) return;
@@ -330,7 +269,6 @@ function createParticle() {
     heart.style.left = Math.random() * 100 + 'vw';
     heart.style.fontSize = (Math.random() * 12 + 14) + 'px';
     heart.style.color = HEART_COLORS[Math.floor(Math.random() * HEART_COLORS.length)];
-    heart.style.opacity = '0.85';
     document.body.appendChild(heart);
     heart.animate([{ transform: 'translateY(0)', opacity: 0.85 }, { transform: 'translateY(-85vh)', opacity: 0 }], { duration: 5200, easing: 'linear' });
     setTimeout(() => heart.remove(), 5200);
@@ -351,18 +289,39 @@ function setupCards() {
 }
 
 function typeText(el, text) {
-    const textNode = document.createTextNode("");
-    el.appendChild(textNode);
+    const node = document.createTextNode("");
+    el.appendChild(node);
     let i = 0;
     const timer = setInterval(() => {
-        textNode.textContent += text[i++];
+        node.textContent += text[i++];
         if (i >= text.length) clearInterval(timer);
     }, 40);
 }
 
-/* ====== NEW INTERACTIVE LOGIC ====== */
-let holdInterval;
-let progress = 0;
+function initScratch(canvas) {
+    if(!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const parent = canvas.parentElement;
+    canvas.width = parent.offsetWidth;
+    canvas.height = parent.offsetHeight;
+    
+    // Colorful Foil Logic
+    const foilColors = ['#ff4d6d', '#5f2c82', '#3e2723', '#e0c3a0', '#1b5e20', '#ff9a9e', '#ff1744', '#ffcc80'];
+    const dayIdx = parseInt(document.body.className.replace('bg-', '')) - 1;
+    ctx.fillStyle = foilColors[dayIdx] || '#C0C0C0';
+    
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.globalCompositeOperation = 'destination-out';
+
+    function scratch(e) {
+        const rect = canvas.getBoundingClientRect();
+        const x = (e.pageX || e.touches[0].pageX) - rect.left;
+        const y = (e.pageY || e.touches[0].pageY) - rect.top;
+        ctx.beginPath(); ctx.arc(x, y, 25, 0, Math.PI * 2); ctx.fill();
+    }
+    canvas.addEventListener('mousemove', scratch);
+    canvas.addEventListener('touchmove', scratch);
+}
 
 function startHold(nextId) {
     progress = 0;
@@ -370,10 +329,7 @@ function startHold(nextId) {
     holdInterval = setInterval(() => {
         progress += 2;
         fill.style.width = progress + '%';
-        if (progress >= 100) {
-            clearInterval(holdInterval);
-            changeDay(nextId);
-        }
+        if (progress >= 100) { clearInterval(holdInterval); changeDay(nextId); }
     }, 30);
 }
 
@@ -386,39 +342,14 @@ function changeDay(id) {
     document.querySelectorAll('.day-section').forEach(s => s.classList.remove('active'));
     document.getElementById('day' + id).classList.add('active');
     document.body.className = 'bg-' + id;
-    // Burst of hearts
-    for(let i=0; i<15; i++) createParticle();
-}
-
-function initScratch(canvas) {
-    if(!canvas) return;
-    const ctx = canvas.getContext('2d');
-    const parent = canvas.parentElement;
-    canvas.width = parent.offsetWidth;
-    canvas.height = parent.offsetHeight;
-
-    // Cover with silver foil
-    ctx.fillStyle = '#C0C0C0';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.globalCompositeOperation = 'destination-out';
-
-    function scratch(e) {
-        const rect = canvas.getBoundingClientRect();
-        const x = (e.pageX || e.touches[0].pageX) - rect.left - window.scrollX;
-        const y = (e.pageY || e.touches[0].pageY) - rect.top - window.scrollY;
-        ctx.beginPath();
-        ctx.arc(x, y, 25, 0, Math.PI * 2);
-        ctx.fill();
-    }
-
-    canvas.addEventListener('mousemove', scratch);
-    canvas.addEventListener('touchmove', scratch);
+    for(let i=0; i<10; i++) createParticle();
 }
 
 function init() {
     setupCards();
-    particleTimer = setInterval(createParticle, 550);
+    setInterval(createParticle, 550);
 }
 </script>
+
 </body>
 </html>
