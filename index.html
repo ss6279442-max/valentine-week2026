@@ -1,180 +1,322 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>The Majestic Journey</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Valentine Protocol | Media Edition</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;500;700&family=Pacifico&family=Quicksand:wght@300;500;700&display=swap" rel="stylesheet">
 
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;600&family=Dancing+Script:wght@600&family=Prata&family=Montserrat:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --p1: #ff758c; --p2: #ff7eb3; --bg: #fff5f7;
+            --text-main: #4b2c20; --glass: rgba(255, 255, 255, 0.9);
+        }
 
-<style>
-:root{
---rose:#e85d75;--gold:#c5a059;--teddy:#8b5a2b;
---choco:#5b2b1c;--confess:#b65cff;--hug:#ff9ecb;--kiss:#ff2d55;
---cream:#fffaf5;--font1:'Prata';--font2:'Cormorant Garamond';--script:'Dancing Script';
-}
+        body, html {
+            width: 100%; height: 100%; margin: 0;
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--bg); overflow: hidden;
+            display: flex; justify-content: center; align-items: center;
+        }
 
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{
-margin:0;font-family:var(--font1);background:var(--cream);
-overflow-x:hidden;text-align:center;color:#4a2c2c;
-transition:1s;
-}
+        #physics-canvas { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
 
-.bg1{background:radial-gradient(circle,#fff1f1,#ffdada)}
-.bg2{background:radial-gradient(circle,#1a0a0a,#4a0e0e);color:white}
-.bg3{background:radial-gradient(circle,#fff9f0,#f7e6d4)}
-.bg4{background:radial-gradient(circle,#2b1208,#5b2b1c);color:#ffe9d6}
-.bg5{background:linear-gradient(135deg,#1a002a,#3d0066);color:white}
-.bg6{background:radial-gradient(circle,#fff0f6,#ffd9ec)}
-.bg7{background:radial-gradient(circle,#120014,#ff2d55);color:white}
+        .app-shell {
+            position: relative; z-index: 10;
+            width: 95%; max-width: 480px; height: 92vh;
+        }
 
-section{display:none;min-height:100vh;flex-direction:column;justify-content:center;align-items:center;padding:40px}
-section.active{display:flex;animation:fade 1s ease}
-@keyframes fade{from{opacity:0;transform:scale(.9)}to{opacity:1}}
+        .glass-card {
+            background: var(--glass); backdrop-filter: blur(15px);
+            border-radius: 35px; height: 100%; padding: 25px;
+            box-shadow: 0 20px 60px rgba(255, 117, 140, 0.2);
+            display: flex; flex-direction: column; text-align: center;
+            border: 2px solid white; position: relative;
+        }
 
-h1{letter-spacing:6px;font-size:clamp(2rem,6vw,3rem)}
-.q-text{max-width:800px;font-family:var(--font2);font-size:clamp(1.2rem,4vw,2rem);margin:20px}
+        /* --- DYNAMIC GIF GALLERY --- */
+        .gif-gallery {
+            display: flex; gap: 8px; justify-content: center;
+            margin: 10px 0; min-height: 140px; flex-wrap: wrap;
+        }
 
-button{
-padding:14px 36px;border-radius:40px;border:none;
-letter-spacing:2px;cursor:pointer;
-font-family:Montserrat;transition:.3s;
-}
-.yes{background:var(--rose);color:white}
-.no{background:transparent;border:1px solid #aaa;color:#888;margin-left:15px}
+        .gif-frame {
+            width: 120px; height: 120px; border-radius: 15px;
+            object-fit: cover; border: 3px solid white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            animation: imgFade 0.6s ease forwards;
+            background: #fff;
+        }
 
-.nudge{opacity:0;margin-top:15px;font-size:.7rem;letter-spacing:2px}
-.nudge.show{opacity:1;animation:shake .5s}
-@keyframes shake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+        @keyframes imgFade { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
 
-.gift{display:none;flex-direction:column;align-items:center;animation:pop .8s}
-@keyframes pop{from{transform:scale(.7);opacity:0}to{transform:scale(1);opacity:1}}
+        .progress-stepper { display: flex; justify-content: center; gap: 8px; margin-bottom: 10px; }
+        .step-dot { width: 8px; height: 8px; border-radius: 50%; background: #ddd; transition: 0.4s; }
+        .step-dot.active { background: var(--p1); transform: scale(1.4); box-shadow: 0 0 10px var(--p1); }
 
-.envelope{
-width:280px;height:180px;background:white;cursor:pointer;
-box-shadow:0 15px 40px rgba(0,0,0,.2);
-transition:.6s;overflow:hidden
-}
-.envelope.open{height:330px}
-.letter{padding:25px;opacity:0;font-family:var(--font2);font-size:1.2rem}
-.envelope.open .letter{opacity:1}
+        h1 { font-family: 'Pacifico', cursive; color: var(--p1); margin: 5px 0; font-size: 1.8rem; }
+        .story-text { font-size: 1.05rem; line-height: 1.4; margin: 10px 0; min-height: 50px; font-weight: 500; }
 
-.logo{margin-top:40px;cursor:pointer}
-.progress{width:140px;height:3px;background:#ddd;margin-top:10px}
-.fill{height:100%;width:0;background:currentColor}
+        .action-area { position: relative; height: 120px; margin-top: auto; }
+        .btn { 
+            font-family: 'Fredoka', sans-serif; border-radius: 50px; 
+            cursor: pointer; border: none; font-weight: 700; transition: 0.3s;
+        }
+        .btn-yes {
+            background: linear-gradient(135deg, var(--p1), var(--p2));
+            color: white; padding: 15px 45px; font-size: 1.2rem;
+            box-shadow: 0 8px 20px rgba(255,107,107,0.3);
+        }
+        .btn-no { position: absolute; left: 50%; transform: translateX(-50%); background: white; color: #999; padding: 8px 18px; border: 1px solid #eee; }
 
-.typing{font-family:var(--script);font-size:2.5rem;margin-top:10px}
+        .overlay {
+            position: absolute; inset: 0; background: white; z-index: 100;
+            display: none; flex-direction: column; justify-content: center; align-items: center;
+            border-radius: 35px; animation: slideUp 0.5s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+            padding: 20px;
+        }
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
 
-#particles{position:fixed;inset:0;pointer-events:none}
-</style>
+        .hide { display: none !important; }
+    </style>
 </head>
+<body>
 
-<body class="bg1">
+    <canvas id="physics-canvas"></canvas>
 
-<div id="particles"></div>
+    <div class="app-shell">
+        <div class="glass-card" id="mainCard">
+            <div class="progress-stepper" id="stepper"></div>
 
-<!-- DAY TEMPLATE -->
+            <div id="gameContent">
+                <h1 id="currentTitle">Loading...</h1>
+                
+                <div class="gif-gallery" id="gifArea"></div>
+
+                <div class="story-text" id="typewriter"></div>
+
+                <div class="action-area">
+                    <button class="btn btn-yes" id="yesAction" onclick="celebrate()">YES!</button>
+                    <button class="btn btn-no" id="noAction" onmouseover="dodge()">No</button>
+                </div>
+            </div>
+
+            <div class="overlay" id="successOverlay">
+                <h1 id="revealMsg">Yay!</h1>
+                <div class="gif-gallery" id="successGifs"></div>
+                <button class="btn btn-yes" onclick="advance()" style="margin-top: 20px;">Continue →</button>
+            </div>
+
+            <div class="hide" id="finalStage">
+                <h1 style="font-size: 3rem;">💝</h1>
+                <h1>The Journey of Us</h1>
+                <p>Check your notifications, I might have sent you something real!</p>
+                <button class="btn btn-yes" onclick="location.reload()">Re-live the Magic</button>
+            </div>
+        </div>
+    </div>
+
 <script>
-const days=[
-{title:"🌹 Rose Day",q:"In a world full of thorns, would you be my forever bloom?",color:"var(--rose)",msg:"You are my rarest rose in every season."},
-{title:"✨ Propose Day",q:"In every universe I still choose you. Will you be mine forever?",color:"var(--gold)",msg:"My heart signs its forever contract with yours."},
-{title:"🧸 Teddy Day",q:"Need someone soft to hold onto forever?",color:"var(--teddy)",msg:"A hug that never lets your fears touch you."},
-{title:"🍫 Chocolate Day",q:"Can I be the sweetness that melts all your worries?",color:"var(--choco)",msg:"Life tastes better when you’re my dessert."},
-{title:"💌 Confession Day",q:"If my heart spoke loudly, would you hear my love?",color:"var(--confess)",msg:"Every heartbeat whispers your name."},
-{title:"🤗 Hug Day",q:"May I wrap you in my forever warmth?",color:"var(--hug)",msg:"My arms are your safest home."},
-{title:"💋 Kiss Day",q:"Ready for a lifetime of stolen kisses?",color:"var(--kiss)",msg:"Every kiss seals my promise to love you endlessly."}
+// --- DATA MAPPED WITH YOUR GIPHY LINKS ---
+const journeyData = [
+    { 
+        title: "Rose Day", 
+        q: "In a world full of thorns, would you be my forever bloom? 🌹", 
+        win: "A flower for my flower! ❤️",
+        gifs: [
+            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYWFuaDc1OGV5ZGlzdjFpYm8yNXo5cjhjaWZkaXFxZGgzNGVxaDl5NyZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/B3Ug5Cy4YntiCb1vIC/giphy.gif",
+            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNTk3M2IyZnFranp0M3p5ZGdyMjg3aGI5b2Qzdms3bm5ndWsyYmd5YSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/zFHu7yuSHm4H5gNZVx/giphy.gif"
+        ],
+        successGifs: ["https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3dzRqdDUyam1xenVnZzdjbGkyNXhhbjdjeTh3bWQ2ajZ4Z21yNWQ3eiZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/ciBtlqkSsMWr5l6xKe/giphy.gif"] 
+    },
+    { 
+        title: "Propose Day", 
+        q: "I don't need the stars, I just need you. Will you be mine? 💍", 
+        win: "Best decision ever! ✨",
+        gifs: [
+            "https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3eGdmZmw0c3cwcno0c2czdWMyNmVsbXUzc3ZpMDM5enNnamk5cjN0cSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/aiAYc1ulnN4dBKl2yz/giphy.gif",
+            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbWhmdGkzY3VhOW5zcHpkeDJyaDVrbW0wMmRmdnJ1bGxwNnowbjhyMSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/QigYdnKB0BL0dvh9Xu/giphy.gif"
+        ], 
+        successGifs: ["https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3ejVzcTh0MWUzZ3dzMm81YTFnMzFmb2R0amRqd21jYTAyNnlpbjV0YSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/xdt9MMFyXHg4ysiAcV/giphy.gif"] 
+    },
+    { 
+        title: "Chocolate Day", 
+        q: "Life is like a box of chocolates, but I already found the best one. 🍫", 
+        win: "Sweet as sugar! 🍫",
+        gifs: [
+            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbWhmdGkzY3VhOW5zcHpkeDJyaDVrbW0wMmRmdnJ1bGxwNnowbjhyMSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/XKBRIMvPGO691zCD88/giphy.gif",
+            "https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3Zmx3bmYxamI1a3J0ZThwa3hnN3d5c2wxcGc2dTU3MTA1cTYxZnV3eSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/RdzIVVDTKE6yzSfE8e/giphy.gif"
+        ], 
+        successGifs: ["https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3OWQ4cWVrc2ZzZXhidXhsc2hsMHhiZXVudjNnOWh0OXlheWx1ZjVlMiZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/k8etDFKWMUpTi7yATD/giphy.gif"] 
+    },
+    { 
+        title: "Teddy Day", 
+        q: "Need someone soft to hold onto when things get tough? 🧸", 
+        win: "Cuddle mode: ON! 🧸",
+        gifs: [
+            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbWhmdGkzY3VhOW5zcHpkeDJyaDVrbW0wMmRmdnJ1bGxwNnowbjhyMSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/8PPX8J5LDlzh1HQj0B/giphy.gif",
+            "https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3OWQ4cWVrc2ZzZXhidXhsc2hsMHhiZXVudjNnOWh0OXlheWx1ZjVlMiZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/PmKqCgReGt8lDGRDhw/giphy.gif"
+        ], 
+        successGifs: ["https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3YW80YTg1OWN2dmN3anpobGk2NDY0NjA1NW52cTY5dTF6dTgzejB4YyZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/KBPijLnsDgKVgICzA9/giphy.gif"] 
+    },
+    { 
+        title: "Promise Day", 
+        q: "I promise to always share my fries and my heart with you. 🤙", 
+        win: "Pinky swear! 🤙",
+        gifs: [
+            "https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3YW80YTg1OWN2dmN3anpobGk2NDY0NjA1NW52cTY5dTF6dTgzejB4YyZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/e1Rsb25X53NmhkYmBl/giphy.gif"
+        ], 
+        successGifs: ["https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3dzRqdDUyam1xenVnZzdjbGkyNXhhbjdjeTh3bWQ2ajZ4Z21yNWQ3eiZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/ciBtlqkSsMWr5l6xKe/giphy.gif"] 
+    },
+    { 
+        title: "Hug Day", 
+        q: "I have a hug waiting for you. Can I deliver it now? 🫂", 
+        win: "Warmest place on Earth. 🫂",
+        gifs: [
+            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHE1a2Ryd3QwbDVhZHd1YWFua2w2a2gybzBtYnZ2YW9ldzByOHNneSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/1JmGiBtqTuehfYxuy9/giphy.gif",
+            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExajVoOGh5b213Mjd2Zzd2dTJwN3BxMnpmaTNqaTc5MHl0dHNhenF5MyZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/fvN5KrNcKKUyX7hNIA/giphy.gif"
+        ], 
+        successGifs: ["https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3ejVzcTh0MWUzZ3dzMm81YTFnMzFmb2R0amRqd21jYTAyNnlpbjV0YSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/xdt9MMFyXHg4ysiAcV/giphy.gif"] 
+    },
+    { 
+        title: "Kiss Day", 
+        q: "Ready to seal our journey with a little bit of magic? 💋", 
+        win: "Gotcha! 💋",
+        gifs: [
+            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHE1a2Ryd3QwbDVhZHd1YWFua2w2a2gybzBtYnZ2YW9ldzByOHNneSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/qFmdpUKAFZ6rMobzzu/giphy.gif",
+            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbWhmdGkzY3VhOW5zcHpkeDJyaDVrbW0wMmRmdnJ1bGxwNnowbjhyMSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/mCnJ7efbC9wwLzvljY/giphy.gif"
+        ], 
+        successGifs: ["https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3Zmx3bmYxamI1a3J0ZThwa3hnN3d5c2wxcGc2dTU3MTA1cTYxZnV3eSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/RdzIVVDTKE6yzSfE8e/giphy.gif"] 
+    }
 ];
 
-let current=0;
-let dodge={};
-let holdInt,progress=0;
+let current = 0;
+let dodgeCount = 0;
 
-days.forEach((d,i)=>{
-document.write(`
-<section id="day${i}" ${i==0?'class="active"':''}>
-<h1 style="color:${d.color}">${d.title}</h1>
-<div class="q-text">${d.q}</div>
-<div>
-<button class="yes" style="background:${d.color}" onclick="unlock(${i})">YES</button>
-<button class="no" onmouseover="prank(this,${i})">NO</button>
-</div>
-<div class="nudge" id="n${i}">LOVE WILL NOT BE DENIED ❤️</div>
-
-<div class="gift" id="g${i}">
-<div class="envelope" onclick="this.classList.add('open')">
-<div class="letter">${d.msg}<div class="typing" id="t${i}"></div></div>
-</div>
-
-<div class="logo" onmousedown="hold(${i+1})" onmouseup="release()"
-ontouchstart="hold(${i+1})" ontouchend="release()">
-<div class="progress"><div class="fill" id="f${i}"></div></div>
-<p>HOLD TO CONTINUE</p>
-</div>
-</div>
-</section>
-`);
-});
-
-function unlock(i){
-document.querySelector(`#day${i} .gift`).style.display="flex";
-typeText(i, "Meow ❤️");
+function init() {
+    createDots();
+    loadStep(0);
+    startParticles();
 }
 
-function prank(btn,i){
-dodge[i]=(dodge[i]||0)+1;
-if(dodge[i]>=3) document.getElementById("n"+i).classList.add("show");
-btn.style.position="fixed";
-btn.style.left=Math.random()*80+"vw";
-btn.style.top=Math.random()*80+"vh";
+function createDots() {
+    const stepper = document.getElementById('stepper');
+    journeyData.forEach((_, i) => {
+        const d = document.createElement('div');
+        d.className = `step-dot ${i === 0 ? 'active' : ''}`;
+        d.id = `dot-${i}`;
+        stepper.appendChild(d);
+    });
 }
 
-function hold(next){
-progress=0;
-holdInt=setInterval(()=>{
-progress+=2;
-document.getElementById("f"+current).style.width=progress+"%";
-if(progress>=100){
-clearInterval(holdInt);
-go(next);
-}
-},30);
-}
-function release(){
-clearInterval(holdInt);
-document.querySelectorAll(".fill").forEach(f=>f.style.width="0%");
+function loadStep(idx) {
+    const data = journeyData[idx];
+    document.getElementById('currentTitle').innerText = data.title;
+    
+    // Load Day GIFs
+    const gifArea = document.getElementById('gifArea');
+    gifArea.innerHTML = '';
+    data.gifs.forEach(link => {
+        const img = document.createElement('img');
+        img.src = link;
+        img.className = 'gif-frame';
+        gifArea.appendChild(img);
+    });
+
+    typeText(data.q);
+    
+    // Reset buttons
+    const noBtn = document.getElementById('noAction');
+    noBtn.style.position = 'absolute'; noBtn.style.left = '50%'; noBtn.style.top = 'unset';
+    noBtn.style.transform = 'translateX(-50%)';
+    noBtn.innerText = "No"; dodgeCount = 0;
+
+    document.querySelectorAll('.step-dot').forEach((dot, i) => {
+        dot.className = `step-dot ${i === idx ? 'active' : (i < idx ? 'done' : '')}`;
+    });
 }
 
-function go(id){
-if(id>=days.length){
-alert("💖 Journey Complete 💖");
-return;
-}
-document.querySelectorAll("section").forEach(s=>s.classList.remove("active"));
-document.getElementById("day"+id).classList.add("active");
-document.body.className="bg"+(id+1);
-current=id;
-window.scrollTo(0,0);
+function typeText(text) {
+    const el = document.getElementById('typewriter');
+    el.innerHTML = ""; let i = 0;
+    const interval = setInterval(() => {
+        el.innerHTML += text.charAt(i); i++;
+        if (i >= text.length) clearInterval(interval);
+    }, 40);
 }
 
-function typeText(i,text){
-let el=document.getElementById("t"+i),c=0;
-let int=setInterval(()=>{
-el.innerHTML+=text[c++];
-if(c>=text.length) clearInterval(int);
-},120);
+function dodge() {
+    const btn = document.getElementById('noAction');
+    dodgeCount++;
+    const area = document.getElementById('mainCard').getBoundingClientRect();
+    const x = Math.random() * (area.width - 120);
+    const y = Math.random() * (area.height - 180);
+    btn.style.left = x + "px"; btn.style.top = y + "px";
+    btn.style.transform = "none";
+    btn.innerText = dodgeCount > 3 ? "Still No? 😂" : "Nope";
 }
 
-/* PARTICLES */
-setInterval(()=>{
-const p=document.createElement("div");
-p.innerHTML=["💖","✨","🌸","💋","🧸"][Math.floor(Math.random()*5)];
-p.style.cssText=`position:fixed;left:${Math.random()*100}vw;top:-20px;font-size:${Math.random()*25+15}px;opacity:.8;transition:5s`;
-document.getElementById("particles").appendChild(p);
-setTimeout(()=>{p.style.transform="translateY(110vh)";p.style.opacity=0},50);
-setTimeout(()=>p.remove(),5000);
-},300);
+function celebrate() {
+    const data = journeyData[current];
+    document.getElementById('revealMsg').innerText = data.win;
+    
+    const successGifs = document.getElementById('successGifs');
+    successGifs.innerHTML = '';
+    data.successGifs.forEach(link => {
+        const img = document.createElement('img');
+        img.src = link;
+        img.className = 'gif-frame';
+        img.style.width = '200px'; img.style.height = '200px';
+        successGifs.appendChild(img);
+    });
+
+    document.getElementById('successOverlay').style.display = 'flex';
+}
+
+function advance() {
+    document.getElementById('successOverlay').style.display = 'none';
+    if (current < journeyData.length - 1) {
+        current++; loadStep(current);
+    } else {
+        document.getElementById('gameContent').classList.add('hide');
+        document.getElementById('finalStage').classList.remove('hide');
+        document.getElementById('stepper').classList.add('hide');
+    }
+}
+
+function startParticles() {
+    const canvas = document.getElementById('physics-canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+    let hearts = [];
+    
+    function create() {
+        return { 
+            x: Math.random()*canvas.width, 
+            y: canvas.height+20, 
+            s: Math.random()*20+10, 
+            v: Math.random()*2+0.5,
+            o: Math.random()*0.5 + 0.2
+        };
+    }
+
+    function draw() {
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        if(hearts.length < 40) hearts.push(create());
+        hearts.forEach((h, i) => {
+            h.y -= h.v;
+            ctx.globalAlpha = h.o;
+            ctx.font = `${h.s}px Arial`;
+            ctx.fillText('❤️', h.x, h.y);
+            if(h.y < -20) hearts[i] = create();
+        });
+        requestAnimationFrame(draw);
+    }
+    draw();
+}
+
+init();
 </script>
-
 </body>
 </html>
