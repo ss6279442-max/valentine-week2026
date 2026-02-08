@@ -1,363 +1,230 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For My Dearest | Sweet Edition</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600&family=Gaegu:wght@400;700&family=Pacifico&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<title>My Love Letter 💌</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <style>
-        :root {
-            --soft-pink: #ffdae0;
-            --peach: #fff5e6;
-            --berry: #ff8fa3;
-            --cream: #fffbff;
-            --text: #7a5c5c;
-            --accent-green: #e2f0cb;
-        }
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;1,600&family=Great+Vibes&display=swap" rel="stylesheet">
 
-        * { box-sizing: border-box; outline: none; }
-        
-        body, html {
-            margin: 0; padding: 0; width: 100%; height: 100%;
-            font-family: 'Fredoka', sans-serif;
-            background: var(--peach); color: var(--text);
-            overflow: hidden; cursor: url('https://cur.cursors-4u.net/symbols/sym-9/sym833.cur'), auto;
-        }
+<style>
+:root {
+  --gold: #d6b36a;
+  --blush: #fff0f5;
+  --cream: #fffdf9;
+  --text: #5a4a42;
+}
 
-        /* SOFT BACKGROUND ANIMATION */
-        #bg-canvas {
-            position: fixed; inset: 0; z-index: 1;
-            background: linear-gradient(180deg, var(--peach) 0%, var(--soft-pink) 100%);
-        }
+* { box-sizing: border-box; }
 
-        .container {
-            position: relative; z-index: 10;
-            width: 100vw; height: 100vh;
-            display: flex; justify-content: center; align-items: center;
-            padding: 20px;
-        }
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: linear-gradient(180deg, #fff7e8, #fde2eb);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Playfair Display', serif;
+  color: var(--text);
+  overflow: hidden;
+}
 
-        /* THE LETTER BOX */
-        .kawaii-card {
-            background: var(--cream);
-            border: 8px solid white;
-            border-radius: 50px;
-            width: 100%; max-width: 500px;
-            padding: 40px;
-            box-shadow: 0 15px 0 rgba(255, 143, 163, 0.2);
-            text-align: center;
-            position: relative;
-            animation: floaty 4s ease-in-out infinite;
-        }
+/* FLOATING LIGHTS */
+canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+}
 
-        @keyframes floaty {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
+/* LETTER CARD */
+.letter-wrapper {
+  position: relative;
+  z-index: 2;
+  background: var(--cream);
+  width: 90%;
+  max-width: 650px;
+  padding: 60px 50px;
+  border-radius: 30px;
+  box-shadow:
+    0 30px 60px rgba(0,0,0,0.08),
+    inset 0 0 0 2px rgba(214,179,106,0.2);
+  animation: rise 1.5s ease;
+}
 
-        h1 { font-family: 'Pacifico', cursive; color: var(--berry); font-size: 2.2rem; margin-top: 0; }
-        .day-label { font-size: 0.9rem; letter-spacing: 2px; text-transform: uppercase; color: #b5a1a1; margin-bottom: 10px; }
-        .prompt-text { font-size: 1.2rem; line-height: 1.5; margin: 20px 0; min-height: 60px; }
+@keyframes rise {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 
-        /* BUTTONS */
-        .btn-group { display: flex; gap: 15px; justify-content: center; margin-top: 30px; position: relative; height: 60px; }
-        
-        .btn {
-            border: none; border-radius: 25px; padding: 12px 35px;
-            font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 1.1rem;
-            cursor: pointer; transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
+h1 {
+  font-family: 'Great Vibes', cursive;
+  text-align: center;
+  font-size: 3.5rem;
+  color: var(--gold);
+  margin-top: 0;
+}
 
-        .btn-yes { background: var(--berry); color: white; box-shadow: 0 6px 0 #e67388; }
-        .btn-yes:hover { transform: scale(1.1); }
-        .btn-yes:active { transform: translateY(4px); box-shadow: 0 2px 0 #e67388; }
+.letter {
+  font-size: 1.35rem;
+  line-height: 1.9;
+  white-space: pre-wrap;
+  min-height: 260px;
+}
 
-        .btn-no { background: #eee; color: #999; position: absolute; }
+.signature {
+  margin-top: 40px;
+  text-align: right;
+  font-family: 'Great Vibes', cursive;
+  font-size: 2.2rem;
+  color: var(--gold);
+}
 
-        /* PROGRESS DOTS */
-        .dots-container { position: fixed; bottom: 40px; display: flex; gap: 12px; }
-        .dot { width: 12px; height: 12px; background: white; border-radius: 50%; border: 2px solid var(--berry); transition: 0.4s; }
-        .dot.active { background: var(--berry); width: 30px; border-radius: 10px; }
+button {
+  display: block;
+  margin: 30px auto 0;
+  padding: 12px 35px;
+  font-size: 1.1rem;
+  border-radius: 30px;
+  border: none;
+  cursor: pointer;
+  background: linear-gradient(135deg, #e7c77b, #d6a85e);
+  color: white;
+  font-weight: 600;
+  box-shadow: 0 8px 20px rgba(214,179,106,0.4);
+  transition: 0.3s;
+}
 
-        /* SUCCESS OVERLAY */
-        .overlay {
-            position: fixed; inset: 0; background: var(--cream);
-            z-index: 100; display: none; flex-direction: column;
-            justify-content: center; align-items: center; text-align: center;
-            padding: 30px;
-        }
-
-        /* THE FINAL LOVE LETTER */
-        #final-letter-screen {
-            position: fixed; inset: 0; background: var(--peach);
-            z-index: 500; display: none; overflow-y: auto;
-            padding: 60px 20px;
-        }
-
-        .letter-content {
-            background: white; max-width: 600px; margin: 0 auto;
-            padding: 50px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            font-family: 'Gaegu', cursive; font-size: 1.5rem; line-height: 1.8;
-            color: #555; position: relative;
-        }
-
-        .sticker-gallery {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-            gap: 15px; margin-top: 40px;
-        }
-        .gallery-item { width: 100%; border-radius: 10px; }
-
-        .hide { display: none; }
-
-        /* DECORATIONS */
-        .flower { position: absolute; width: 40px; opacity: 0.6; pointer-events: none; }
-    </style>
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 25px rgba(214,179,106,0.6);
+}
+</style>
 </head>
+
 <body>
 
-    <canvas id="bg-canvas"></canvas>
+<canvas id="bg"></canvas>
 
-    <div class="container" id="game-stage">
-        <div class="kawaii-card">
-            <div class="day-label" id="day-num">Day 1</div>
-            <h1 id="day-title">Rose Day</h1>
-            
-            <div id="media-slot" style="height: 150px; display: flex; justify-content: center; align-items: center;">
-                </div>
-
-            <p class="prompt-text" id="typewriter-text"></p>
-
-            <div class="btn-group">
-                <button class="btn btn-yes" onclick="UI.approve()">Yes! ✨</button>
-                <button class="btn btn-no" id="no-btn" onmouseover="UI.dodge()">No</button>
-            </div>
-        </div>
-
-        <div class="dots-container" id="dots"></div>
-    </div>
-
-    <div class="overlay" id="success-modal">
-        <h1 style="font-size: 3rem;">🎀</h1>
-        <h2 id="win-msg" style="color: var(--berry); font-family: 'Pacifico';"></h2>
-        <div id="win-gif-slot"></div>
-        <button class="btn btn-yes" onclick="UI.nextStep()" style="margin-top: 30px;">Next, please! →</button>
-    </div>
-
-    <div id="final-letter-screen">
-        <div class="letter-content">
-            <h1 style="text-align: center;">My Dearest,</h1>
-            <p id="letter-typing-area"></p>
-            <div class="sticker-gallery" id="full-gallery"></div>
-            <p style="text-align: right; margin-top: 40px; font-family: 'Pacifico';">Forever Yours ❤️</p>
-            <center><button class="btn btn-yes" onclick="location.reload()">Replay the Magic</button></center>
-        </div>
-    </div>
+<div class="letter-wrapper">
+  <h1>My Dearest</h1>
+  <div class="letter" id="text"></div>
+  <div class="signature">Forever Yours 🤍</div>
+  <button onclick="replay()">Read Again ✨</button>
+</div>
 
 <script>
-/* ============================================================
-   DATA & CONFIGURATION
-   ============================================================ */
-const GIFS = [
-    "https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3bXA4Y3M4aXF2ZDEzZWY5OWh4amc4bjdjMzlocncxeDQ1amgyNngxNyZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/zLlJ4iBwvP6Mwb3E35/giphy.gif",
-    "https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3djJ6OXJ0cTE4NHJ1a3prbDZ5dm84ZWlrMTNzajYyMmVycmgyMnQ5biZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/ryL7JeWS2lmMfby9IY/giphy.gif",
-    "https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3djJ6OXJ0cTE4NHJ1a3prbDZ5dm84ZWlrMTNzajYyMmVycmgyMnQ5biZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/KokBjZDjPp8BaDK97l/giphy.gif",
-    "https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3d2QxM3YxYWhyZWYxb2dyY3Z1NDU1cTFyaXFwaTJkdGl3bXBpdHl0eSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/xWTNfEu9uAXBnFQIa5/giphy.gif",
-    "https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3d2QxM3YxYWhyZWYxb2dyY3Z1NDU1cTFyaXFwaTJkdGl3bXBpdHl0eSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/r0nu8ftNO5LclBrwxt/giphy.gif",
-    "https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3d2QxM3YxYWhyZWYxb2dyY3Z1NDU1cTFyaXFwaTJkdGl3bXBpdHl0eSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/VKUSdDIW7vXWwTFCtf/giphy.gif",
-    "https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3d2QxM3YxYWhyZWYxb2dyY3Z1NDU1cTFyaXFwaTJkdGl3bXBpdHl0eSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/r1KxZq1Q3MxtXn9IE8/giphy.gif",
-    "https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3eXM3bXk0eDdla2VsemJjbGNyOHlmeWV2ODJxcHJweDduczFhZ2dtZCZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/7zjI1NgvpRVO9l9irq/giphy.gif",
-    "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHE1a2Ryd3QwbDVhZHd1YWFua2w2a2gybzBtYnZ2YW9ldzByOHNneSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/qFmdpUKAFZ6rMobzzu/giphy.gif",
-    "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbWhmdGkzY3VhOW5zcHpkeDJyaDVrbW0wMmRmdnJ1bGxwNnowbjhyMSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/mCnJ7efbC9wwLzvljY/giphy.gif",
-    "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHE1a2Ryd3QwbDVhZHd1YWFua2w2a2gybzBtYnZ2YW9ldzByOHNneSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/1JmGiBtqTuehfYxuy9/giphy.gif",
-    "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExajVoOGh5b213Mjd2Zzd2dTJwN3BxMnpmaTNqaTc5MHl0dHNhenF5MyZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/fvN5KrNcKKUyX7hNIA/giphy.gif",
-    "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYWFuaDc1OGV5ZGlzdjFpYm8yNXo5cjhjaWZkaXFxZGgzNGVxaDl5NyZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/B3Ug5Cy4YntiCb1vIC/giphy.gif",
-    "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNTk3M2IyZnFranp0M3p5ZGdyMjg3aGI5b2Qzdms3bm5ndWsyYmd5YSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/zFHu7yuSHm4H5gNZVx/giphy.gif",
-    "https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3dzRqdDUyam1xenVnZzdjbGkyNXhhbjdjeTh3bWQ2ajZ4Z21yNWQ3eiZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/ciBtlqkSsMWr5l6xKe/giphy.gif"
-];
+/* ===============================
+   LOVE LETTER TEXT
+================================= */
+const LETTER = `
+This little journey may have started as something playful,
+but it ends with something real.
 
-const STAGES = [
-    { title: "Rose Day", q: "Will you let me be the gardener of your heart?", win: "A Rose for my Rose! ❤️", mainGif: GIFS[12], winGif: GIFS[13] },
-    { title: "Propose Day", q: "I'm officially applying for the 'Forever' position. Hire me?", win: "Hired for life! 💍", mainGif: GIFS[14], winGif: GIFS[3] },
-    { title: "Chocolate Day", q: "Want to share a sweetness that never melts?", win: "You're the treat! 🍫", mainGif: GIFS[4], winGif: GIFS[5] },
-    { title: "Teddy Day", q: "Need a portable hug that never runs out of batteries?", win: "Cuddle mode: ON! 🧸", mainGif: GIFS[6], winGif: GIFS[7] },
-    { title: "Promise Day", q: "Can I promise to love you even when I'm hungry?", win: "Pinky swear! 🤙", mainGif: GIFS[0], winGif: GIFS[14] },
-    { title: "Hug Day", q: "I have a hug stored with your name on it. Claim it?", win: "Safest place! 🫂", mainGif: GIFS[10], winGif: GIFS[11] },
-    { title: "Kiss Day", q: "Ready to seal this digital diary with a real-life spark?", win: "Magic found. 💋", mainGif: GIFS[8], winGif: GIFS[9] }
-];
+You are my calm in the noise,
+my softness in a loud world,
+the place my heart rests when everything feels heavy.
 
-const LOVE_LETTER_TEXT = `As we finish this little journey through Valentine's Week, I wanted to tell you how much you mean to me. You are the softest part of my world, the calm in my storm, and the smile on my face every single day. I've collected all these little moments and stickers just for you because you deserve every bit of sweetness. This isn't just a website; it's a small piece of my heart that belongs to you. Always.`;
+Loving you feels gentle.
+It feels safe.
+It feels like coming home.
 
-/* ============================================================
-   UI ENGINE
-   ============================================================ */
-const UI = (() => {
-    let current = 0;
-    let dodgeCount = 0;
+Every smile of yours lives quietly in my mind,
+every laugh leaves warmth behind,
+and every moment with you feels like a blessing
+I never want to take for granted.
 
-    const init = () => {
-        createDots();
-        loadStage();
-        Background.start();
-    };
+This letter isn’t grand because love doesn’t need to shout.
+It’s written softly — the way I feel about you.
+Steady. Certain. True.
 
-    const createDots = () => {
-        const container = document.getElementById('dots');
-        STAGES.forEach((_, i) => {
-            const d = document.createElement('div');
-            d.className = 'dot';
-            d.id = `dot-${i}`;
-            container.appendChild(d);
-        });
-    };
+If you ever wonder where you belong,
+remember this:
 
-    const loadStage = () => {
-        const data = STAGES[current];
-        document.getElementById('day-num').innerText = `Step ${current + 1}`;
-        document.getElementById('day-title').innerText = data.title;
-        document.getElementById('media-slot').innerHTML = `<img src="${data.mainGif}" style="height: 120px; border-radius: 15px;">`;
-        
-        typeText(data.q);
-        
-        const noBtn = document.getElementById('no-btn');
-        noBtn.style.position = 'relative'; noBtn.style.left = 'auto'; noBtn.style.top = 'auto';
-        noBtn.innerText = "No";
-        dodgeCount = 0;
+You are cherished.
+You are wanted.
+You are deeply, endlessly loved.
+`;
 
-        document.querySelectorAll('.dot').forEach((d, i) => d.className = i === current ? 'dot active' : 'dot');
-    };
+/* ===============================
+   TYPEWRITER EFFECT
+================================= */
+const area = document.getElementById("text");
+let i = 0;
 
-    const typeText = (text) => {
-        const el = document.getElementById('typewriter-text');
-        el.innerText = "";
-        let i = 0;
-        const timer = setInterval(() => {
-            el.innerText += text.charAt(i);
-            i++;
-            if(i >= text.length) clearInterval(timer);
-        }, 50);
-    };
+function type() {
+  if (i < LETTER.length) {
+    area.innerText += LETTER.charAt(i);
+    i++;
+    setTimeout(type, 45);
+  } else {
+    sparkle();
+  }
+}
+type();
 
-    const dodge = () => {
-        const btn = document.getElementById('no-btn');
-        dodgeCount++;
-        const x = Math.random() * 200 - 100;
-        const y = Math.random() * 200 - 100;
-        btn.style.position = 'fixed';
-        btn.style.left = `calc(50% + ${x}px)`;
-        btn.style.top = `calc(50% + ${y}px)`;
-        btn.innerText = dodgeCount > 3 ? "Wait! 🥺" : "No";
-    };
+function replay() {
+  area.innerText = "";
+  i = 0;
+  type();
+}
 
-    const approve = () => {
-        const modal = document.getElementById('success-modal');
-        document.getElementById('win-msg').innerText = STAGES[current].win;
-        document.getElementById('win-gif-slot').innerHTML = `<img src="${STAGES[current].winGif}" style="height: 180px;">`;
-        modal.style.display = 'flex';
-    };
+/* ===============================
+   MAJESTIC FLOATING LIGHTS
+================================= */
+const canvas = document.getElementById("bg");
+const ctx = canvas.getContext("2d");
 
-    const nextStep = () => {
-        document.getElementById('success-modal').style.display = 'none';
-        if(current < STAGES.length - 1) {
-            current++;
-            loadStage();
-        } else {
-            showFinalLetter();
-        }
-    };
+function resize() {
+  canvas.width = innerWidth;
+  canvas.height = innerHeight;
+}
+resize();
+onresize = resize;
 
-    const showFinalLetter = () => {
-        document.getElementById('game-stage').style.display = 'none';
-        const final = document.getElementById('final-letter-screen');
-        final.style.display = 'block';
-        
-        // Populate Gallery
-        const gallery = document.getElementById('full-gallery');
-        GIFS.forEach(url => {
-            const img = document.createElement('img');
-            img.src = url;
-            img.className = 'gallery-item';
-            gallery.appendChild(img);
-        });
+const lights = [];
 
-        // Type the letter
-        let i = 0;
-        const area = document.getElementById('letter-typing-area');
-        const letterTimer = setInterval(() => {
-            area.innerText += LOVE_LETTER_TEXT.charAt(i);
-            i++;
-            if(i >= LOVE_LETTER_TEXT.length) {
-                clearInterval(letterTimer);
-                Background.confetti();
-            }
-        }, 60);
-    };
+function spawn() {
+  lights.push({
+    x: Math.random() * canvas.width,
+    y: canvas.height + 50,
+    r: Math.random() * 15 + 8,
+    v: Math.random() * 0.6 + 0.3,
+    o: Math.random() * 0.4 + 0.2
+  });
+}
 
-    return { init, dodge, approve, nextStep };
-})();
+function draw() {
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  if (lights.length < 40) spawn();
 
-/* ============================================================
-   BACKGROUND PHYSICS (CALM STYLE)
-   ============================================================ */
-const Background = (() => {
-    const canvas = document.getElementById('bg-canvas');
-    const ctx = canvas.getContext('2d');
-    let bubbles = [];
+  lights.forEach((l,i)=>{
+    l.y -= l.v;
+    ctx.beginPath();
+    ctx.arc(l.x,l.y,l.r,0,Math.PI*2);
+    ctx.fillStyle = `rgba(214,179,106,${l.o})`;
+    ctx.fill();
+    if(l.y < -60) lights.splice(i,1);
+  });
 
-    const start = () => {
-        resize();
-        window.onresize = resize;
-        loop();
-    };
+  requestAnimationFrame(draw);
+}
+draw();
 
-    const resize = () => {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-    };
-
-    const loop = () => {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        
-        if(bubbles.length < 25) {
-            bubbles.push({
-                x: Math.random() * canvas.width,
-                y: canvas.height + 50,
-                r: Math.random() * 20 + 5,
-                v: Math.random() * 1 + 0.5,
-                o: Math.random() * 0.4
-            });
-        }
-
-        bubbles.forEach((b, i) => {
-            b.y -= b.v;
-            ctx.beginPath();
-            ctx.arc(b.x, b.y, b.r, 0, Math.PI * 2);
-            ctx.fillStyle = `rgba(255, 255, 255, ${b.o})`;
-            ctx.fill();
-            if(b.y < -50) bubbles.splice(i, 1);
-        });
-
-        requestAnimationFrame(loop);
-    };
-
-    const confetti = () => {
-        // Simple sparkle trigger
-        for(let i=0; i<50; i++) {
-            bubbles.push({
-                x: Math.random() * canvas.width,
-                y: Math.random() * canvas.height,
-                r: Math.random() * 5 + 2,
-                v: Math.random() * 4 - 2,
-                o: 1
-            });
-        }
-    };
-
-    return { start, confetti };
-})();
-
-UI.init();
+/* ===============================
+   FINAL SPARKLE
+================================= */
+function sparkle() {
+  for(let i=0;i<60;i++){
+    lights.push({
+      x: Math.random()*canvas.width,
+      y: Math.random()*canvas.height,
+      r: Math.random()*6+2,
+      v: Math.random()*2-1,
+      o: 1
+    });
+  }
+}
 </script>
+
 </body>
 </html>
