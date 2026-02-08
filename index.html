@@ -3,320 +3,472 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Valentine Protocol | Media Edition</title>
+    <title>The Valentine Multi-Verse | Elite Edition</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;500;700&family=Pacifico&family=Quicksand:wght@300;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;600;700&family=Pacifico&family=Playfair+Display:ital,wght@0,700;1,700&family=Space+Grotesk:wght@300;500;700&family=Montserrat:wght@200;800&display=swap" rel="stylesheet">
 
     <style>
+        /* ============================================================
+           1. CSS ARCHITECTURE: THEME VARIABLES & GLOBAL STYLES
+           ============================================================ */
         :root {
-            --p1: #ff758c; --p2: #ff7eb3; --bg: #fff5f7;
-            --text-main: #4b2c20; --glass: rgba(255, 255, 255, 0.9);
+            --primary: #ff758c;
+            --secondary: #ff7eb3;
+            --accent: #ffb347;
+            --bg: #fff5f7;
+            --text: #2d3436;
+            --glass: rgba(255, 255, 255, 0.85);
+            --transition: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            --font-main: 'Fredoka', sans-serif;
         }
 
+        /* DYNAMIC THEME ENGINE CLASSES */
+        .theme-rose { --bg: #fff0f3; --primary: #ff4d6d; --font-head: 'Playfair Display'; }
+        .theme-propose { --bg: #1a1a2e; --text: #e0e0e0; --glass: rgba(255,255,255,0.1); --primary: #f0a500; --font-head: 'Pacifico'; }
+        .theme-choco { --bg: #2b1208; --text: #ffe9d6; --glass: rgba(255,255,255,0.05); --primary: #d2691e; --font-head: 'Playfair Display'; }
+        .theme-teddy { --bg: #fdf2e9; --primary: #a67c52; --font-head: 'Fredoka'; }
+        .theme-promise { --bg: #e0f2f1; --primary: #00897b; --font-head: 'Space Grotesk'; }
+        .theme-hug { --bg: #fce4ec; --primary: #d81b60; --font-head: 'Pacifico'; }
+        .theme-kiss { --bg: #0d0d0d; --text: #fff; --primary: #ff003c; --font-head: 'Montserrat'; }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
         body, html {
-            width: 100%; height: 100%; margin: 0;
-            font-family: 'Quicksand', sans-serif;
-            background-color: var(--bg); overflow: hidden;
-            display: flex; justify-content: center; align-items: center;
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            font-family: var(--font-main);
+            background-color: var(--bg); color: var(--text);
+            overflow: hidden;
+            transition: background 1s ease, color 0.5s ease;
         }
 
-        #physics-canvas { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
+        /* ============================================================
+           2. CANVAS & LAYOUT LAYERS
+           ============================================================ */
+        #physics-engine {
+            position: fixed; inset: 0; z-index: 1; pointer-events: none;
+        }
 
-        .app-shell {
+        .stage-wrapper {
             position: relative; z-index: 10;
-            width: 95%; max-width: 480px; height: 92vh;
-        }
-
-        .glass-card {
-            background: var(--glass); backdrop-filter: blur(15px);
-            border-radius: 35px; height: 100%; padding: 25px;
-            box-shadow: 0 20px 60px rgba(255, 117, 140, 0.2);
-            display: flex; flex-direction: column; text-align: center;
-            border: 2px solid white; position: relative;
-        }
-
-        /* --- DYNAMIC GIF GALLERY --- */
-        .gif-gallery {
-            display: flex; gap: 8px; justify-content: center;
-            margin: 10px 0; min-height: 140px; flex-wrap: wrap;
-        }
-
-        .gif-frame {
-            width: 120px; height: 120px; border-radius: 15px;
-            object-fit: cover; border: 3px solid white;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            animation: imgFade 0.6s ease forwards;
-            background: #fff;
-        }
-
-        @keyframes imgFade { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
-
-        .progress-stepper { display: flex; justify-content: center; gap: 8px; margin-bottom: 10px; }
-        .step-dot { width: 8px; height: 8px; border-radius: 50%; background: #ddd; transition: 0.4s; }
-        .step-dot.active { background: var(--p1); transform: scale(1.4); box-shadow: 0 0 10px var(--p1); }
-
-        h1 { font-family: 'Pacifico', cursive; color: var(--p1); margin: 5px 0; font-size: 1.8rem; }
-        .story-text { font-size: 1.05rem; line-height: 1.4; margin: 10px 0; min-height: 50px; font-weight: 500; }
-
-        .action-area { position: relative; height: 120px; margin-top: auto; }
-        .btn { 
-            font-family: 'Fredoka', sans-serif; border-radius: 50px; 
-            cursor: pointer; border: none; font-weight: 700; transition: 0.3s;
-        }
-        .btn-yes {
-            background: linear-gradient(135deg, var(--p1), var(--p2));
-            color: white; padding: 15px 45px; font-size: 1.2rem;
-            box-shadow: 0 8px 20px rgba(255,107,107,0.3);
-        }
-        .btn-no { position: absolute; left: 50%; transform: translateX(-50%); background: white; color: #999; padding: 8px 18px; border: 1px solid #eee; }
-
-        .overlay {
-            position: absolute; inset: 0; background: white; z-index: 100;
-            display: none; flex-direction: column; justify-content: center; align-items: center;
-            border-radius: 35px; animation: slideUp 0.5s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+            width: 100vw; height: 100vh;
+            display: flex; justify-content: center; align-items: center;
             padding: 20px;
         }
-        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
 
-        .hide { display: none !important; }
+        .main-card {
+            width: 100%; max-width: 950px;
+            display: grid; grid-template-columns: 1fr;
+            gap: 20px; align-items: center;
+            opacity: 0; transform: translateY(30px);
+            transition: opacity 0.8s, transform 0.8s;
+        }
+
+        .main-card.visible { opacity: 1; transform: translateY(0); }
+
+        @media (min-width: 768px) {
+            .main-card.layout-split { grid-template-columns: 1.3fr 1fr; text-align: left; }
+        }
+
+        /* ============================================================
+           3. UI COMPONENTS
+           ============================================================ */
+        .glass-panel {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-radius: 40px;
+            padding: 40px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.12);
+            border: 1px solid rgba(255,255,255,0.3);
+            position: relative;
+        }
+
+        h1 {
+            font-family: var(--font-head);
+            font-size: clamp(1.8rem, 7vw, 3.2rem);
+            margin: 0 0 15px 0;
+            color: var(--primary);
+            letter-spacing: -1px;
+        }
+
+        .message-box {
+            font-size: 1.15rem; line-height: 1.6;
+            font-weight: 400; margin-bottom: 30px;
+            min-height: 80px;
+        }
+
+        /* STICKER SYSTEM */
+        .sticker-container {
+            display: flex; gap: 15px; justify-content: center;
+            flex-wrap: wrap; margin-bottom: 20px;
+        }
+
+        .sticker-img {
+            width: 120px; height: 120px; object-fit: contain;
+            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.1));
+            animation: stickerFloat 4s ease-in-out infinite;
+        }
+
+        @keyframes stickerFloat {
+            0%, 100% { transform: translateY(0) scale(1) rotate(0deg); }
+            50% { transform: translateY(-15px) scale(1.05) rotate(5deg); }
+        }
+
+        /* BUTTON SYSTEM */
+        .action-tray {
+            position: relative; height: 120px;
+            display: flex; align-items: center; justify-content: center;
+            gap: 20px;
+        }
+
+        .btn-yes {
+            background: var(--primary);
+            color: white; border: none;
+            padding: 18px 45px; border-radius: 100px;
+            font-family: 'Space Grotesk'; font-weight: 700;
+            font-size: 1.2rem; cursor: pointer;
+            text-transform: uppercase; letter-spacing: 2px;
+            box-shadow: 0 15px 35px rgba(255, 117, 140, 0.4);
+            transition: transform 0.3s, box-shadow 0.3s;
+            z-index: 100;
+        }
+
+        .btn-yes:hover { transform: scale(1.05) translateY(-3px); }
+
+        .btn-no {
+            position: relative;
+            background: rgba(0,0,0,0.05);
+            color: #888; border: 1px solid #ddd;
+            padding: 12px 25px; border-radius: 100px;
+            cursor: pointer; font-weight: 600;
+            transition: 0.1s linear; z-index: 10;
+        }
+
+        /* ============================================================
+           4. NAVIGATION & OVERLAYS
+           ============================================================ */
+        .progress-bar {
+            position: fixed; top: 30px; left: 50%;
+            transform: translateX(-50%);
+            display: flex; gap: 12px; z-index: 1000;
+        }
+
+        .progress-dot {
+            width: 10px; height: 10px; border-radius: 50%;
+            background: rgba(0,0,0,0.1); transition: 0.4s;
+        }
+
+        .progress-dot.active {
+            background: var(--primary); transform: scale(1.6);
+            box-shadow: 0 0 15px var(--primary);
+        }
+
+        .celebration-modal {
+            position: fixed; inset: 0; background: var(--bg);
+            z-index: 2000; display: none;
+            flex-direction: column; justify-content: center; align-items: center;
+            text-align: center; padding: 40px;
+        }
+
+        .preloader {
+            position: fixed; inset: 0; background: #fff;
+            z-index: 9999; display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+        }
     </style>
 </head>
-<body>
+<body class="theme-rose">
 
-    <canvas id="physics-canvas"></canvas>
+    <div class="preloader" id="loader">
+        <h1 style="font-family: 'Pacifico';">Building your Universe...</h1>
+        <div id="load-count">0%</div>
+    </div>
 
-    <div class="app-shell">
-        <div class="glass-card" id="mainCard">
-            <div class="progress-stepper" id="stepper"></div>
+    <canvas id="physics-engine"></canvas>
 
-            <div id="gameContent">
-                <h1 id="currentTitle">Loading...</h1>
+    <div class="progress-bar" id="nav-dots"></div>
+
+    <div class="stage-wrapper">
+        <div class="main-card" id="app-card">
+            
+            <div class="sticker-container" id="sticker-wall">
+                </div>
+
+            <div class="glass-panel">
+                <h1 id="title-display"></h1>
+                <div class="message-box" id="text-display"></div>
                 
-                <div class="gif-gallery" id="gifArea"></div>
-
-                <div class="story-text" id="typewriter"></div>
-
-                <div class="action-area">
-                    <button class="btn btn-yes" id="yesAction" onclick="celebrate()">YES!</button>
-                    <button class="btn btn-no" id="noAction" onmouseover="dodge()">No</button>
+                <div class="action-tray">
+                    <button class="btn-yes" onclick="App.handleChoice(true)">Yes, I'm Yours!</button>
+                    <button class="btn-no" id="no-btn" onmouseover="App.dodgeNo()">No</button>
                 </div>
             </div>
 
-            <div class="overlay" id="successOverlay">
-                <h1 id="revealMsg">Yay!</h1>
-                <div class="gif-gallery" id="successGifs"></div>
-                <button class="btn btn-yes" onclick="advance()" style="margin-top: 20px;">Continue →</button>
-            </div>
-
-            <div class="hide" id="finalStage">
-                <h1 style="font-size: 3rem;">💝</h1>
-                <h1>The Journey of Us</h1>
-                <p>Check your notifications, I might have sent you something real!</p>
-                <button class="btn btn-yes" onclick="location.reload()">Re-live the Magic</button>
-            </div>
         </div>
     </div>
 
+    <div class="celebration-modal" id="modal">
+        <h1 id="modal-title"></h1>
+        <div id="modal-media" class="sticker-container"></div>
+        <button class="btn-yes" onclick="App.next()" style="margin-top: 40px;">Continue Journey →</button>
+    </div>
+
 <script>
-// --- DATA MAPPED WITH YOUR GIPHY LINKS ---
-const journeyData = [
-    { 
-        title: "Rose Day", 
-        q: "In a world full of thorns, would you be my forever bloom? 🌹", 
-        win: "A flower for my flower! ❤️",
-        gifs: [
-            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYWFuaDc1OGV5ZGlzdjFpYm8yNXo5cjhjaWZkaXFxZGgzNGVxaDl5NyZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/B3Ug5Cy4YntiCb1vIC/giphy.gif",
-            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNTk3M2IyZnFranp0M3p5ZGdyMjg3aGI5b2Qzdms3bm5ndWsyYmd5YSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/zFHu7yuSHm4H5gNZVx/giphy.gif"
-        ],
-        successGifs: ["https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3dzRqdDUyam1xenVnZzdjbGkyNXhhbjdjeTh3bWQ2ajZ4Z21yNWQ3eiZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/ciBtlqkSsMWr5l6xKe/giphy.gif"] 
-    },
-    { 
-        title: "Propose Day", 
-        q: "I don't need the stars, I just need you. Will you be mine? 💍", 
-        win: "Best decision ever! ✨",
-        gifs: [
-            "https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3eGdmZmw0c3cwcno0c2czdWMyNmVsbXUzc3ZpMDM5enNnamk5cjN0cSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/aiAYc1ulnN4dBKl2yz/giphy.gif",
-            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbWhmdGkzY3VhOW5zcHpkeDJyaDVrbW0wMmRmdnJ1bGxwNnowbjhyMSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/QigYdnKB0BL0dvh9Xu/giphy.gif"
-        ], 
-        successGifs: ["https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3ejVzcTh0MWUzZ3dzMm81YTFnMzFmb2R0amRqd21jYTAyNnlpbjV0YSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/xdt9MMFyXHg4ysiAcV/giphy.gif"] 
-    },
-    { 
-        title: "Chocolate Day", 
-        q: "Life is like a box of chocolates, but I already found the best one. 🍫", 
-        win: "Sweet as sugar! 🍫",
-        gifs: [
-            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbWhmdGkzY3VhOW5zcHpkeDJyaDVrbW0wMmRmdnJ1bGxwNnowbjhyMSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/XKBRIMvPGO691zCD88/giphy.gif",
-            "https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3Zmx3bmYxamI1a3J0ZThwa3hnN3d5c2wxcGc2dTU3MTA1cTYxZnV3eSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/RdzIVVDTKE6yzSfE8e/giphy.gif"
-        ], 
-        successGifs: ["https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3OWQ4cWVrc2ZzZXhidXhsc2hsMHhiZXVudjNnOWh0OXlheWx1ZjVlMiZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/k8etDFKWMUpTi7yATD/giphy.gif"] 
-    },
-    { 
-        title: "Teddy Day", 
-        q: "Need someone soft to hold onto when things get tough? 🧸", 
-        win: "Cuddle mode: ON! 🧸",
-        gifs: [
-            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbWhmdGkzY3VhOW5zcHpkeDJyaDVrbW0wMmRmdnJ1bGxwNnowbjhyMSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/8PPX8J5LDlzh1HQj0B/giphy.gif",
-            "https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3OWQ4cWVrc2ZzZXhidXhsc2hsMHhiZXVudjNnOWh0OXlheWx1ZjVlMiZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/PmKqCgReGt8lDGRDhw/giphy.gif"
-        ], 
-        successGifs: ["https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3YW80YTg1OWN2dmN3anpobGk2NDY0NjA1NW52cTY5dTF6dTgzejB4YyZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/KBPijLnsDgKVgICzA9/giphy.gif"] 
-    },
-    { 
-        title: "Promise Day", 
-        q: "I promise to always share my fries and my heart with you. 🤙", 
-        win: "Pinky swear! 🤙",
-        gifs: [
-            "https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3YW80YTg1OWN2dmN3anpobGk2NDY0NjA1NW52cTY5dTF6dTgzejB4YyZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/e1Rsb25X53NmhkYmBl/giphy.gif"
-        ], 
-        successGifs: ["https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3dzRqdDUyam1xenVnZzdjbGkyNXhhbjdjeTh3bWQ2ajZ4Z21yNWQ3eiZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/ciBtlqkSsMWr5l6xKe/giphy.gif"] 
-    },
-    { 
-        title: "Hug Day", 
-        q: "I have a hug waiting for you. Can I deliver it now? 🫂", 
-        win: "Warmest place on Earth. 🫂",
-        gifs: [
-            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHE1a2Ryd3QwbDVhZHd1YWFua2w2a2gybzBtYnZ2YW9ldzByOHNneSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/1JmGiBtqTuehfYxuy9/giphy.gif",
-            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExajVoOGh5b213Mjd2Zzd2dTJwN3BxMnpmaTNqaTc5MHl0dHNhenF5MyZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/fvN5KrNcKKUyX7hNIA/giphy.gif"
-        ], 
-        successGifs: ["https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3ejVzcTh0MWUzZ3dzMm81YTFnMzFmb2R0amRqd21jYTAyNnlpbjV0YSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/xdt9MMFyXHg4ysiAcV/giphy.gif"] 
-    },
-    { 
-        title: "Kiss Day", 
-        q: "Ready to seal our journey with a little bit of magic? 💋", 
-        win: "Gotcha! 💋",
-        gifs: [
-            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHE1a2Ryd3QwbDVhZHd1YWFua2w2a2gybzBtYnZ2YW9ldzByOHNneSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/qFmdpUKAFZ6rMobzzu/giphy.gif",
-            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbWhmdGkzY3VhOW5zcHpkeDJyaDVrbW0wMmRmdnJ1bGxwNnowbjhyMSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/mCnJ7efbC9wwLzvljY/giphy.gif"
-        ], 
-        successGifs: ["https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3Zmx3bmYxamI1a3J0ZThwa3hnN3d5c2wxcGc2dTU3MTA1cTYxZnV3eSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/RdzIVVDTKE6yzSfE8e/giphy.gif"] 
-    }
-];
+/* ============================================================
+   5. THE CORE ENGINE (JAVASCRIPT)
+   ============================================================ */
 
-let current = 0;
-let dodgeCount = 0;
-
-function init() {
-    createDots();
-    loadStep(0);
-    startParticles();
-}
-
-function createDots() {
-    const stepper = document.getElementById('stepper');
-    journeyData.forEach((_, i) => {
-        const d = document.createElement('div');
-        d.className = `step-dot ${i === 0 ? 'active' : ''}`;
-        d.id = `dot-${i}`;
-        stepper.appendChild(d);
-    });
-}
-
-function loadStep(idx) {
-    const data = journeyData[idx];
-    document.getElementById('currentTitle').innerText = data.title;
+/**
+ * App Module: Handles state, themes, and logic.
+ */
+const App = (() => {
     
-    // Load Day GIFs
-    const gifArea = document.getElementById('gifArea');
-    gifArea.innerHTML = '';
-    data.gifs.forEach(link => {
-        const img = document.createElement('img');
-        img.src = link;
-        img.className = 'gif-frame';
-        gifArea.appendChild(img);
-    });
+    // Media Links from User
+    const STICKERS = [
+        "https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3bXA4Y3M4aXF2ZDEzZWY5OWh4amc4bjdjMzlocncxeDQ1amgyNngxNyZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/zLlJ4iBwvP6Mwb3E35/giphy.gif",
+        "https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3djJ6OXJ0cTE4NHJ1a3prbDZ5dm84ZWlrMTNzajYyMmVycmgyMnQ5biZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/ryL7JeWS2lmMfby9IY/giphy.gif",
+        "https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3djJ6OXJ0cTE4NHJ1a3prbDZ5dm84ZWlrMTNzajYyMmVycmgyMnQ5biZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/KokBjZDjPp8BaDK97l/giphy.gif",
+        "https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3d2QxM3YxYWhyZWYxb2dyY3Z1NDU1cTFyaXFwaTJkdGl3bXBpdHl0eSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/xWTNfEu9uAXBnFQIa5/giphy.gif",
+        "https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3d2QxM3YxYWhyZWYxb2dyY3Z1NDU1cTFyaXFwaTJkdGl3bXBpdHl0eSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/r0nu8ftNO5LclBrwxt/giphy.gif",
+        "https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3d2QxM3YxYWhyZWYxb2dyY3Z1NDU1cTFyaXFwaTJkdGl3bXBpdHl0eSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/VKUSdDIW7vXWwTFCtf/giphy.gif",
+        "https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3d2QxM3YxYWhyZWYxb2dyY3Z1NDU1cTFyaXFwaTJkdGl3bXBpdHl0eSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/r1KxZq1Q3MxtXn9IE8/giphy.gif",
+        "https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3eXM3bXk0eDdla2VsemJjbGNyOHlmeWV2ODJxcHJweDduczFhZ2dtZCZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/7zjI1NgvpRVO9l9irq/giphy.gif"
+    ];
 
-    typeText(data.q);
-    
-    // Reset buttons
-    const noBtn = document.getElementById('noAction');
-    noBtn.style.position = 'absolute'; noBtn.style.left = '50%'; noBtn.style.top = 'unset';
-    noBtn.style.transform = 'translateX(-50%)';
-    noBtn.innerText = "No"; dodgeCount = 0;
+    const DAYS_CONFIG = [
+        {
+            id: 0, theme: "theme-rose", title: "Rose Day", layout: "layout-split",
+            msg: "In a digital world full of thorns, you're my only organic bloom. Would you be my forever flower?",
+            stickers: [0, 1], winMsg: "My Rarest Rose! 🌹"
+        },
+        {
+            id: 1, theme: "theme-propose", title: "Propose Day", layout: "layout-center",
+            msg: "I choice you in every universe, in every timeline, and in every single tab. Will you stay by my side?",
+            stickers: [2, 3], winMsg: "Soulmates Found! 💍"
+        },
+        {
+            id: 2, theme: "theme-choco", title: "Chocolate Day", layout: "layout-split",
+            msg: "Sweeter than the richest cocoa, and warmer than hot milk. Want to share a lifetime of dessert?",
+            stickers: [4, 5], winMsg: "Life is Sweeter with You! 🍫"
+        },
+        {
+            id: 3, theme: "theme-teddy", title: "Teddy Day", layout: "layout-center",
+            msg: "Need a hug-buddy who never lets go? I'm applying for the role of your permanent Teddy.",
+            stickers: [6, 7], winMsg: "Cuddles Activated! 🧸"
+        },
+        {
+            id: 4, theme: "theme-promise", title: "Promise Day", layout: "layout-split",
+            msg: "I promise to never skip your rants and always share my data. Do you promise to be mine?",
+            stickers: [0, 6], winMsg: "Promise Sealed! 🤙"
+        },
+        {
+            id: 5, theme: "theme-hug", title: "Hug Day", layout: "layout-center",
+            msg: "A hug is a handshake from the heart. My heart is ready for a very long handshake.",
+            stickers: [1, 2], winMsg: "My Safest Place. 🫂"
+        },
+        {
+            id: 6, theme: "theme-kiss", title: "Kiss Day", layout: "layout-split",
+            msg: "The final step before the big day. Ready to seal our multi-verse journey with magic?",
+            stickers: [3, 7], winMsg: "Universe Complete! 💋"
+        }
+    ];
 
-    document.querySelectorAll('.step-dot').forEach((dot, i) => {
-        dot.className = `step-dot ${i === idx ? 'active' : (i < idx ? 'done' : '')}`;
-    });
-}
+    let state = {
+        current: 0,
+        dodgeCount: 0,
+        preloaded: 0
+    };
 
-function typeText(text) {
-    const el = document.getElementById('typewriter');
-    el.innerHTML = ""; let i = 0;
-    const interval = setInterval(() => {
-        el.innerHTML += text.charAt(i); i++;
-        if (i >= text.length) clearInterval(interval);
-    }, 40);
-}
-
-function dodge() {
-    const btn = document.getElementById('noAction');
-    dodgeCount++;
-    const area = document.getElementById('mainCard').getBoundingClientRect();
-    const x = Math.random() * (area.width - 120);
-    const y = Math.random() * (area.height - 180);
-    btn.style.left = x + "px"; btn.style.top = y + "px";
-    btn.style.transform = "none";
-    btn.innerText = dodgeCount > 3 ? "Still No? 😂" : "Nope";
-}
-
-function celebrate() {
-    const data = journeyData[current];
-    document.getElementById('revealMsg').innerText = data.win;
-    
-    const successGifs = document.getElementById('successGifs');
-    successGifs.innerHTML = '';
-    data.successGifs.forEach(link => {
-        const img = document.createElement('img');
-        img.src = link;
-        img.className = 'gif-frame';
-        img.style.width = '200px'; img.style.height = '200px';
-        successGifs.appendChild(img);
-    });
-
-    document.getElementById('successOverlay').style.display = 'flex';
-}
-
-function advance() {
-    document.getElementById('successOverlay').style.display = 'none';
-    if (current < journeyData.length - 1) {
-        current++; loadStep(current);
-    } else {
-        document.getElementById('gameContent').classList.add('hide');
-        document.getElementById('finalStage').classList.remove('hide');
-        document.getElementById('stepper').classList.add('hide');
-    }
-}
-
-function startParticles() {
-    const canvas = document.getElementById('physics-canvas');
-    const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-    let hearts = [];
-    
-    function create() {
-        return { 
-            x: Math.random()*canvas.width, 
-            y: canvas.height+20, 
-            s: Math.random()*20+10, 
-            v: Math.random()*2+0.5,
-            o: Math.random()*0.5 + 0.2
-        };
-    }
-
-    function draw() {
-        ctx.clearRect(0,0,canvas.width,canvas.height);
-        if(hearts.length < 40) hearts.push(create());
-        hearts.forEach((h, i) => {
-            h.y -= h.v;
-            ctx.globalAlpha = h.o;
-            ctx.font = `${h.s}px Arial`;
-            ctx.fillText('❤️', h.x, h.y);
-            if(h.y < -20) hearts[i] = create();
+    /**
+     * Preloads all media for zero-lag transitions
+     */
+    const preloadMedia = () => {
+        let loaded = 0;
+        STICKERS.forEach(url => {
+            const img = new Image();
+            img.onload = () => {
+                loaded++;
+                document.getElementById('load-count').innerText = `${Math.round((loaded / STICKERS.length) * 100)}%`;
+                if(loaded === STICKERS.length) initApp();
+            };
+            img.src = url;
         });
-        requestAnimationFrame(draw);
-    }
-    draw();
-}
+    };
 
-init();
+    /**
+     * Initializes the UI
+     */
+    const initApp = () => {
+        document.getElementById('loader').style.display = 'none';
+        const nav = document.getElementById('nav-dots');
+        DAYS_CONFIG.forEach((_, i) => {
+            const dot = document.createElement('div');
+            dot.className = `progress-dot ${i === 0 ? 'active' : ''}`;
+            dot.id = `dot-${i}`;
+            nav.appendChild(dot);
+        });
+        render();
+    };
+
+    /**
+     * Main Render Loop
+     */
+    const render = () => {
+        const data = DAYS_CONFIG[state.current];
+        const card = document.getElementById('app-card');
+        
+        card.classList.remove('visible');
+        
+        setTimeout(() => {
+            document.body.className = data.theme;
+            card.className = `main-card visible ${data.layout}`;
+            document.getElementById('title-display').innerText = data.title;
+            document.getElementById('text-display').innerText = data.msg;
+            
+            // Render Stickers
+            const wall = document.getElementById('sticker-wall');
+            wall.innerHTML = '';
+            data.stickers.forEach(index => {
+                const img = document.createElement('img');
+                img.src = STICKERS[index];
+                img.className = 'sticker-img';
+                wall.appendChild(img);
+            });
+
+            // Update dots
+            document.querySelectorAll('.progress-dot').forEach((d, i) => {
+                d.className = i === state.current ? 'progress-dot active' : 'progress-dot';
+            });
+
+            // Reset No Button
+            const noBtn = document.getElementById('no-btn');
+            noBtn.style.position = 'relative';
+            noBtn.style.left = '0';
+            noBtn.style.top = '0';
+            noBtn.innerText = "No";
+            state.dodgeCount = 0;
+        }, 400);
+    };
+
+    /**
+     * Handle "No" button dodging
+     */
+    const dodgeNo = () => {
+        const btn = document.getElementById('no-btn');
+        state.dodgeCount++;
+        
+        const x = Math.random() * 300 - 150;
+        const y = Math.random() * 300 - 150;
+        
+        btn.style.position = 'fixed';
+        btn.style.left = `calc(50% + ${x}px)`;
+        btn.style.top = `calc(50% + ${y}px)`;
+        
+        const phrases = ["No", "Rude...", "Try again", "Missing!", "Nope", "Error 404"];
+        btn.innerText = phrases[Math.min(state.dodgeCount, phrases.length - 1)];
+    };
+
+    /**
+     * Handle Choice
+     */
+    const handleChoice = (isYes) => {
+        if(isYes) {
+            const data = DAYS_CONFIG[state.current];
+            const modal = document.getElementById('modal');
+            const media = document.getElementById('modal-media');
+            
+            document.getElementById('modal-title').innerText = data.winMsg;
+            media.innerHTML = `<img src="${STICKERS[data.stickers[0]]}" class="sticker-img" style="width:200px; height:200px;">`;
+            
+            modal.style.display = 'flex';
+            Physics.burst();
+        }
+    };
+
+    const next = () => {
+        document.getElementById('modal').style.display = 'none';
+        if(state.current < DAYS_CONFIG.length - 1) {
+            state.current++;
+            render();
+        } else {
+            alert("The Journey is complete! Happy Valentine's Day! ❤️");
+        }
+    };
+
+    return { preloadMedia, dodgeNo, handleChoice, next };
+})();
+
+/**
+ * Physics Engine: High-performance Canvas animation
+ */
+const Physics = (() => {
+    const canvas = document.getElementById('physics-engine');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+
+    const init = () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+        loop();
+    };
+
+    const burst = () => {
+        for(let i=0; i<40; i++) {
+            particles.push({
+                x: canvas.width / 2,
+                y: canvas.height / 2,
+                size: Math.random() * 20 + 10,
+                vx: (Math.random() - 0.5) * 15,
+                vy: (Math.random() - 0.5) * 15,
+                life: 1,
+                char: ["❤️", "💖", "🌸", "✨"][Math.floor(Math.random()*4)]
+            });
+        }
+    };
+
+    const loop = () => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        // Background slow drift
+        if(particles.length < 30) {
+            particles.push({
+                x: Math.random() * canvas.width,
+                y: canvas.height + 20,
+                size: Math.random() * 15 + 10,
+                vx: (Math.random() - 0.5) * 2,
+                vy: -(Math.random() * 3 + 1),
+                life: 1,
+                char: "❤️"
+            });
+        }
+
+        particles.forEach((p, i) => {
+            p.x += p.vx;
+            p.y += p.vy;
+            p.life -= 0.005;
+            
+            ctx.globalAlpha = p.life;
+            ctx.font = `${p.size}px Arial`;
+            ctx.fillText(p.char, p.x, p.y);
+            
+            if(p.life <= 0 || p.y < -50) particles.splice(i, 1);
+        });
+
+        requestAnimationFrame(loop);
+    };
+
+    return { init, burst };
+})();
+
+// Launch Engine
+window.onload = () => {
+    Physics.init();
+    App.preloadMedia();
+};
 </script>
 </body>
 </html>
