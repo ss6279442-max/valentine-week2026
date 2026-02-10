@@ -5,6 +5,7 @@
 <title>Our Valentine Week 💕</title>
 
 <style>
+/* --- General Styles --- */
 body {
   margin: 0;
   padding: 0;
@@ -23,26 +24,33 @@ h1 {
   text-align: center;
   color: #ff4d88;
   margin-bottom: 5px;
+  font-size: 2.8em;
+  text-shadow: 1px 1px 5px rgba(0,0,0,0.1);
 }
 
 .subtitle {
   text-align: center;
   color: #555;
   margin-bottom: 40px;
+  font-size: 1.2em;
 }
 
+/* --- Day Card Styles --- */
 .day, .final {
-  background: rgba(255, 255, 255, 0.9);
+  position: relative;
+  background: rgba(255, 255, 255, 0.95);
   border-radius: 16px;
-  padding: 25px;
-  margin-bottom: 25px;
+  padding: 25px 25px 50px 25px;
+  margin-bottom: 35px;
   box-shadow: 0 12px 30px rgba(0,0,0,0.1);
+  overflow: hidden;
 }
 
 .day h2, .final h2 {
   margin-top: 0;
 }
 
+/* --- Border Colors per Day --- */
 .rose { border-left: 6px solid #ff6f91; }
 .propose { border-left: 6px solid #ff9671; }
 .chocolate { border-left: 6px solid #845ec2; }
@@ -51,6 +59,26 @@ h1 {
 .hug { border-left: 6px solid #6a5acd; }
 .kiss { border-left: 6px solid #ff4d4d; }
 
+/* --- Stickers --- */
+.sticker {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  pointer-events: none;
+  animation: float 4s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-15px) rotate(15deg); }
+}
+
+/* Random position helper */
+.sticker1 { top: 10px; right: 10px; }
+.sticker2 { bottom: 10px; left: 10px; }
+.sticker3 { top: 40px; left: 50%; transform: translateX(-50%); }
+
+/* --- Final Letter Styles --- */
 .final {
   text-align: center;
 }
@@ -61,6 +89,7 @@ h1 {
   border-radius: 10px;
   border: 1px solid #ccc;
   outline: none;
+  font-size: 1em;
 }
 
 .final button {
@@ -71,7 +100,7 @@ h1 {
   border: none;
   border-radius: 10px;
   cursor: pointer;
-  font-size: 15px;
+  font-size: 1em;
 }
 
 .final button:hover {
@@ -88,10 +117,20 @@ h1 {
   animation: fadeIn 1.2s ease;
 }
 
+/* --- Typing Animation --- */
+.typing p {
+  border-right: 2px solid #ff4d88;
+  display: inline;
+  white-space: pre-wrap;
+  overflow: hidden;
+  font-size: 1em;
+}
+
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
 </style>
 </head>
 
@@ -102,99 +141,113 @@ h1 {
   <h1>Our Valentine Week 💖</h1>
   <p class="subtitle">Seven days. One heart. Endless love.</p>
 
-  <div class="day rose">
+  <!-- --- Day Cards with Stickers and Typing --- -->
+  <div class="day rose typing">
     <h2>🌹 Rose Day</h2>
-    <p>
-      Just like a rose slowly blooms,  
-      my feelings for you grew quietly…  
-      soft, pure, and impossibly beautiful.
-    </p>
+    <p id="msg1"></p>
+    <img src="https://img.icons8.com/emoji/48/000000/rose-emoji.png" class="sticker sticker1">
+    <img src="https://img.icons8.com/emoji/48/000000/heart-with-arrow.png" class="sticker sticker2">
   </div>
 
-  <div class="day propose">
+  <div class="day propose typing">
     <h2>💍 Propose Day</h2>
-    <p>
-      If loving you is a choice,  
-      then I choose you — every single time.  
-      Today, tomorrow, and all my forever.
-    </p>
+    <p id="msg2"></p>
+    <img src="https://img.icons8.com/emoji/48/000000/ring-emoji.png" class="sticker sticker1">
+    <img src="https://img.icons8.com/emoji/48/000000/pink-heart.png" class="sticker sticker3">
   </div>
 
-  <div class="day chocolate">
+  <div class="day chocolate typing">
     <h2>🍫 Chocolate Day</h2>
-    <p>
-      You make my life sweeter than any chocolate ever could.  
-      One smile from you, and my heart melts instantly.
-    </p>
+    <p id="msg3"></p>
+    <img src="https://img.icons8.com/emoji/48/000000/chocolate-bar.png" class="sticker sticker2">
+    <img src="https://img.icons8.com/emoji/48/000000/candy.png" class="sticker sticker3">
   </div>
 
-  <div class="day teddy">
+  <div class="day teddy typing">
     <h2>🧸 Teddy Day</h2>
-    <p>
-      When the world feels heavy,  
-      I want to be the comfort you lean on,  
-      the hug that makes everything feel okay.
-    </p>
+    <p id="msg4"></p>
+    <img src="https://img.icons8.com/emoji/48/000000/teddy-bear.png" class="sticker sticker1">
+    <img src="https://img.icons8.com/emoji/48/000000/bear-emoji.png" class="sticker sticker2">
   </div>
 
-  <div class="day promise">
+  <div class="day promise typing">
     <h2>🤞 Promise Day</h2>
-    <p>
-      I promise to stand by you on sunny days  
-      and hold you closer during the storms.  
-      My heart is yours — always.
-    </p>
+    <p id="msg5"></p>
+    <img src="https://img.icons8.com/emoji/48/000000/crossed-fingers.png" class="sticker sticker1">
+    <img src="https://img.icons8.com/emoji/48/000000/sparkling-heart.png" class="sticker sticker2">
   </div>
 
-  <div class="day hug">
+  <div class="day hug typing">
     <h2>🤗 Hug Day</h2>
-    <p>
-      If I could right now,  
-      I’d pull you into my arms  
-      and let the whole world fade away.
-    </p>
+    <p id="msg6"></p>
+    <img src="https://img.icons8.com/emoji/48/000000/hugging-face.png" class="sticker sticker1">
+    <img src="https://img.icons8.com/emoji/48/000000/heart.png" class="sticker sticker3">
   </div>
 
-  <div class="day kiss">
+  <div class="day kiss typing">
     <h2>💋 Kiss Day</h2>
-    <p>
-      A single kiss from you  
-      would say everything my heart feels  
-      but my words can never fully explain.
-    </p>
+    <p id="msg7"></p>
+    <img src="https://img.icons8.com/emoji/48/000000/kiss-mark.png" class="sticker sticker1">
+    <img src="https://img.icons8.com/emoji/48/000000/heart.png" class="sticker sticker2">
   </div>
 
+  <!-- --- Final Love Letter --- -->
   <div class="final">
     <h2>💌 Final Love Letter</h2>
     <p>Enter the secret passkey to open my heart</p>
-
     <input type="password" id="passkey" placeholder="Enter passkey 💕">
     <button onclick="openLetter()">Open Letter</button>
 
-    <div id="letter" class="hidden">
-      <p>
-        My love,<br><br>
-        You are my favorite thought in the quiet moments,  
-        my comfort in chaos,  
-        and the most beautiful chapter of my life.<br><br>
-        Loving you feels easy, natural, and endlessly right.  
-        No matter where life takes us,  
-        my heart will always find its way back to you.<br><br>
-        Forever yours 💖
-      </p>
+    <div id="letter" class="hidden typing">
+      <p id="letterMsg"></p>
     </div>
   </div>
 
 </div>
 
 <script>
+/* --- Messages --- */
+const messages = [
+  "Just like a rose slowly blooms,\nmy feelings for you grew quietly…\nsoft, pure, and impossibly beautiful.",
+  "If loving you is a choice,\nthen I choose you — every single time.\nToday, tomorrow, and all my forever.",
+  "You make my life sweeter than any chocolate ever could.\nOne smile from you, and my heart melts instantly.",
+  "When the world feels heavy,\nI want to be the comfort you lean on,\nthe hug that makes everything feel okay.",
+  "I promise to stand by you on sunny days\nand hold you closer during the storms.\nMy heart is yours — always.",
+  "If I could right now,\nI’d pull you into my arms\nand let the whole world fade away.",
+  "A single kiss from you\nwould say everything my heart feels\nbut my words can never fully explain."
+];
+
+const letterMessage = "My love,\n\nYou are my favorite thought in the quiet moments,\nmy comfort in chaos,\nand the most beautiful chapter of my life.\n\nLoving you feels easy, natural, and endlessly right.\nNo matter where life takes us,\nmy heart will always find its way back to you.\n\nForever yours 💖";
+
+/* --- Typing Effect --- */
+function typeMessage(elementId, text, speed=50) {
+  const el = document.getElementById(elementId);
+  let i = 0;
+  function type() {
+    if (i < text.length) {
+      el.innerHTML += text.charAt(i);
+      i++;
+      setTimeout(type, speed);
+    }
+  }
+  type();
+}
+
+/* Run typing for all days */
+for (let i=0; i<messages.length; i++) {
+  typeMessage("msg"+(i+1), messages[i]);
+}
+
+/* Open Love Letter */
 function openLetter() {
   const pass = document.getElementById("passkey").value;
-  const letter = document.getElementById("letter");
+  const letterDiv = document.getElementById("letter");
+  const letterP = document.getElementById("letterMsg");
   const correctPasskey = "foreverus";
 
-  if (pass === correctPasskey) {
-    letter.style.display = "block";
+  if(pass === correctPasskey) {
+    letterDiv.style.display = "block";
+    typeMessage("letterMsg", letterMessage);
   } else {
     alert("Wrong passkey 💔 Try again with love.");
   }
@@ -203,3 +256,4 @@ function openLetter() {
 
 </body>
 </html>
+
