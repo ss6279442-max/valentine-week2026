@@ -2,226 +2,201 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>My Love Letter 💌</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;1,600&family=Great+Vibes&display=swap" rel="stylesheet">
+<title>Our Valentine Week 💕</title>
 
 <style>
-:root {
-  --gold: #d6b36a;
-  --blush: #fff0f5;
-  --cream: #fffdf9;
-  --text: #5a4a42;
-}
-
-* { box-sizing: border-box; }
-
 body {
   margin: 0;
-  min-height: 100vh;
-  background: linear-gradient(180deg, #fff7e8, #fde2eb);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-family: 'Playfair Display', serif;
-  color: var(--text);
-  overflow: hidden;
+  padding: 0;
+  font-family: "Segoe UI", sans-serif;
+  background: linear-gradient(135deg, #ffe6f0, #e6f2ff);
+  color: #222;
 }
 
-/* FLOATING LIGHTS */
-canvas {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-}
-
-/* LETTER CARD */
-.letter-wrapper {
-  position: relative;
-  z-index: 2;
-  background: var(--cream);
-  width: 90%;
-  max-width: 650px;
-  padding: 60px 50px;
-  border-radius: 30px;
-  box-shadow:
-    0 30px 60px rgba(0,0,0,0.08),
-    inset 0 0 0 2px rgba(214,179,106,0.2);
-  animation: rise 1.5s ease;
-}
-
-@keyframes rise {
-  from { opacity: 0; transform: translateY(40px); }
-  to { opacity: 1; transform: translateY(0); }
+.container {
+  max-width: 900px;
+  margin: auto;
+  padding: 30px;
 }
 
 h1 {
-  font-family: 'Great Vibes', cursive;
   text-align: center;
-  font-size: 3.5rem;
-  color: var(--gold);
+  color: #ff4d88;
+  margin-bottom: 5px;
+}
+
+.subtitle {
+  text-align: center;
+  color: #555;
+  margin-bottom: 40px;
+}
+
+.day, .final {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 16px;
+  padding: 25px;
+  margin-bottom: 25px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.1);
+}
+
+.day h2, .final h2 {
   margin-top: 0;
 }
 
-.letter {
-  font-size: 1.35rem;
-  line-height: 1.9;
-  white-space: pre-wrap;
-  min-height: 260px;
+.rose { border-left: 6px solid #ff6f91; }
+.propose { border-left: 6px solid #ff9671; }
+.chocolate { border-left: 6px solid #845ec2; }
+.teddy { border-left: 6px solid #ffc75f; }
+.promise { border-left: 6px solid #4d96ff; }
+.hug { border-left: 6px solid #6a5acd; }
+.kiss { border-left: 6px solid #ff4d4d; }
+
+.final {
+  text-align: center;
 }
 
-.signature {
-  margin-top: 40px;
-  text-align: right;
-  font-family: 'Great Vibes', cursive;
-  font-size: 2.2rem;
-  color: var(--gold);
+.final input {
+  padding: 12px;
+  width: 220px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  outline: none;
 }
 
-button {
-  display: block;
-  margin: 30px auto 0;
-  padding: 12px 35px;
-  font-size: 1.1rem;
-  border-radius: 30px;
-  border: none;
-  cursor: pointer;
-  background: linear-gradient(135deg, #e7c77b, #d6a85e);
+.final button {
+  padding: 12px 24px;
+  margin-left: 10px;
+  background: #ff4d88;
   color: white;
-  font-weight: 600;
-  box-shadow: 0 8px 20px rgba(214,179,106,0.4);
-  transition: 0.3s;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 15px;
 }
 
-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 25px rgba(214,179,106,0.6);
+.final button:hover {
+  background: #ff1f6a;
+}
+
+.hidden {
+  display: none;
+  margin-top: 25px;
+  background: #fff0f6;
+  padding: 25px;
+  border-radius: 12px;
+  text-align: left;
+  animation: fadeIn 1.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 </style>
 </head>
 
 <body>
 
-<canvas id="bg"></canvas>
+<div class="container">
 
-<div class="letter-wrapper">
-  <h1>My Dearest</h1>
-  <div class="letter" id="text"></div>
-  <div class="signature">Forever Yours 🤍</div>
-  <button onclick="replay()">Read Again ✨</button>
+  <h1>Our Valentine Week 💖</h1>
+  <p class="subtitle">Seven days. One heart. Endless love.</p>
+
+  <div class="day rose">
+    <h2>🌹 Rose Day</h2>
+    <p>
+      Just like a rose slowly blooms,  
+      my feelings for you grew quietly…  
+      soft, pure, and impossibly beautiful.
+    </p>
+  </div>
+
+  <div class="day propose">
+    <h2>💍 Propose Day</h2>
+    <p>
+      If loving you is a choice,  
+      then I choose you — every single time.  
+      Today, tomorrow, and all my forever.
+    </p>
+  </div>
+
+  <div class="day chocolate">
+    <h2>🍫 Chocolate Day</h2>
+    <p>
+      You make my life sweeter than any chocolate ever could.  
+      One smile from you, and my heart melts instantly.
+    </p>
+  </div>
+
+  <div class="day teddy">
+    <h2>🧸 Teddy Day</h2>
+    <p>
+      When the world feels heavy,  
+      I want to be the comfort you lean on,  
+      the hug that makes everything feel okay.
+    </p>
+  </div>
+
+  <div class="day promise">
+    <h2>🤞 Promise Day</h2>
+    <p>
+      I promise to stand by you on sunny days  
+      and hold you closer during the storms.  
+      My heart is yours — always.
+    </p>
+  </div>
+
+  <div class="day hug">
+    <h2>🤗 Hug Day</h2>
+    <p>
+      If I could right now,  
+      I’d pull you into my arms  
+      and let the whole world fade away.
+    </p>
+  </div>
+
+  <div class="day kiss">
+    <h2>💋 Kiss Day</h2>
+    <p>
+      A single kiss from you  
+      would say everything my heart feels  
+      but my words can never fully explain.
+    </p>
+  </div>
+
+  <div class="final">
+    <h2>💌 Final Love Letter</h2>
+    <p>Enter the secret passkey to open my heart</p>
+
+    <input type="password" id="passkey" placeholder="Enter passkey 💕">
+    <button onclick="openLetter()">Open Letter</button>
+
+    <div id="letter" class="hidden">
+      <p>
+        My love,<br><br>
+        You are my favorite thought in the quiet moments,  
+        my comfort in chaos,  
+        and the most beautiful chapter of my life.<br><br>
+        Loving you feels easy, natural, and endlessly right.  
+        No matter where life takes us,  
+        my heart will always find its way back to you.<br><br>
+        Forever yours 💖
+      </p>
+    </div>
+  </div>
+
 </div>
 
 <script>
-/* ===============================
-   LOVE LETTER TEXT
-================================= */
-const LETTER = `
-This little journey may have started as something playful,
-but it ends with something real.
+function openLetter() {
+  const pass = document.getElementById("passkey").value;
+  const letter = document.getElementById("letter");
+  const correctPasskey = "foreverus";
 
-You are my calm in the noise,
-my softness in a loud world,
-the place my heart rests when everything feels heavy.
-
-Loving you feels gentle.
-It feels safe.
-It feels like coming home.
-
-Every smile of yours lives quietly in my mind,
-every laugh leaves warmth behind,
-and every moment with you feels like a blessing
-I never want to take for granted.
-
-This letter isn’t grand because love doesn’t need to shout.
-It’s written softly — the way I feel about you.
-Steady. Certain. True.
-
-If you ever wonder where you belong,
-remember this:
-
-You are cherished.
-You are wanted.
-You are deeply, endlessly loved.
-`;
-
-/* ===============================
-   TYPEWRITER EFFECT
-================================= */
-const area = document.getElementById("text");
-let i = 0;
-
-function type() {
-  if (i < LETTER.length) {
-    area.innerText += LETTER.charAt(i);
-    i++;
-    setTimeout(type, 45);
+  if (pass === correctPasskey) {
+    letter.style.display = "block";
   } else {
-    sparkle();
-  }
-}
-type();
-
-function replay() {
-  area.innerText = "";
-  i = 0;
-  type();
-}
-
-/* ===============================
-   MAJESTIC FLOATING LIGHTS
-================================= */
-const canvas = document.getElementById("bg");
-const ctx = canvas.getContext("2d");
-
-function resize() {
-  canvas.width = innerWidth;
-  canvas.height = innerHeight;
-}
-resize();
-onresize = resize;
-
-const lights = [];
-
-function spawn() {
-  lights.push({
-    x: Math.random() * canvas.width,
-    y: canvas.height + 50,
-    r: Math.random() * 15 + 8,
-    v: Math.random() * 0.6 + 0.3,
-    o: Math.random() * 0.4 + 0.2
-  });
-}
-
-function draw() {
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-  if (lights.length < 40) spawn();
-
-  lights.forEach((l,i)=>{
-    l.y -= l.v;
-    ctx.beginPath();
-    ctx.arc(l.x,l.y,l.r,0,Math.PI*2);
-    ctx.fillStyle = `rgba(214,179,106,${l.o})`;
-    ctx.fill();
-    if(l.y < -60) lights.splice(i,1);
-  });
-
-  requestAnimationFrame(draw);
-}
-draw();
-
-/* ===============================
-   FINAL SPARKLE
-================================= */
-function sparkle() {
-  for(let i=0;i<60;i++){
-    lights.push({
-      x: Math.random()*canvas.width,
-      y: Math.random()*canvas.height,
-      r: Math.random()*6+2,
-      v: Math.random()*2-1,
-      o: 1
-    });
+    alert("Wrong passkey 💔 Try again with love.");
   }
 }
 </script>
