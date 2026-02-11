@@ -3,374 +3,272 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Valentine Week 💖 v2.2 Cinematic</title>
+<title>Valentine Journey v2.8</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
 body{
   margin:0;
-  font-family:"Segoe UI",sans-serif;
-  overflow:hidden;
-  background:linear-gradient(135deg,#ffe6f0,#fff0f6);
-}
-
-/* sections */
-section{
-  display:none;
-  height:100vh;
-  width:100vw;
-  position:relative;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  animation:fade .6s ease;
-}
-section.active{display:flex;}
-
-@keyframes fade{
-  from{opacity:0;transform:scale(.98)}
-  to{opacity:1;transform:scale(1)}
-}
-
-/* cinematic card */
-.card{
-  background:white;
-  padding:38px;
-  border-radius:24px;
-  max-width:760px;
+  background:linear-gradient(135deg,#ffd6e8,#ffeef5,#e6f7ff);
+  font-family:Poppins,sans-serif;
+  overflow-x:hidden;
   text-align:center;
-  box-shadow:0 20px 60px rgba(0,0,0,.15);
-  z-index:5;
-  animation:cardIn .7s ease;
-}
-@keyframes cardIn{
-  from{transform:translateY(40px);opacity:0}
-  to{transform:translateY(0);opacity:1}
 }
 
-h1{margin:0 0 12px;font-size:2.3em}
-.message{
-  font-size:1.35em;
-  white-space:pre-wrap;
-  padding:0 10px;
-}
-
-/* flip greeting card */
-.flip{perspective:1000px}
-.flip-inner{
+.page{
+  display:none;
+  padding:70px 20px;
+  min-height:100vh;
   position:relative;
-  transform-style:preserve-3d;
-  transition:transform .8s;
-}
-.flip:hover .flip-inner{transform:rotateY(180deg)}
-.face{
-  backface-visibility:hidden;
-}
-.back{
-  position:absolute;
-  inset:0;
-  transform:rotateY(180deg);
 }
 
-/* navigation */
-.nav-wrap{
-  display:flex;
-  gap:12px;
-  flex-wrap:wrap;
-  justify-content:center;
-  margin-top:22px;
+.page.active{display:block;}
+
+h1{
+  font-family:"Dancing Script",cursive;
+  font-size:42px;
+  margin-bottom:10px;
 }
-.nav-btn{
+
+p{font-size:18px; max-width:700px; margin:auto;}
+
+button{
+  padding:14px 26px;
+  font-size:18px;
+  border-radius:28px;
+  border:none;
   background:#ff4d88;
   color:white;
-  border:none;
-  padding:14px 26px;
-  border-radius:14px;
-  font-size:1.05em;
+  margin:12px;
   cursor:pointer;
-  min-width:120px;
-}
-.nav-btn:hover{background:#ff1f6a}
-
-/* progress */
-#progress{
-  position:fixed;
-  bottom:12px;
-  left:50%;
-  transform:translateX(-50%);
-  background:white;
-  padding:6px 16px;
-  border-radius:20px;
-  font-size:.9em;
-  box-shadow:0 6px 18px rgba(0,0,0,.18);
-  z-index:20;
 }
 
-/* stickers auto grid */
+.yesBtn{background:#28c76f;}
+.noBtn{background:#ff6b6b; position:relative;}
+
 .sticker{
   position:absolute;
-  width:210px;
-  max-width:26vw;
   pointer-events:none;
-  animation:float 6s ease-in-out infinite;
-}
-@keyframes float{
-  50%{transform:translateY(-12px)}
+  z-index:0;
+  opacity:.95;
 }
 
-/* floating bg hearts */
-.bg-heart{
+.holdHeart{
+  font-size:70px;
+  cursor:pointer;
+  user-select:none;
+  transition:.2s;
+}
+.holdHeart.active{transform:scale(1.25); filter:drop-shadow(0 0 12px hotpink);}
+
+input{
+  padding:12px;
+  font-size:18px;
+  border-radius:12px;
+  border:1px solid #ccc;
+}
+
+.heart{
   position:fixed;
   bottom:-20px;
-  color:#ff9ecb;
-  font-size:18px;
-  animation:bgUp linear forwards;
-  pointer-events:none;
-  z-index:1;
-}
-@keyframes bgUp{
-  to{transform:translateY(-120vh);opacity:0}
+  font-size:20px;
+  animation:floatUp linear forwards;
 }
 
-/* confetti */
-.conf{
-  position:fixed;
-  font-size:22px;
-  color:#ff4d88;
-  pointer-events:none;
-  animation:fall linear forwards;
-}
-@keyframes fall{
-  to{transform:translateY(110vh) rotate(360deg);opacity:0}
+@keyframes floatUp{
+  to{transform:translateY(-110vh); opacity:0;}
 }
 
-/* mobile */
-@media(max-width:600px){
-  .card{padding:22px}
-  h1{font-size:1.6em}
-  .message{font-size:1.05em}
-  .sticker{width:120px}
-  .nav-btn{width:130px;font-size:.95em}
+#finalLove{
+  font-size:64px;
+  font-family:"Dancing Script";
+  display:none;
+  margin-top:40px;
+  color:#ff3366;
 }
 </style>
 </head>
 
 <body>
 
-<div id="progress"></div>
+<!-- Pages -->
 
-<!-- ROSE -->
-<section class="active">
-<div class="card flip">
-<div class="flip-inner">
-<div class="face">
+<div class="page active" id="p0">
 <h1>Rose Day 🌹</h1>
-<p class="message">Like a rose blooms slowly,
-my feelings for you grew quietly and beautifully.</p>
+<p>A rose for you — because beauty deserves beauty.</p>
+<button onclick="next()">Next</button>
 </div>
-<div class="face back">
-<p class="message">Every petal = one reason I adore you.</p>
-</div>
-</div>
-<div class="nav-wrap">
-<button class="nav-btn" onclick="next()">Next →</button>
-</div>
-</div>
-</section>
 
-<!-- PROPOSE -->
-<section>
-<div class="card">
+<div class="page" id="p1">
 <h1>Propose Day 💍</h1>
-<p class="message">If loving you is a choice —
-I choose you. Every time.</p>
-<div class="nav-wrap">
-<button class="nav-btn" onclick="prev()">No 🙈</button>
-<button class="nav-btn" onclick="next()">Yes 💖</button>
+<p>Will you walk this crazy journey with me?</p>
+<button class="yesBtn" onclick="next()">Yes</button>
+<button class="noBtn" onclick="prankNo(this)">No</button>
 </div>
-</div>
-</section>
 
-<!-- CHOCOLATE -->
-<section>
-<div class="card">
+<div class="page" id="p2">
 <h1>Chocolate Day 🍫</h1>
-<p class="message">You make life sweeter than chocolate ever could.</p>
-<div class="nav-wrap">
-<button class="nav-btn" onclick="prev()">← Back</button>
-<button class="nav-btn" onclick="next()">Next →</button>
+<p>Life is sweeter with you in every bite.</p>
+<button onclick="next()">Next</button>
 </div>
-</div>
-</section>
 
-<!-- TEDDY -->
-<section>
-<div class="card">
+<div class="page" id="p3">
 <h1>Teddy Day 🧸</h1>
-<p class="message">Soft, warm, comforting —
-exactly how you make me feel.</p>
-<div class="nav-wrap">
-<button class="nav-btn" onclick="prev()">← Back</button>
-<button class="nav-btn" onclick="next()">Next →</button>
+<p>If you need a hug — I’m your teddy.</p>
+<button onclick="next()">Next</button>
 </div>
-</div>
-</section>
 
-<!-- PROMISE -->
-<section>
-<div class="card">
+<div class="page" id="p4">
 <h1>Promise Day 🤝</h1>
-<p class="message">I promise loyalty, laughter, and patience.</p>
-<div class="nav-wrap">
-<button class="nav-btn" onclick="prev()">← Back</button>
-<button class="nav-btn" onclick="next()">Next →</button>
+<p>Hold the heart to seal the promise.</p>
+<div class="holdHeart" id="hold">❤️</div>
 </div>
-</div>
-</section>
 
-<!-- HUG -->
-<section>
-<div class="card">
+<div class="page" id="p5">
 <h1>Hug Day 🤗</h1>
-<p class="message">Every hug from you feels like home.</p>
-<div class="nav-wrap">
-<button class="nav-btn" onclick="prev()">← Back</button>
-<button class="nav-btn" onclick="next()">Next →</button>
+<p>Some hugs say everything words can’t.</p>
+<button class="yesBtn" onclick="next()">Next Hug</button>
+<button class="noBtn" onclick="prankNo(this)">No</button>
 </div>
-</div>
-</section>
 
-<!-- KISS -->
-<section>
-<div class="card">
+<div class="page" id="p6">
 <h1>Kiss Day 💋</h1>
-<p class="message">A kiss that says everything silently.</p>
-<div class="nav-wrap">
-<button class="nav-btn" onclick="prev()">← Back</button>
-<button class="nav-btn" onclick="next()">Next →</button>
+<p>A gentle kiss — sealed with love.</p>
+<button onclick="next()">Next</button>
 </div>
-</div>
-</section>
 
-<!-- LETTER -->
-<section>
-<div class="card">
-<h1>💌 Secret Letter</h1>
-<input id="key" type="password" placeholder="Enter passkey" style="padding:12px;border-radius:8px;border:1px solid #ccc">
-<button class="nav-btn" onclick="openLetter()">Open</button>
-<div id="finalText" style="margin-top:18px;font-size:1.25em"></div>
-<div class="nav-wrap">
-<button class="nav-btn" onclick="prev()">← Back</button>
+<div class="page" id="p7">
+<h1>Secret Letter 💌</h1>
+<p>Enter the key to unlock.</p>
+<input id="keyInput">
+<br>
+<button onclick="unlock()">Unlock</button>
+<div id="letter" style="display:none;margin-top:20px;font-size:18px;line-height:1.6"></div>
 </div>
+
+<div class="page" id="p8">
+<h1>Will you be my Valentine?</h1>
+<button class="yesBtn" onclick="love()">YES</button>
+<button class="noBtn" onclick="prankNo(this)">NO</button>
+<div id="finalLove">❤️ I LOVE YOU ❤️</div>
 </div>
-</section>
 
 <script>
-/* pages */
-const pages=[...document.querySelectorAll("section")];
-let idx=0;
+let page=0;
+const pages=document.querySelectorAll(".page");
 
-function show(i){
-  pages.forEach(p=>p.classList.remove("active"));
-  pages[i].classList.add("active");
-  idx=i;
-  progress.textContent=`Page ${i+1} / ${pages.length}`;
-}
-function next(){ if(idx<pages.length-1) show(idx+1); }
-function prev(){ if(idx>0) show(idx-1); }
-
-/* keyboard */
-document.addEventListener("keydown",e=>{
-  if(e.key==="ArrowRight"||e.key.toLowerCase()==="y") next();
-  if(e.key==="ArrowLeft"||e.key.toLowerCase()==="n") prev();
-});
-
-/* typewriter */
-function typeWriter(t,el,s){
-  el.textContent="";
-  let i=0;
-  const k=setInterval(()=>{
-    el.textContent+=t[i++];
-    if(i>=t.length) clearInterval(k);
-  },s);
+function next(){
+  pages[page].classList.remove("active");
+  page++;
+  if(page>=pages.length) page=pages.length-1;
+  pages[page].classList.add("active");
+  placeStickers(page);
 }
 
-/* letter */
-const letter=`My Dearest Love,
-
-You are my favorite place,
-my safest feeling,
-my forever person.
-
-Always yours 💖`;
-
-function openLetter(){
-  if(key.value.trim().toLowerCase()==="foreverus"){
-    typeWriter(letter,finalText,24);
-    confetti();
-  } else alert("Wrong passkey 💔");
+function prankNo(btn){
+  const p=Math.floor(Math.random()*5);
+  if(p===0){btn.style.transform="scale(.5)";}
+  if(p===1){btn.style.transform="rotate(180deg)";}
+  if(p===2){btn.style.position="absolute";btn.style.left=Math.random()*80+"%";}
+  if(p===3){btn.textContent="Try YES 😌";}
+  if(p===4){btn.style.opacity=.2;}
 }
 
-/* confetti */
-function confetti(){
-  const end=Date.now()+3200;
-  const int=setInterval(()=>{
-    if(Date.now()>end) return clearInterval(int);
-    const h=document.createElement("div");
-    h.className="conf";
-    h.innerHTML="❤";
-    h.style.left=Math.random()*100+"vw";
-    h.style.animationDuration=(2+Math.random()*3)+"s";
-    h.style.transform=`translateX(${Math.random()*120-60}px)`;
-    document.body.appendChild(h);
-    setTimeout(()=>h.remove(),5000);
-  },110);
+<!-- PASSKEY -->
+function unlock(){
+ if(document.getElementById("keyInput").value==="alwaysyours"){
+   const L=`My love,
+
+From the smallest smile you gave me to the biggest warmth you brought into my life — every moment with you feels like a quiet miracle. You are not just someone I like… you are the feeling of home inside my heart.
+
+When days are loud, thoughts are heavy, and the world feels rushed, the thought of you slows everything down. You are my calm place. My favorite memory. My best “what if” that became real.
+
+I don’t promise perfection — but I promise presence. I promise effort. I promise honesty. I promise to choose you not once, but again and again — in simple days and difficult days alike.
+
+If hugs could store emotions, mine would always be full for you. If words could build shelter, I would build you one from love alone. You are deeply valued, quietly admired, and endlessly cherished.
+
+No matter where life goes, I want you to know this — you are important to me in a way that is steady, sincere, and forever growing.
+
+This letter isn’t just romance — it’s intention.
+
+Always — with warmth,
+always yours.`;
+
+   document.getElementById("letter").innerText=L;
+   document.getElementById("letter").style.display="block";
+   next();
+ }
 }
 
-/* floating bg hearts */
-setInterval(()=>{
-  const h=document.createElement("div");
-  h.className="bg-heart";
-  h.innerHTML="❤";
-  h.style.left=Math.random()*100+"vw";
-  h.style.animationDuration=(7+Math.random()*6)+"s";
-  document.body.appendChild(h);
-  setTimeout(()=>h.remove(),14000);
-},500);
-
-/* auto place 15 stickers */
-const stickerURLs=[
-"https://media.giphy.com/media/9OF21735SjJ3VgKz8n/giphy.gif",
-"https://media.giphy.com/media/80Je0Zm2rKD8Kf8iE6/giphy.gif",
-"https://media.giphy.com/media/ydWtdyaz5pOLu8PtPE/giphy.gif",
-"https://media.giphy.com/media/MTN145SF7JMoGN4tL7/giphy.gif",
-"https://media.giphy.com/media/WU4xpOdtSsa3wEOFDn/giphy.gif",
-"https://media.giphy.com/media/JkRvaImYJCUFDmPwDV/giphy.gif",
-"https://media.giphy.com/media/zmp7KBrHGxx53aECwa/giphy.gif",
-"https://media.giphy.com/media/YSfrvcbz6e3n0Gvac3/giphy.gif",
-"https://media.giphy.com/media/Y7RZZdZGlwnIz1O1nx/giphy.gif",
-"https://media.giphy.com/media/G0XUBswL5AYkUtbHMw/giphy.gif",
-"https://media.giphy.com/media/fvN5KrNcKKUyX7hNIA/giphy.gif",
-"https://media.giphy.com/media/22muo9w0PtHdX5WpZ7/giphy.gif",
-"https://media.giphy.com/media/gdspgdOIV1HxhnxQOH/giphy.gif",
-"https://media.giphy.com/media/euW6JDwrMn0BqyNC8t/giphy.gif",
-"https://media.giphy.com/media/7cWcSDahOGHTjumdNG/giphy.gif"
-];
-
-function placeStickers(){
-  pages.forEach(sec=>{
-    for(let i=0;i<3;i++){
-      const img=document.createElement("img");
-      img.src=stickerURLs[(Math.random()*stickerURLs.length)|0];
-      img.className="sticker";
-      img.style.top=Math.random()*80+"%";
-      img.style.left=Math.random()*80+"%";
-      sec.appendChild(img);
-    }
-  });
+function love(){
+ document.getElementById("finalLove").style.display="block";
+ setInterval(makeHeart,300);
 }
-placeStickers();
-show(0);
+
+function makeHeart(){
+ const h=document.createElement("div");
+ h.className="heart";
+ h.innerHTML="❤";
+ h.style.left=Math.random()*100+"%";
+ h.style.fontSize=(12+Math.random()*28)+"px";
+ h.style.animationDuration=(3+Math.random()*3)+"s";
+ document.body.appendChild(h);
+ setTimeout(()=>h.remove(),6000);
+}
+
+<!-- HOLD HEART -->
+let holdTimer;
+const hold=document.getElementById("hold");
+if(hold){
+ hold.addEventListener("mousedown",startHold);
+ hold.addEventListener("touchstart",startHold);
+ hold.addEventListener("mouseup",stopHold);
+ hold.addEventListener("touchend",stopHold);
+}
+function startHold(){
+ hold.classList.add("active");
+ holdTimer=setTimeout(next,1400);
+}
+function stopHold(){
+ hold.classList.remove("active");
+ clearTimeout(holdTimer);
+}
+
+<!-- UNIQUE STICKERS ONLY (duplicates removed) -->
+const stickersByPage={
+5:[ /* Hug Day unique */
+"https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZnVoODd3cHpnc29hOXl3cG96enFmZmg4YWM2b3k4dHJodnI3ZTB3ZSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/fvN5KrNcKKUyX7hNIA/giphy.gif",
+"https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZnVoODd3cHpnc29hOXl3cG96enFmZmg4YWM2b3k4dHJodnI3ZTB3ZSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/gdspgdOIV1HxhnxQOH/giphy.gif",
+"https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3N3hkdjRiaWQza2RmN3MzY3ZxdnMwdGQ3cXFwODFuN3NjcXgxc216YSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/mVii6Jrdd9LoGJAvOG/giphy.gif"
+],
+
+6:[ /* Kiss Day unique */
+"https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMWF4dHVndHVkNWs2cGI0eGFhN2UwY2FwMGg5YWttZWJhbnVqbGphMCZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/euW6JDwrMn0BqyNC8t/giphy.gif",
+"https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3azl4YjE2cHRybm8ybTZ5cW4wcDJjN2JjZXFiZ2h0eW80emhzbXN6cyZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/OARUkhh6SUGNyWgy5N/giphy.gif",
+"https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3azl4YjE2cHRybm8ybTZ5cW4wcDJjN2JjZXFiZ2h0eW80emhzbXN6cyZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/csPb1uvYpIEnnAJqfW/giphy.gif",
+"https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3bjRzejg0cnlub2s3MTlma20wZDRleDg4cWw2eDZtaGxrOWttcDJpdyZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/wuBduJG4DIVpMqwaEj/giphy.gif"
+]
+};
+
+function placeStickers(p){
+ document.querySelectorAll(".sticker").forEach(s=>s.remove());
+ const list=stickersByPage[p];
+ if(!list) return;
+
+ list.forEach(url=>{
+   const img=document.createElement("img");
+   img.src=url;
+   img.className="sticker";
+   img.style.width=(60+Math.random()*110)+"px";
+   img.style.left=Math.random()<.5 ? "2%" : "88%";
+   img.style.top=(10+Math.random()*75)+"%";
+   img.style.transform=`rotate(${Math.random()*40-20}deg)`;
+   document.body.appendChild(img);
+ });
+}
+
+placeStickers(0);
 </script>
-
 </body>
 </html>
