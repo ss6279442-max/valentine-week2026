@@ -2,187 +2,312 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Valentine Week 💖</title>
-<style>
-/* GENERAL STYLES */
-body {
-  margin:0;
-  font-family:"Segoe UI", sans-serif;
-  scroll-behavior:smooth;
-}
-h1 { text-align:center; margin-top:30px; }
-p.message { text-align:center; font-size:1.2em; max-width:700px; margin:20px auto; white-space:pre-wrap; }
+<title>Valentine Week 2.0 💖</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-/* DAY SECTIONS */
-section {
-  min-height:100vh;
-  position:relative;
-  padding-top:60px;
-  padding-bottom:60px;
+<style>
+body{
+  margin:0;
+  font-family:Segoe UI, sans-serif;
   overflow:hidden;
-  display:flex;
-  flex-direction:column;
+  background:linear-gradient(135deg,#ffe6f0,#fff0f5);
+}
+
+/* layout */
+section{
+  display:none;
+  height:100vh;
+  width:100vw;
+  position:relative;
   justify-content:center;
   align-items:center;
-  transition: background 0.5s;
+  flex-direction:column;
+  animation:fade .6s ease;
 }
 
-/* NAV BUTTONS */
-.nav-btn {
-  text-decoration:none;
+section.active{display:flex;}
+
+@keyframes fade{from{opacity:0;transform:scale(.98)}to{opacity:1;transform:scale(1)}}
+
+/* card */
+.card{
+  background:white;
+  padding:40px;
+  border-radius:22px;
+  box-shadow:0 15px 40px rgba(0,0,0,.12);
+  max-width:720px;
+  text-align:center;
+  position:relative;
+  z-index:5;
+  animation:cardIn .8s ease;
+}
+
+@keyframes cardIn{
+  from{transform:translateY(30px);opacity:0}
+  to{transform:translateY(0);opacity:1}
+}
+
+h1{margin:0 0 10px;font-size:2.3em}
+.message{font-size:1.3em;white-space:pre-wrap}
+
+/* buttons */
+.nav-btn{
   background:#ff4d88;
   color:white;
-  padding:12px 24px;
+  border:none;
+  padding:12px 22px;
   border-radius:12px;
   margin:10px;
+  cursor:pointer;
   font-size:1em;
 }
-.nav-btn:hover { background:#ff1f6a; }
+.nav-btn:hover{background:#ff1f6a}
 
-/* STICKERS */
-.sticker {
+/* stickers */
+.sticker{
   position:absolute;
-  width:100px;
+  width:170px;
+  pointer-events:none;
 }
 
-/* DAY THEMES */
-#rose { background:#ffe6f0; color:#222; }
-#propose { background:#ffe0cc; color:#222; }
-#chocolate { background:#fff0e6; color:#222; }
-#teddy { background:#f0f0ff; color:#222; }
-#promise { background:#e6fff5; color:#222; }
-#hug { background:#e6f0ff; color:#222; }
-#kiss { background:#fff0f5; color:#222; }
-#loveletter { background:#fff5e6; color:#222; }
-
-/* LOVE LETTER INPUT */
-#loveletter input {
-  padding:10px;
-  font-size:1em;
-  border-radius:8px;
-  border:1px solid #ccc;
+/* progress */
+#progress{
+  position:fixed;
+  bottom:10px;
+  left:50%;
+  transform:translateX(-50%);
+  background:white;
+  padding:6px 16px;
+  border-radius:20px;
+  font-size:.9em;
+  box-shadow:0 4px 12px rgba(0,0,0,.15);
+  z-index:20;
 }
-#loveletter button {
-  padding:10px 20px;
-  margin-left:10px;
-  border:none;
-  border-radius:8px;
-  background:#ff4d88;
-  color:white;
-  font-size:1em;
-}
-#loveletter button:hover { background:#ff1f6a; }
 
-/* FINAL LETTER TEXT */
-#finalText {
-  margin-top:20px;
-  font-size:1.2em;
-  max-width:600px;
-  text-align:center;
-  white-space:pre-wrap;
+/* floating hearts bg */
+.bg-heart{
+  position:fixed;
+  color:#ff9ecb;
+  animation:bgFloat linear forwards;
+  z-index:1;
+  pointer-events:none;
+}
+@keyframes bgFloat{
+  to{transform:translateY(-110vh);opacity:0}
+}
+
+/* confetti hearts */
+.heart-particle{
+  position:fixed;
+  color:#ff4d88;
+  z-index:999;
+  pointer-events:none;
+  animation:fall linear forwards;
+}
+@keyframes fall{
+  to{transform:translateY(110vh) rotate(360deg);opacity:0}
+}
+
+/* flip card */
+.flip{
+  perspective:1000px;
+}
+.flip-inner{
+  transition:transform .8s;
+  transform-style:preserve-3d;
+  position:relative;
+}
+.flip:hover .flip-inner{
+  transform:rotateY(180deg);
+}
+.flip-front,.flip-back{
+  backface-visibility:hidden;
+  position:absolute;
+  width:100%;
+}
+.flip-back{
+  transform:rotateY(180deg);
+}
+
+/* mobile */
+@media(max-width:600px){
+  .card{padding:25px}
+  h1{font-size:1.6em}
+  .message{font-size:1.05em}
+  .sticker{width:110px}
 }
 </style>
 </head>
+
 <body>
 
-<!-- ROSE DAY -->
-<section id="rose">
-  <h1>Rose Day 🌹</h1>
-  <p class="message">Just like a rose slowly blooms, my feelings for you grew quietly… soft, pure, and impossibly beautiful.</p>
-  <img src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3eWFkd2N5bTR4YnI0aTBsd2R5NGd2NW1yYmk1MnVjYXVza2doODUyMyZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/9OF21735SjJ3VgKz8n/giphy.gif" class="sticker" style="top:20px; left:30px;">
-  <img src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3eWFkd2N5bTR4YnI0aTBsd2R5NGd2NW1yYmk1MnVjYXVza2doODUyMyZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/80Je0Zm2rKD8Kf8iE6/giphy.gif" class="sticker" style="top:100px; right:50px;">
-  <img src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3eWFkd2N5bTR4YnI0aTBsd2R5NGd2NW1yYmk1MnVjYXVza2doODUyMyZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/ydWtdyaz5pOLu8PtPE/giphy.gif" class="sticker" style="bottom:50px; left:40%;">
-  <a href="#propose" class="nav-btn">Next →</a>
+<div id="progress"></div>
+
+<!-- ROSE -->
+<section id="rose" class="active">
+<div class="card flip">
+<div class="flip-inner">
+<div class="flip-front">
+<h1>Rose Day 🌹</h1>
+<p class="message">Just like a rose slowly blooms, my feelings for you grew quietly… soft, pure, and impossibly beautiful.</p>
+</div>
+<div class="flip-back">
+<p class="message">Every petal = one reason I adore you.</p>
+</div>
+</div>
+<button class="nav-btn" onclick="goNext()">Next →</button>
+</div>
+<img class="sticker" src="https://media.giphy.com/media/9OF21735SjJ3VgKz8n/giphy.gif" style="top:5%;left:5%">
 </section>
 
-<!-- PROPOSE DAY -->
+<!-- PROPOSE -->
 <section id="propose">
-  <h1>Propose Day 💍</h1>
-  <p class="message">If loving you is a choice, then I choose you — today, tomorrow, and all my forever.</p>
-  <img src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3YTdybHVjbTZ3NGM2a2x3NDVhenoxcjdmMWcwY3MxZDJ3NzR6dXBrZiZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/MTN145SF7JMoGN4tL7/giphy.gif" class="sticker" style="top:50px; left:20px;">
-  <img src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3YTdybHVjbTZ3NGM2a2x3NDVhenoxcjdmMWcwY3MxZDJ3NzR6dXBrZiZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/WU4xpOdtSsa3wEOFDn/giphy.gif" class="sticker" style="bottom:100px; right:50px;">
-  <a href="#rose" class="nav-btn">← Previous</a>
-  <a href="#chocolate" class="nav-btn">Next →</a>
+<div class="card">
+<h1>Propose Day 💍</h1>
+<p class="message">If loving you is a choice, then I choose you — today, tomorrow, and all my forever.</p>
+<button class="nav-btn" onclick="goPrev()">← Prev</button>
+<button class="nav-btn" onclick="goNext()">Next →</button>
+</div>
 </section>
 
-<!-- CHOCOLATE DAY -->
+<!-- CHOCOLATE -->
 <section id="chocolate">
-  <h1>Chocolate Day 🍫</h1>
-  <p class="message">You make my life sweeter than any chocolate ever could. One smile from you, and my heart melts instantly.</p>
-  <img src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3Zng2bGN0dTB5a3lxNGEwZmNzbTF4ajduanJjbnl0Mmh1ZXBlYmVqbiZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/JkRvaImYJCUFDmPwDV/giphy.gif" class="sticker" style="top:30px; left:40px;">
-  <img src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3Zng2bGN0dTB5a3lxNGEwZmNzbTF4ajduanJjbnl0Mmh1ZXBlYmVqbiZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/zmp7KBrHGxx53aECwa/giphy.gif" class="sticker" style="top:150px; right:60px;">
-  <a href="#propose" class="nav-btn">← Previous</a>
-  <a href="#teddy" class="nav-btn">Next →</a>
+<div class="card">
+<h1>Chocolate Day 🍫</h1>
+<p class="message">You make my life sweeter than any chocolate ever could.</p>
+<button class="nav-btn" onclick="goPrev()">← Prev</button>
+<button class="nav-btn" onclick="goNext()">Next →</button>
+</div>
 </section>
 
-<!-- TEDDY DAY -->
+<!-- TEDDY -->
 <section id="teddy">
-  <h1>Teddy Day 🧸</h1>
-  <p class="message">Cuddly, warm, and always comforting — just like you make my heart feel.</p>
-  <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbzVtM3Rjc3J1a2pvZHQydjA5MWUwNWtwdTFrNXdrMmU4NHRtdjBjOSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/YSfrvcbz6e3n0Gvac3/giphy.gif" class="sticker" style="top:20px; left:50px;">
-  <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbzVtM3Rjc3J1a2pvZHQydjA5MWUwNWtwdTFrNXdrMmU4NHRtdjBjOSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/Y7RZZdZGlwnIz1O1nx/giphy.gif" class="sticker" style="top:150px; right:80px;">
-  <img src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3enllczE3MmdyenAzY252cTJydXc0bWg2eW4wdHByeWpwd3c0dXBjdCZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/G0XUBswL5AYkUtbHMw/giphy.gif" class="sticker" style="bottom:50px; left:30%;">
-  <a href="#chocolate" class="nav-btn">← Previous</a>
-  <a href="#promise" class="nav-btn">Next →</a>
+<div class="card">
+<h1>Teddy Day 🧸</h1>
+<p class="message">Cuddly, warm, and always comforting — just like you make my heart feel.</p>
+<button class="nav-btn" onclick="goPrev()">← Prev</button>
+<button class="nav-btn" onclick="goNext()">Next →</button>
+</div>
 </section>
 
-<!-- PROMISE DAY -->
+<!-- PROMISE -->
 <section id="promise">
-  <h1>Promise Day 🤝</h1>
-  <p class="message">Today we seal our promise to stay together through all seasons of life. Forever starts here.</p>
-  <a href="#teddy" class="nav-btn">← Previous</a>
-  <a href="#hug" class="nav-btn">Next →</a>
+<div class="card">
+<h1>Promise Day 🤝</h1>
+<p class="message">We promise patience, laughter, and loyalty — no matter what.</p>
+<button class="nav-btn" onclick="goPrev()">← Prev</button>
+<button class="nav-btn" onclick="goNext()">Next →</button>
+</div>
 </section>
 
-<!-- HUG DAY -->
+<!-- HUG -->
 <section id="hug">
-  <h1>Hug Day 🤗</h1>
-  <p class="message">Every hug from you feels like home. I never want to let go.</p>
-  <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbmh2aHZ2Y2Voa3RrNjJkNmxtempjaGc1bXBwNHIzeHVzZmo0Mno2bSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/fvN5KrNcKKUyX7hNIA/giphy.gif" class="sticker" style="top:30px; left:40px;">
-  <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbmh2aHZ2Y2Voa3RrNjJkNmxtempjaGc1bXBwNHIzeHVzZmo0Mno2bSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/22muo9w0PtHdX5WpZ7/giphy.gif" class="sticker" style="top:150px; right:50px;">
-  <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbmh2aHZ2Y2Voa3RrNjJkNmxtempjaGc1bXBwNHIzeHVzZmo0Mno2bSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/gdspgdOIV1HxhnxQOH/giphy.gif" class="sticker" style="bottom:50px; left:35%;">
-  <a href="#promise" class="nav-btn">← Previous</a>
-  <a href="#kiss" class="nav-btn">Next →</a>
+<div class="card">
+<h1>Hug Day 🤗</h1>
+<p class="message">Every hug from you feels like home.</p>
+<button class="nav-btn" onclick="goPrev()">← Prev</button>
+<button class="nav-btn" onclick="goNext()">Next →</button>
+</div>
 </section>
 
-<!-- KISS DAY -->
+<!-- KISS -->
 <section id="kiss">
-  <h1>Kiss Day 💋</h1>
-  <p class="message">Every kiss from you tells me: I am home, I am loved, I am yours.</p>
-  <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExeXU2amtjbnlxOHkzaWk5cDEyM2t2cmpodm5vdjd5ZmkzbDJnbnRjaiZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/euW6JDwrMn0BqyNC8t/giphy.gif" class="sticker" style="top:20px; left:30px;">
-  <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExeXU2amtjbnlxOHkzaWk5cDEyM2t2cmpodm5vdjd5ZmkzbDJnbnRjaiZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/7cWcSDahOGHTjumdNG/giphy.gif" class="sticker" style="top:150px; right:50px;">
-  <a href="#hug" class="nav-btn">← Previous</a>
-  <a href="#loveletter" class="nav-btn">Next →</a>
+<div class="card">
+<h1>Kiss Day 💋</h1>
+<p class="message">Every kiss says what words cannot.</p>
+<button class="nav-btn" onclick="goPrev()">← Prev</button>
+<button class="nav-btn" onclick="goNext()">Next →</button>
+</div>
 </section>
 
-<!-- LOVE LETTER -->
+<!-- LETTER -->
 <section id="loveletter">
-  <h1>💌 Our Love Letter</h1>
-  <p>Enter the secret passkey to reveal the letter:</p>
-  <input type="password" id="passkey" placeholder="Enter passkey">
-  <button onclick="openLetter()">Open Letter</button>
-  <div id="finalText"></div>
-  <a href="#kiss" class="nav-btn">← Previous</a>
+<div class="card">
+<h1>💌 Love Letter</h1>
+<input id="passkey" type="password" placeholder="Enter passkey">
+<button class="nav-btn" onclick="openLetter()">Open</button>
+<div id="finalText" style="margin-top:20px"></div>
+<button class="nav-btn" onclick="goPrev()">← Prev</button>
+</div>
 </section>
 
 <script>
-const finalMessage = `My Dearest Love,
+const pages=["rose","propose","chocolate","teddy","promise","hug","kiss","loveletter"];
+let index=0;
 
-Every day with you is a beautiful chapter of my life.
-I love you more than words could ever express.
-You are my heart, my soul, my everything.
+function show(i){
+  document.querySelectorAll("section").forEach(s=>s.classList.remove("active"));
+  document.getElementById(pages[i]).classList.add("active");
+  index=i;
+  window.scrollTo(0,0);
+  document.getElementById("progress").textContent=`Day ${i+1} / ${pages.length}`;
+}
 
-Forever yours 💖`;
+function goNext(){ if(index<pages.length-1) show(index+1); }
+function goPrev(){ if(index>0) show(index-1); }
+
+document.addEventListener("keydown",e=>{
+  if(e.key==="ArrowRight") goNext();
+  if(e.key==="ArrowLeft") goPrev();
+});
+
+/* typewriter */
+function typeWriter(text,el,speed){
+  el.textContent="";
+  let i=0;
+  const t=setInterval(()=>{
+    el.textContent+=text[i];
+    if(++i>=text.length) clearInterval(t);
+  },speed);
+}
+
+/* passkey */
+const msg=`My Dearest Love,
+
+Every day with you is magic.
+You are my calm, my chaos, my forever.
+
+Always yours 💖`;
 
 function openLetter(){
-  const input = document.getElementById('passkey').value;
-  const finalDiv = document.getElementById('finalText');
-  if(input.toLowerCase() === 'foreverus'){
-    finalDiv.textContent = finalMessage;
-  } else {
-    alert("Incorrect passkey! Try again 💔");
-  }
+  const v=document.getElementById("passkey").value.trim().toLowerCase();
+  if(v==="foreverus"){
+    typeWriter(msg,document.getElementById("finalText"),25);
+    startConfetti();
+  } else alert("Wrong passkey 💔");
 }
+
+/* confetti */
+function startConfetti(){
+  const end=Date.now()+3000;
+  const int=setInterval(()=>{
+    if(Date.now()>end) return clearInterval(int);
+    const h=document.createElement("div");
+    h.className="heart-particle";
+    h.innerHTML="❤";
+    h.style.left=Math.random()*100+"vw";
+    h.style.fontSize=(20+Math.random()*25)+"px";
+    h.style.animationDuration=(2+Math.random()*3)+"s";
+    h.style.transform=`translateX(${Math.random()*120-60}px)`;
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(),5000);
+  },120);
+}
+
+/* floating bg hearts */
+setInterval(()=>{
+  const h=document.createElement("div");
+  h.className="bg-heart";
+  h.innerHTML="❤";
+  h.style.left=Math.random()*100+"vw";
+  h.style.bottom="-20px";
+  h.style.fontSize=(12+Math.random()*18)+"px";
+  h.style.animationDuration=(6+Math.random()*6)+"s";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),12000);
+},600);
+
+show(0);
 </script>
 
 </body>
