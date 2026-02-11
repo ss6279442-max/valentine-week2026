@@ -3,272 +3,233 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Valentine Journey v2.8</title>
+<title>Valentine Journey v3.1</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
 
 <style>
 body{
   margin:0;
-  background:linear-gradient(135deg,#ffd6e8,#ffeef5,#e6f7ff);
-  font-family:Poppins,sans-serif;
-  overflow-x:hidden;
+  background:#fff0f5;
+  font-family:Poppins, sans-serif;
   text-align:center;
+  overflow:hidden;
 }
 
 .page{
   display:none;
-  padding:70px 20px;
-  min-height:100vh;
-  position:relative;
+  height:100vh;
+  padding:40px 18px;
+  animation:fade .5s ease;
 }
 
-.page.active{display:block;}
+.page.active{ display:block; }
 
 h1{
-  font-family:"Dancing Script",cursive;
+  font-family:"Dancing Script", cursive;
   font-size:42px;
-  margin-bottom:10px;
+  margin:10px 0;
 }
 
-p{font-size:18px; max-width:700px; margin:auto;}
+p{
+  font-size:18px;
+  line-height:1.5;
+}
 
 button{
-  padding:14px 26px;
   font-size:18px;
-  border-radius:28px;
-  border:none;
-  background:#ff4d88;
-  color:white;
+  padding:14px 26px;
   margin:12px;
-  cursor:pointer;
+  border:none;
+  border-radius:30px;
+  background:#ff4d6d;
+  color:white;
 }
 
-.yesBtn{background:#28c76f;}
-.noBtn{background:#ff6b6b; position:relative;}
-
-.sticker{
-  position:absolute;
-  pointer-events:none;
-  z-index:0;
-  opacity:.95;
+button.secondary{
+  background:#888;
 }
 
-.holdHeart{
-  font-size:70px;
+@keyframes fade{
+  from{opacity:0; transform:translateY(20px);}
+  to{opacity:1; transform:translateY(0);}
+}
+
+/* promise heart hold */
+.heartHold{
+  font-size:80px;
   cursor:pointer;
   user-select:none;
-  transition:.2s;
-}
-.holdHeart.active{transform:scale(1.25); filter:drop-shadow(0 0 12px hotpink);}
-
-input{
-  padding:12px;
-  font-size:18px;
-  border-radius:12px;
-  border:1px solid #ccc;
 }
 
+/* floating pastel hearts final page */
 .heart{
-  position:fixed;
-  bottom:-20px;
-  font-size:20px;
-  animation:floatUp linear forwards;
+  position:absolute;
+  font-size:22px;
+  animation:float 6s linear infinite;
 }
 
-@keyframes floatUp{
-  to{transform:translateY(-110vh); opacity:0;}
-}
-
-#finalLove{
-  font-size:64px;
-  font-family:"Dancing Script";
-  display:none;
-  margin-top:40px;
-  color:#ff3366;
+@keyframes float{
+  from{transform:translateY(100vh);}
+  to{transform:translateY(-10vh);}
 }
 </style>
 </head>
 
 <body>
 
-<!-- Pages -->
+<!-- PAGES -->
 
-<div class="page active" id="p0">
-<h1>Rose Day 🌹</h1>
-<p>A rose for you — because beauty deserves beauty.</p>
-<button onclick="next()">Next</button>
+<div class="page active">
+<h1>Our Valentine Journey</h1>
+<p>Ready to go through each day with me?</p>
+<button onclick="next()">Start</button>
 </div>
 
-<div class="page" id="p1">
-<h1>Propose Day 💍</h1>
-<p>Will you walk this crazy journey with me?</p>
-<button class="yesBtn" onclick="next()">Yes</button>
-<button class="noBtn" onclick="prankNo(this)">No</button>
+<div class="page">
+<h1>Rose Day</h1>
+<p>Will you accept this rose?</p>
+<button onclick="next()">Yes</button>
+<button id="no1" onclick="noPrank(this)">No</button>
 </div>
 
-<div class="page" id="p2">
-<h1>Chocolate Day 🍫</h1>
-<p>Life is sweeter with you in every bite.</p>
-<button onclick="next()">Next</button>
+<div class="page">
+<h1>Propose Day</h1>
+<p>Can I keep proposing forever?</p>
+<button onclick="next()">Yes</button>
+<button onclick="noPrank(this)">No</button>
 </div>
 
-<div class="page" id="p3">
-<h1>Teddy Day 🧸</h1>
-<p>If you need a hug — I’m your teddy.</p>
-<button onclick="next()">Next</button>
+<div class="page">
+<h1>Chocolate Day</h1>
+<p>Will you share chocolates with me?</p>
+<button onclick="next()">Yes</button>
+<button onclick="noPrank(this)">No</button>
 </div>
 
-<div class="page" id="p4">
-<h1>Promise Day 🤝</h1>
-<p>Hold the heart to seal the promise.</p>
-<div class="holdHeart" id="hold">❤️</div>
+<div class="page">
+<h1>Teddy Day</h1>
+<p>Can I be your teddy when you’re sad?</p>
+<button onclick="next()">Yes</button>
+<button onclick="noPrank(this)">No</button>
 </div>
 
-<div class="page" id="p5">
-<h1>Hug Day 🤗</h1>
-<p>Some hugs say everything words can’t.</p>
-<button class="yesBtn" onclick="next()">Next Hug</button>
-<button class="noBtn" onclick="prankNo(this)">No</button>
+<div class="page">
+<h1>Promise Day</h1>
+<p>Hold the heart to seal our promise</p>
+<div class="heartHold"
+onmousedown="startHold()"
+onmouseup="cancelHold()"
+ontouchstart="startHold()"
+ontouchend="cancelHold()">❤️</div>
+<p id="holdMsg"></p>
 </div>
 
-<div class="page" id="p6">
-<h1>Kiss Day 💋</h1>
-<p>A gentle kiss — sealed with love.</p>
-<button onclick="next()">Next</button>
+<div class="page">
+<h1>Hug Day</h1>
+<p>Can I hug you forever?</p>
+<button onclick="next()">Yes</button>
+<button onclick="noPrank(this)">No</button>
 </div>
 
-<div class="page" id="p7">
-<h1>Secret Letter 💌</h1>
-<p>Enter the key to unlock.</p>
-<input id="keyInput">
-<br>
+<div class="page">
+<h1>Kiss Day</h1>
+<p>One kiss for luck?</p>
+<button onclick="next()">Yes</button>
+<button onclick="noPrank(this)">No</button>
+</div>
+
+<div class="page">
+<h1>Secret Letter</h1>
+<p>Enter the passkey</p>
+<input id="key" style="padding:12px;font-size:18px;border-radius:12px;border:1px solid #ccc">
+<br><br>
 <button onclick="unlock()">Unlock</button>
-<div id="letter" style="display:none;margin-top:20px;font-size:18px;line-height:1.6"></div>
+<p id="wrong"></p>
 </div>
 
-<div class="page" id="p8">
+<div class="page">
+<h1>My Love Letter</h1>
+<p style="max-width:700px;margin:auto;font-size:18px">
+From the moment you stepped into my world, things began to feel softer, warmer, and far more meaningful. 
+You became the calm in my chaos, the smile in my ordinary days, and the quiet strength behind my loudest dreams. 
+Every small memory with you feels larger than grand celebrations. The way you listen, the way you care, and the way you simply exist — it all matters deeply to me.
+
+Love isn’t only in big gestures — it lives in late replies, silly jokes, shared silence, and unplanned laughter. 
+If I could choose again, I would still choose you — in every timeline, every version, every possibility. 
+You are not just special — you are essential to the happiness I feel.
+
+This journey page by page was fun — but the real journey is what I want with you beyond screens and days and themes. 
+If love is a promise, consider mine already made. If love is a choice, I keep choosing you. Always.
+</p>
+<button onclick="next()">Continue</button>
+</div>
+
+<div class="page" id="finalQ">
 <h1>Will you be my Valentine?</h1>
-<button class="yesBtn" onclick="love()">YES</button>
-<button class="noBtn" onclick="prankNo(this)">NO</button>
-<div id="finalLove">❤️ I LOVE YOU ❤️</div>
+<button onclick="bigLove()">YES</button>
+<button onclick="noPrank(this)">No</button>
+</div>
+
+<div class="page" id="bigLovePage">
+<h1 style="font-size:64px">I LOVE YOU ❤️</h1>
 </div>
 
 <script>
-let page=0;
 const pages=document.querySelectorAll(".page");
+let i=0;
 
 function next(){
-  pages[page].classList.remove("active");
-  page++;
-  if(page>=pages.length) page=pages.length-1;
-  pages[page].classList.add("active");
-  placeStickers(page);
+  pages[i].classList.remove("active");
+  i++;
+  pages[i].classList.add("active");
 }
 
-function prankNo(btn){
-  const p=Math.floor(Math.random()*5);
-  if(p===0){btn.style.transform="scale(.5)";}
-  if(p===1){btn.style.transform="rotate(180deg)";}
-  if(p===2){btn.style.position="absolute";btn.style.left=Math.random()*80+"%";}
-  if(p===3){btn.textContent="Try YES 😌";}
-  if(p===4){btn.style.opacity=.2;}
+/* --- no button prank --- */
+function noPrank(btn){
+  const x=Math.random()*80;
+  const y=Math.random()*80;
+  btn.style.position="absolute";
+  btn.style.left=x+"vw";
+  btn.style.top=y+"vh";
+  btn.textContent=["Nope","Try again","Really?","Wrong button"][Math.floor(Math.random()*4)];
 }
 
-<!-- PASSKEY -->
-function unlock(){
- if(document.getElementById("keyInput").value==="alwaysyours"){
-   const L=`My love,
-
-From the smallest smile you gave me to the biggest warmth you brought into my life — every moment with you feels like a quiet miracle. You are not just someone I like… you are the feeling of home inside my heart.
-
-When days are loud, thoughts are heavy, and the world feels rushed, the thought of you slows everything down. You are my calm place. My favorite memory. My best “what if” that became real.
-
-I don’t promise perfection — but I promise presence. I promise effort. I promise honesty. I promise to choose you not once, but again and again — in simple days and difficult days alike.
-
-If hugs could store emotions, mine would always be full for you. If words could build shelter, I would build you one from love alone. You are deeply valued, quietly admired, and endlessly cherished.
-
-No matter where life goes, I want you to know this — you are important to me in a way that is steady, sincere, and forever growing.
-
-This letter isn’t just romance — it’s intention.
-
-Always — with warmth,
-always yours.`;
-
-   document.getElementById("letter").innerText=L;
-   document.getElementById("letter").style.display="block";
-   next();
- }
-}
-
-function love(){
- document.getElementById("finalLove").style.display="block";
- setInterval(makeHeart,300);
-}
-
-function makeHeart(){
- const h=document.createElement("div");
- h.className="heart";
- h.innerHTML="❤";
- h.style.left=Math.random()*100+"%";
- h.style.fontSize=(12+Math.random()*28)+"px";
- h.style.animationDuration=(3+Math.random()*3)+"s";
- document.body.appendChild(h);
- setTimeout(()=>h.remove(),6000);
-}
-
-<!-- HOLD HEART -->
+/* --- hold heart promise --- */
 let holdTimer;
-const hold=document.getElementById("hold");
-if(hold){
- hold.addEventListener("mousedown",startHold);
- hold.addEventListener("touchstart",startHold);
- hold.addEventListener("mouseup",stopHold);
- hold.addEventListener("touchend",stopHold);
-}
 function startHold(){
- hold.classList.add("active");
- holdTimer=setTimeout(next,1400);
+  document.getElementById("holdMsg").innerText="Holding...";
+  holdTimer=setTimeout(next,1200);
 }
-function stopHold(){
- hold.classList.remove("active");
- clearTimeout(holdTimer);
-}
-
-<!-- UNIQUE STICKERS ONLY (duplicates removed) -->
-const stickersByPage={
-5:[ /* Hug Day unique */
-"https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZnVoODd3cHpnc29hOXl3cG96enFmZmg4YWM2b3k4dHJodnI3ZTB3ZSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/fvN5KrNcKKUyX7hNIA/giphy.gif",
-"https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZnVoODd3cHpnc29hOXl3cG96enFmZmg4YWM2b3k4dHJodnI3ZTB3ZSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/gdspgdOIV1HxhnxQOH/giphy.gif",
-"https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3N3hkdjRiaWQza2RmN3MzY3ZxdnMwdGQ3cXFwODFuN3NjcXgxc216YSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/mVii6Jrdd9LoGJAvOG/giphy.gif"
-],
-
-6:[ /* Kiss Day unique */
-"https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMWF4dHVndHVkNWs2cGI0eGFhN2UwY2FwMGg5YWttZWJhbnVqbGphMCZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/euW6JDwrMn0BqyNC8t/giphy.gif",
-"https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3azl4YjE2cHRybm8ybTZ5cW4wcDJjN2JjZXFiZ2h0eW80emhzbXN6cyZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/OARUkhh6SUGNyWgy5N/giphy.gif",
-"https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3azl4YjE2cHRybm8ybTZ5cW4wcDJjN2JjZXFiZ2h0eW80emhzbXN6cyZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/csPb1uvYpIEnnAJqfW/giphy.gif",
-"https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3bjRzejg0cnlub2s3MTlma20wZDRleDg4cWw2eDZtaGxrOWttcDJpdyZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/wuBduJG4DIVpMqwaEj/giphy.gif"
-]
-};
-
-function placeStickers(p){
- document.querySelectorAll(".sticker").forEach(s=>s.remove());
- const list=stickersByPage[p];
- if(!list) return;
-
- list.forEach(url=>{
-   const img=document.createElement("img");
-   img.src=url;
-   img.className="sticker";
-   img.style.width=(60+Math.random()*110)+"px";
-   img.style.left=Math.random()<.5 ? "2%" : "88%";
-   img.style.top=(10+Math.random()*75)+"%";
-   img.style.transform=`rotate(${Math.random()*40-20}deg)`;
-   document.body.appendChild(img);
- });
+function cancelHold(){
+  clearTimeout(holdTimer);
+  document.getElementById("holdMsg").innerText="";
 }
 
-placeStickers(0);
+/* --- passkey --- */
+function unlock(){
+  if(document.getElementById("key").value==="alwaysyours"){
+    next();
+  } else {
+    document.getElementById("wrong").innerText="Wrong key";
+  }
+}
+
+/* --- final hearts --- */
+function bigLove(){
+  next();
+  for(let n=0;n<40;n++){
+    let h=document.createElement("div");
+    h.className="heart";
+    h.innerText="♥";
+    h.style.left=Math.random()*100+"vw";
+    h.style.animationDuration=4+Math.random()*4+"s";
+    h.style.fontSize=16+Math.random()*30+"px";
+    h.style.color=["#ff8fab","#ffc2d1","#ffb3c6","#ffd6e0"][Math.floor(Math.random()*4)];
+    document.body.appendChild(h);
+  }
+}
 </script>
+
 </body>
 </html>
