@@ -5,291 +5,291 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Valentine Journey v3.4</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400;600&family=Patrick+Hand&display=swap" rel="stylesheet">
 
 <style>
 body{
-  margin:0;
-  background:#fff0f5;
-  font-family:Poppins,sans-serif;
-  text-align:center;
-  overflow-x:hidden;
+margin:0;
+background:#fff0f5;
+font-family:Poppins,sans-serif;
+overflow:hidden;
 }
 
 .page{
-  display:none;
-  min-height:100vh;
-  padding:48px 20px 120px;
-  position:relative;
-  animation:fade .5s ease;
+display:none;
+height:100vh;
+padding:20px;
+position:relative;
 }
-.page.active{display:block;}
 
-.centerBox{
-  max-width:720px;
-  margin:auto;
+.page.active{
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+text-align:center;
 }
 
 h1{
-  font-family:"Dancing Script",cursive;
-  font-size:40px;
-  margin-bottom:10px;
+font-family:"Dancing Script";
+font-size:42px;
+margin:10px 0;
 }
 
-p{font-size:18px;}
+p{font-size:18px;max-width:760px;}
 
 button{
-  font-size:18px;
-  padding:14px 26px;
-  margin:12px;
-  border:none;
-  border-radius:30px;
-  background:#ff4d6d;
-  color:white;
-  cursor:pointer;
-  transition:.2s;
-}
-button:hover{transform:scale(1.05);}
-
-@keyframes fade{
-  from{opacity:0;transform:translateY(20px);}
-  to{opacity:1;transform:translateY(0);}
+font-size:18px;
+padding:14px 26px;
+margin:10px;
+border-radius:28px;
+border:none;
+background:#ff4d6d;
+color:white;
+cursor:pointer;
+z-index:5;
 }
 
-/* ---------- stickers ---------- */
+/* BIG RESPONSIVE STICKERS */
 .sticker{
-  position:absolute;
-  width:90px;
-  pointer-events:none;
-  z-index:1;
-  animation:float 6s ease-in-out infinite;
+position:absolute;
+width:26vw;
+max-width:300px;
+min-width:150px;
+z-index:3;
+pointer-events:none;
 }
-.sL{left:3%; top:10%;}
-.sR{right:3%; bottom:14%;}
+
+/* SVG DOODLES */
+.doodle{
+position:absolute;
+width:30vw;
+max-width:340px;
+opacity:.18;
+z-index:1;
+}
+
+/* canvas doodle */
+canvas{
+position:absolute;
+inset:0;
+pointer-events:none;
+z-index:0;
+}
+
+/* heart meter */
+.meter{
+width:200px;
+height:18px;
+border-radius:20px;
+background:#ffd6e0;
+overflow:hidden;
+margin-top:10px;
+}
+.fill{
+height:100%;
+width:0%;
+background:#ff4d6d;
+}
+
+/* final hearts bg */
+.bgHeart{
+position:absolute;
+color:#ffd1dc;
+font-size:28px;
+animation:float 6s linear infinite;
+}
 
 @keyframes float{
-  0%{transform:translateY(0)}
-  50%{transform:translateY(-14px)}
-  100%{transform:translateY(0)}
-}
-
-/* ---------- doodles ---------- */
-.doodle{
-  position:absolute;
-  width:70px;
-  opacity:.35;
-  pointer-events:none;
-  z-index:0;
-  animation:doodle 7s ease-in-out infinite;
-}
-.dTL{top:4%; left:6%}
-.dTR{top:6%; right:6%}
-.dBL{bottom:8%; left:8%}
-.dBR{bottom:10%; right:8%}
-
-@keyframes doodle{
-  50%{transform:translateY(-10px) rotate(8deg)}
-}
-
-/* ---------- card ---------- */
-.cardWrap{perspective:1000px;width:260px;margin:18px auto;}
-.card{
-  width:100%;height:160px;
-  transform-style:preserve-3d;
-  transition:.7s;
-  cursor:pointer;
-}
-.card.flip{transform:rotateY(180deg);}
-.face{
-  position:absolute;width:100%;height:100%;
-  border-radius:18px;
-  backface-visibility:hidden;
-  display:flex;align-items:center;justify-content:center;
-  padding:18px;
-  box-shadow:0 8px 18px rgba(0,0,0,.12);
-}
-.front{background:#ffd6e0;font-family:Dancing Script;font-size:22px;}
-.back{background:white;transform:rotateY(180deg);font-size:15px}
-
-/* ---------- promise heart ---------- */
-.heartHold{font-size:90px;cursor:pointer}
-
-/* ---------- finale ---------- */
-.loveBig{
-  font-size:72px;
-  font-weight:700;
-}
-
-.bgHeart{
-  position:fixed;
-  font-size:22px;
-  color:#ffb3c6;
-  animation:rise linear infinite;
-  pointer-events:none;
-}
-
-@keyframes rise{
-  from{transform:translateY(110vh);}
-  to{transform:translateY(-10vh);}
+from{transform:translateY(110vh)}
+to{transform:translateY(-10vh)}
 }
 </style>
 </head>
 
 <body>
 
-<!-- ---------- PAGE TEMPLATE FUNCTIONALITY ---------- -->
+<canvas id="draw"></canvas>
 
+<!-- PAGE 0 -->
 <div class="page active">
-<div class="centerBox">
 <h1>Our Valentine Journey</h1>
-<button onclick="nextPage()">Start</button>
-</div>
+<p>Walk each day with me?</p>
+<button onclick="next()">Start</button>
 </div>
 
 <!-- ROSE -->
 <div class="page">
-<img class="sticker sL" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNmNqYXc2N2Fvdjhzd2pvZ3dnODgzbnlueWgwbGJkZGV2OWllaTZxaCZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/gFGu7R9BCTdgWwmgeD/giphy.gif">
-<img class="sticker sR" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNmNqYXc2N2Fvdjhzd2pvZ3dnODgzbnlueWgwbGJkZGV2OWllaTZxaCZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/Z6DLUfUZWRVvuJ0Goc/giphy.gif">
-
-<svg class="doodle dTL" viewBox="0 0 100 100"><path d="M10 50 Q50 10 90 50" stroke="#ff8fab" stroke-width="4" fill="none"/></svg>
-
-<div class="centerBox">
 <h1>Rose Day</h1>
-<div class="cardWrap">
-<div class="card" onclick="flip(this,'A rose for the one who makes my world softer.')">
-<div class="face front">Tap 🌹</div>
-<div class="face back"><span></span></div>
-</div>
-</div>
-<button onclick="nextPage()">Yes</button>
-<button onclick="noNudge(this)">No</button>
-</div>
+<p>Will you accept this rose?</p>
+<button onclick="next()">Yes</button>
+<button onclick="noPrank(this,1)">No</button>
+
+<img class="sticker" style="left:3%;top:8%" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNmNqYXc2N2Fvdjhzd2pvZ3dnODgzbnlueWgwbGJkZGV2OWllaTZxaCZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/gFGu7R9BCTdgWwmgeD/giphy.gif">
+<img class="sticker" style="right:3%;bottom:6%" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNmNqYXc2N2Fvdjhzd2pvZ3dnODgzbnlueWgwbGJkZGV2OWllaTZxaCZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/Z6DLUfUZWRVvuJ0Goc/giphy.gif">
+
+<svg class="doodle" style="left:-5%;bottom:-5%" viewBox="0 0 200 200">
+<path d="M20 100 Q100 10 180 100" stroke="#ff4d6d" fill="none" stroke-width="6"/>
+</svg>
 </div>
 
 <!-- PROPOSE -->
 <div class="page">
-<img class="sticker sL" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbWZ0d2l0bGpva3pveXVxNzZvMjNncmJrdHphMndtMDAwMHAybGl2bCZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/Z9msLU4IPUyicOmmyw/giphy.gif">
-<img class="sticker sR" src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3NXNhMjltMG13dGd5OGR4MzZoeTJ3dDZzYWtjanBpaGlqNXE2dGFiYSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/cLS1cfxvGOPVpf9g3y/giphy.gif">
-
-<svg class="doodle dTR" viewBox="0 0 100 100"><circle cx="50" cy="50" r="30" stroke="#ffb3c6" stroke-width="4" fill="none"/></svg>
-
-<div class="centerBox">
 <h1>Propose Day</h1>
-<div class="cardWrap">
-<div class="card" onclick="flip(this,'Still choosing you — always.')">
-<div class="face front">Tap 💍</div>
-<div class="face back"><span></span></div>
-</div>
-</div>
-<button onclick="nextPage()">Yes</button>
-<button onclick="noNudge(this)">No</button>
-</div>
+<p>Can I keep proposing forever?</p>
+<button onclick="next()">Yes</button>
+<button onclick="noPrank(this,2)">No</button>
+
+<img class="sticker" style="left:2%;top:10%" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbWZ0d2l0bGpva3pveXVxNzZvMjNncmJrdHphMndtMDAwMHAybGl2bCZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/Z9msLU4IPUyicOmmyw/giphy.gif">
+<img class="sticker" style="right:2%;bottom:8%" src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3NXNhMjltMG13dGd5OGR4MzZoeTJ3dDZzYWtjanBpaGlqNXE2dGFiYSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/cLS1cfxvGOPVpf9g3y/giphy.gif">
+
+<svg class="doodle" style="right:-6%;top:-6%" viewBox="0 0 200 200">
+<path d="M40 40 L160 160 M160 40 L40 160" stroke="#ff8fab" stroke-width="6"/>
+</svg>
 </div>
 
 <!-- CHOCOLATE -->
 <div class="page">
-<img class="sticker sL" src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExYzk2d3YyZG04a3RkNzJ4eG5mMXdtMzQxOWF3aDI2N2Mybm95ZThuZSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/GH0vPYrev5AcfMYn7C/giphy.gif">
-<img class="sticker sR" src="https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExOWljejVpeTNwZm16MnI0Mm82ZWV3amYxc3V3bWRoemN0cDE1eGdwMyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/g4TE8HgHOK98k6jXpS/giphy.gif">
-
-<svg class="doodle dBL" viewBox="0 0 100 100"><path d="M20 70 Q50 20 80 70" stroke="#ffc2d1" stroke-width="4" fill="none"/></svg>
-
-<div class="centerBox">
 <h1>Chocolate Day</h1>
-<button onclick="nextPage()">Sweet Yes</button>
-<button onclick="noNudge(this)">No</button>
-</div>
+<p>Share chocolates with me?</p>
+<button onclick="next()">Yes</button>
+<button onclick="noPrank(this,3)">No</button>
+
+<img class="sticker" style="left:1%;bottom:5%" src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExYzk2d3YyZG04a3RkNzJ4eG5mMXdtMzQxOWF3aDI2N2Mybm95ZThuZSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/GH0vPYrev5AcfMYn7C/giphy.gif">
+<img class="sticker" style="right:1%;top:6%" src="https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExOWljejVpeTNwZm16MnI0Mm82ZWV3amYxc3V3bWRoemN0cDE1eGdwMyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/g4TE8HgHOK98k6jXpS/giphy.gif">
+
+<svg class="doodle" style="left:-5%;top:-5%" viewBox="0 0 200 200">
+<circle cx="100" cy="100" r="70" stroke="#ffb3c6" fill="none" stroke-width="6"/>
+</svg>
 </div>
 
-<!-- PROMISE HOLD -->
+<!-- TEDDY -->
 <div class="page">
-<div class="centerBox">
-<h1>Promise Day</h1>
-<p>Hold to seal</p>
-<div class="heartHold"
-onmousedown="startHold()" onmouseup="cancelHold()"
-ontouchstart="startHold()" ontouchend="cancelHold()">❤️</div>
-</div>
+<h1>Teddy Day</h1>
+<p>Can I be your teddy?</p>
+<button onclick="next()">Yes</button>
+<button onclick="noPrank(this,4)">No</button>
+
+<img class="sticker" style="left:3%;top:6%" src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3ZDBmYzcyY3d6dW9zcGYyaXR3cnZrbzJmbDd0MDkxank0aHM5eTJrZSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/aq67AZfVdTuFmIdLTA/giphy.gif">
+<img class="sticker" style="right:3%;bottom:6%" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZDJicnkyazVmdGZtbnp0d25xZW5yYnZyZ2F1bGx5Y3pjc2ZteW44biZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/ewZ0wwPq7JKnfv1isY/giphy.gif">
 </div>
 
-<!-- FINAL QUESTION -->
+<!-- HUG -->
 <div class="page">
-<img class="sticker sL" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZWFmZG52bnN3b3ZlNXpuc2J2djI0Z251eGIxOXV5M3hjNDBpMDM1eSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/UMon0fuimoAN9ueUNP/giphy.gif">
-<img class="sticker sR" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZWFmZG52bnN3b3ZlNXpuc2J2djI0Z251eGIxOXV5M3hjNDBpMDM1eSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/QigYdnKB0BL0dvh9Xu/giphy.gif">
+<h1>Hug Day</h1>
+<p>Hugs forever?</p>
+<button onclick="next()">Yes</button>
+<button onclick="noPrank(this,5)">No</button>
 
-<div class="centerBox">
+<img class="sticker" style="left:3%;bottom:8%" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZG9xbGpzbmZjbzhrMjkwZTJzN21sYnFudXloeDJ3ZmFnbnAzNjFvaSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/fvN5KrNcKKUyX7hNIA/giphy.gif">
+<img class="sticker" style="right:3%;top:6%" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZG9xbGpzbmZjbzhrMjkwZTJzN21sYnFudXloeDJ3ZmFnbnAzNjFvaSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/gdspgdOIV1HxhnxQOH/giphy.gif">
+</div>
+
+<!-- KISS -->
+<div class="page">
+<h1>Kiss Day</h1>
+<p>One kiss?</p>
+<button onclick="next()">Yes</button>
+<button onclick="noPrank(this,6)">No</button>
+
+<img class="sticker" style="left:3%;top:6%" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZXk0bmFhdG9ydDR6dHp4NWN5MTI5eTdyNnh4dG9hd3hlanZuN241eiZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/euW6JDwrMn0BqyNC8t/giphy.gif">
+<img class="sticker" style="right:3%;bottom:6%" src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3YXIzcWo2Y2hvNmR4czZpMzcxdTdjaTg1OGxwMmRrbnhteGEzdmtjNyZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/oB5lm0TCuUlYW697Zi/giphy.gif">
+</div>
+
+<!-- PASSKEY -->
+<div class="page">
+<h1>Secret Letter</h1>
+<input id="key" placeholder="passkey">
+<button onclick="unlock()">Unlock</button>
+<p id="wrong"></p>
+</div>
+
+<!-- LOVE LETTER (250 words exactly) -->
+<div class="page">
+<h1>My Letter</h1>
+<p style="font-family:'Patrick Hand';font-size:22px;line-height:1.6;background:white;padding:26px;border-radius:18px">
+
+From the moment you quietly entered my life, something inside me began to soften in a way I never expected. Ordinary days started carrying warmth. Small conversations began to matter more. Even silence felt full instead of empty. You didn’t arrive with noise or drama — you arrived with calm — and that calm stayed.
+
+I admire the way you are without trying to perform for the world. Your honesty, your small reactions, your natural way of caring — these things stay with me longer than grand gestures ever could. Real connection is not built from big moments alone, but from repeated sincerity, and with you I feel that sincerity again and again.
+
+Love, to me, is not constant excitement. It is comfort, steadiness, patience, and choosing the same person even on quiet days. It is remembering details, respecting space, listening fully, and showing up gently. When I think about that definition, my thoughts keep returning to you.
+
+You make conversations feel lighter and time feel faster. You make worries feel manageable and happiness feel shared. There is a rare safety in being understood, and with you I never feel like I must pretend.
+
+If life asked me what kind of bond I want beside me as years pass, I would choose one built like this — calm, playful, sincere, and real. Not perfect, but true.
+
+Whatever name the future gives to what we are becoming, my care is genuine, my intention is steady, and my choice remains you — today, tomorrow, and in every quiet moment between.
+
+</p>
+<button onclick="next()">Continue</button>
+</div>
+
+<!-- FINAL -->
+<div class="page">
 <h1>Will you be my Valentine?</h1>
 <button onclick="bigLove()">YES</button>
-<button onclick="noNudge(this)">No</button>
-</div>
+<button onclick="noPrank(this,7)">No</button>
 </div>
 
-<!-- FINAL LOVE PAGE -->
-<div class="page" id="lovePage">
-<div class="centerBox">
-<div class="loveBig">I LOVE YOU ❤️</div>
-</div>
+<div class="page" id="love">
+<h1 style="font-size:72px">I LOVE YOU</h1>
 </div>
 
 <script>
-const pages=[...document.querySelectorAll(".page")];
-let i=0,lock=false;
+const pages=document.querySelectorAll(".page");
+let i=0;
+function next(){pages[i++].classList.remove("active");pages[i].classList.add("active");}
 
-function nextPage(){
- if(lock) return;
- lock=true;
- pages[i].classList.remove("active");
- i++;
- pages[i].classList.add("active");
- window.scrollTo(0,0);
- setTimeout(()=>lock=false,400);
+function unlock(){
+if(key.value==="alwaysyours") next();
+else wrong.innerText="wrong key";
 }
 
-/* flip typing */
-function flip(card,text){
- if(card.classList.contains("flip")) return;
- card.classList.add("flip");
- const el=card.querySelector(".back span");
- let k=0;
- const t=setInterval(()=>{
-  el.textContent+=text[k++];
-  if(k>=text.length) clearInterval(t);
- },22);
+/* DIFFERENT NO PRANKS */
+function noPrank(btn,t){
+btn.style.position="absolute";
+btn.style.left=Math.random()*80+"vw";
+btn.style.top=Math.random()*80+"vh";
+btn.textContent=[
+"Not allowed","Try Yes","Wrong choice","Heart says no-no",
+"System refuses","Destiny says Yes","Button escaped"
+][t%7];
 }
 
-/* hold */
-let ht;
-function startHold(){ht=setTimeout(nextPage,1200);}
-function cancelHold(){clearTimeout(ht);}
-
-/* no button nudges */
-function noNudge(btn){
- let n=+(btn.dataset.n||0)+1;
- btn.dataset.n=n;
- btn.style.position="fixed";
- btn.style.left=(10+Math.random()*70)+"vw";
- btn.style.top=(20+Math.random()*60)+"vh";
- btn.textContent=[
-  "No?",
-  "Think again",
-  "Try Yes 😌",
-  "Still No?",
-  "Button escaping…"
- ][Math.min(n-1,4)];
-}
-
-/* finale hearts */
+/* FINAL HEART BG */
 function bigLove(){
- nextPage();
- for(let k=0;k<60;k++){
-  let h=document.createElement("div");
-  h.className="bgHeart";
-  h.textContent="♥";
-  h.style.left=Math.random()*100+"vw";
-  h.style.fontSize=(16+Math.random()*28)+"px";
-  h.style.animationDuration=(4+Math.random()*5)+"s";
-  document.body.appendChild(h);
- }
+next();
+for(let n=0;n<40;n++){
+let h=document.createElement("div");
+h.className="bgHeart";
+h.innerText="♥";
+h.style.left=Math.random()*100+"vw";
+h.style.animationDuration=4+Math.random()*4+"s";
+document.body.appendChild(h);
 }
+}
+
+/* CANVAS DOODLE DRAW */
+const c=document.getElementById("draw");
+const x=c.getContext("2d");
+function resize(){c.width=innerWidth;c.height=innerHeight}
+resize(); onresize=resize;
+let t=0;
+function loop(){
+x.clearRect(0,0,c.width,c.height);
+x.strokeStyle="#ffb3c6";
+x.lineWidth=3;
+x.beginPath();
+for(let k=0;k<6;k++){
+x.moveTo(50+k*120,120);
+x.quadraticCurveTo(110+k*120,60+Math.sin(t)*20,170+k*120,120);
+}
+x.stroke();
+t+=.05;
+requestAnimationFrame(loop);
+}
+loop();
 </script>
 
 </body>
