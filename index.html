@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Valentine Journey v3.1</title>
+<title>Valentine Journey v3.4</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
 
@@ -11,30 +11,32 @@
 body{
   margin:0;
   background:#fff0f5;
-  font-family:Poppins, sans-serif;
+  font-family:Poppins,sans-serif;
   text-align:center;
-  overflow:hidden;
+  overflow-x:hidden;
 }
 
 .page{
   display:none;
-  height:100vh;
-  padding:40px 18px;
+  min-height:100vh;
+  padding:48px 20px 120px;
+  position:relative;
   animation:fade .5s ease;
 }
+.page.active{display:block;}
 
-.page.active{ display:block; }
+.centerBox{
+  max-width:720px;
+  margin:auto;
+}
 
 h1{
-  font-family:"Dancing Script", cursive;
-  font-size:42px;
-  margin:10px 0;
+  font-family:"Dancing Script",cursive;
+  font-size:40px;
+  margin-bottom:10px;
 }
 
-p{
-  font-size:18px;
-  line-height:1.5;
-}
+p{font-size:18px;}
 
 button{
   font-size:18px;
@@ -44,33 +46,90 @@ button{
   border-radius:30px;
   background:#ff4d6d;
   color:white;
+  cursor:pointer;
+  transition:.2s;
 }
-
-button.secondary{
-  background:#888;
-}
+button:hover{transform:scale(1.05);}
 
 @keyframes fade{
-  from{opacity:0; transform:translateY(20px);}
-  to{opacity:1; transform:translateY(0);}
+  from{opacity:0;transform:translateY(20px);}
+  to{opacity:1;transform:translateY(0);}
 }
 
-/* promise heart hold */
-.heartHold{
-  font-size:80px;
-  cursor:pointer;
-  user-select:none;
-}
-
-/* floating pastel hearts final page */
-.heart{
+/* ---------- stickers ---------- */
+.sticker{
   position:absolute;
-  font-size:22px;
-  animation:float 6s linear infinite;
+  width:90px;
+  pointer-events:none;
+  z-index:1;
+  animation:float 6s ease-in-out infinite;
 }
+.sL{left:3%; top:10%;}
+.sR{right:3%; bottom:14%;}
 
 @keyframes float{
-  from{transform:translateY(100vh);}
+  0%{transform:translateY(0)}
+  50%{transform:translateY(-14px)}
+  100%{transform:translateY(0)}
+}
+
+/* ---------- doodles ---------- */
+.doodle{
+  position:absolute;
+  width:70px;
+  opacity:.35;
+  pointer-events:none;
+  z-index:0;
+  animation:doodle 7s ease-in-out infinite;
+}
+.dTL{top:4%; left:6%}
+.dTR{top:6%; right:6%}
+.dBL{bottom:8%; left:8%}
+.dBR{bottom:10%; right:8%}
+
+@keyframes doodle{
+  50%{transform:translateY(-10px) rotate(8deg)}
+}
+
+/* ---------- card ---------- */
+.cardWrap{perspective:1000px;width:260px;margin:18px auto;}
+.card{
+  width:100%;height:160px;
+  transform-style:preserve-3d;
+  transition:.7s;
+  cursor:pointer;
+}
+.card.flip{transform:rotateY(180deg);}
+.face{
+  position:absolute;width:100%;height:100%;
+  border-radius:18px;
+  backface-visibility:hidden;
+  display:flex;align-items:center;justify-content:center;
+  padding:18px;
+  box-shadow:0 8px 18px rgba(0,0,0,.12);
+}
+.front{background:#ffd6e0;font-family:Dancing Script;font-size:22px;}
+.back{background:white;transform:rotateY(180deg);font-size:15px}
+
+/* ---------- promise heart ---------- */
+.heartHold{font-size:90px;cursor:pointer}
+
+/* ---------- finale ---------- */
+.loveBig{
+  font-size:72px;
+  font-weight:700;
+}
+
+.bgHeart{
+  position:fixed;
+  font-size:22px;
+  color:#ffb3c6;
+  animation:rise linear infinite;
+  pointer-events:none;
+}
+
+@keyframes rise{
+  from{transform:translateY(110vh);}
   to{transform:translateY(-10vh);}
 }
 </style>
@@ -78,156 +137,158 @@ button.secondary{
 
 <body>
 
-<!-- PAGES -->
+<!-- ---------- PAGE TEMPLATE FUNCTIONALITY ---------- -->
 
 <div class="page active">
+<div class="centerBox">
 <h1>Our Valentine Journey</h1>
-<p>Ready to go through each day with me?</p>
-<button onclick="next()">Start</button>
+<button onclick="nextPage()">Start</button>
+</div>
 </div>
 
+<!-- ROSE -->
 <div class="page">
+<img class="sticker sL" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNmNqYXc2N2Fvdjhzd2pvZ3dnODgzbnlueWgwbGJkZGV2OWllaTZxaCZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/gFGu7R9BCTdgWwmgeD/giphy.gif">
+<img class="sticker sR" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNmNqYXc2N2Fvdjhzd2pvZ3dnODgzbnlueWgwbGJkZGV2OWllaTZxaCZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/Z6DLUfUZWRVvuJ0Goc/giphy.gif">
+
+<svg class="doodle dTL" viewBox="0 0 100 100"><path d="M10 50 Q50 10 90 50" stroke="#ff8fab" stroke-width="4" fill="none"/></svg>
+
+<div class="centerBox">
 <h1>Rose Day</h1>
-<p>Will you accept this rose?</p>
-<button onclick="next()">Yes</button>
-<button id="no1" onclick="noPrank(this)">No</button>
+<div class="cardWrap">
+<div class="card" onclick="flip(this,'A rose for the one who makes my world softer.')">
+<div class="face front">Tap 🌹</div>
+<div class="face back"><span></span></div>
+</div>
+</div>
+<button onclick="nextPage()">Yes</button>
+<button onclick="noNudge(this)">No</button>
+</div>
 </div>
 
+<!-- PROPOSE -->
 <div class="page">
+<img class="sticker sL" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbWZ0d2l0bGpva3pveXVxNzZvMjNncmJrdHphMndtMDAwMHAybGl2bCZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/Z9msLU4IPUyicOmmyw/giphy.gif">
+<img class="sticker sR" src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3NXNhMjltMG13dGd5OGR4MzZoeTJ3dDZzYWtjanBpaGlqNXE2dGFiYSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/cLS1cfxvGOPVpf9g3y/giphy.gif">
+
+<svg class="doodle dTR" viewBox="0 0 100 100"><circle cx="50" cy="50" r="30" stroke="#ffb3c6" stroke-width="4" fill="none"/></svg>
+
+<div class="centerBox">
 <h1>Propose Day</h1>
-<p>Can I keep proposing forever?</p>
-<button onclick="next()">Yes</button>
-<button onclick="noPrank(this)">No</button>
+<div class="cardWrap">
+<div class="card" onclick="flip(this,'Still choosing you — always.')">
+<div class="face front">Tap 💍</div>
+<div class="face back"><span></span></div>
+</div>
+</div>
+<button onclick="nextPage()">Yes</button>
+<button onclick="noNudge(this)">No</button>
+</div>
 </div>
 
+<!-- CHOCOLATE -->
 <div class="page">
+<img class="sticker sL" src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExYzk2d3YyZG04a3RkNzJ4eG5mMXdtMzQxOWF3aDI2N2Mybm95ZThuZSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/GH0vPYrev5AcfMYn7C/giphy.gif">
+<img class="sticker sR" src="https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExOWljejVpeTNwZm16MnI0Mm82ZWV3amYxc3V3bWRoemN0cDE1eGdwMyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/g4TE8HgHOK98k6jXpS/giphy.gif">
+
+<svg class="doodle dBL" viewBox="0 0 100 100"><path d="M20 70 Q50 20 80 70" stroke="#ffc2d1" stroke-width="4" fill="none"/></svg>
+
+<div class="centerBox">
 <h1>Chocolate Day</h1>
-<p>Will you share chocolates with me?</p>
-<button onclick="next()">Yes</button>
-<button onclick="noPrank(this)">No</button>
+<button onclick="nextPage()">Sweet Yes</button>
+<button onclick="noNudge(this)">No</button>
+</div>
 </div>
 
+<!-- PROMISE HOLD -->
 <div class="page">
-<h1>Teddy Day</h1>
-<p>Can I be your teddy when you’re sad?</p>
-<button onclick="next()">Yes</button>
-<button onclick="noPrank(this)">No</button>
-</div>
-
-<div class="page">
+<div class="centerBox">
 <h1>Promise Day</h1>
-<p>Hold the heart to seal our promise</p>
+<p>Hold to seal</p>
 <div class="heartHold"
-onmousedown="startHold()"
-onmouseup="cancelHold()"
-ontouchstart="startHold()"
-ontouchend="cancelHold()">❤️</div>
-<p id="holdMsg"></p>
+onmousedown="startHold()" onmouseup="cancelHold()"
+ontouchstart="startHold()" ontouchend="cancelHold()">❤️</div>
+</div>
 </div>
 
+<!-- FINAL QUESTION -->
 <div class="page">
-<h1>Hug Day</h1>
-<p>Can I hug you forever?</p>
-<button onclick="next()">Yes</button>
-<button onclick="noPrank(this)">No</button>
-</div>
+<img class="sticker sL" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZWFmZG52bnN3b3ZlNXpuc2J2djI0Z251eGIxOXV5M3hjNDBpMDM1eSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/UMon0fuimoAN9ueUNP/giphy.gif">
+<img class="sticker sR" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZWFmZG52bnN3b3ZlNXpuc2J2djI0Z251eGIxOXV5M3hjNDBpMDM1eSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/QigYdnKB0BL0dvh9Xu/giphy.gif">
 
-<div class="page">
-<h1>Kiss Day</h1>
-<p>One kiss for luck?</p>
-<button onclick="next()">Yes</button>
-<button onclick="noPrank(this)">No</button>
-</div>
-
-<div class="page">
-<h1>Secret Letter</h1>
-<p>Enter the passkey</p>
-<input id="key" style="padding:12px;font-size:18px;border-radius:12px;border:1px solid #ccc">
-<br><br>
-<button onclick="unlock()">Unlock</button>
-<p id="wrong"></p>
-</div>
-
-<div class="page">
-<h1>My Love Letter</h1>
-<p style="max-width:700px;margin:auto;font-size:18px">
-From the moment you stepped into my world, things began to feel softer, warmer, and far more meaningful. 
-You became the calm in my chaos, the smile in my ordinary days, and the quiet strength behind my loudest dreams. 
-Every small memory with you feels larger than grand celebrations. The way you listen, the way you care, and the way you simply exist — it all matters deeply to me.
-
-Love isn’t only in big gestures — it lives in late replies, silly jokes, shared silence, and unplanned laughter. 
-If I could choose again, I would still choose you — in every timeline, every version, every possibility. 
-You are not just special — you are essential to the happiness I feel.
-
-This journey page by page was fun — but the real journey is what I want with you beyond screens and days and themes. 
-If love is a promise, consider mine already made. If love is a choice, I keep choosing you. Always.
-</p>
-<button onclick="next()">Continue</button>
-</div>
-
-<div class="page" id="finalQ">
+<div class="centerBox">
 <h1>Will you be my Valentine?</h1>
 <button onclick="bigLove()">YES</button>
-<button onclick="noPrank(this)">No</button>
+<button onclick="noNudge(this)">No</button>
+</div>
 </div>
 
-<div class="page" id="bigLovePage">
-<h1 style="font-size:64px">I LOVE YOU ❤️</h1>
+<!-- FINAL LOVE PAGE -->
+<div class="page" id="lovePage">
+<div class="centerBox">
+<div class="loveBig">I LOVE YOU ❤️</div>
+</div>
 </div>
 
 <script>
-const pages=document.querySelectorAll(".page");
-let i=0;
+const pages=[...document.querySelectorAll(".page")];
+let i=0,lock=false;
 
-function next(){
-  pages[i].classList.remove("active");
-  i++;
-  pages[i].classList.add("active");
+function nextPage(){
+ if(lock) return;
+ lock=true;
+ pages[i].classList.remove("active");
+ i++;
+ pages[i].classList.add("active");
+ window.scrollTo(0,0);
+ setTimeout(()=>lock=false,400);
 }
 
-/* --- no button prank --- */
-function noPrank(btn){
-  const x=Math.random()*80;
-  const y=Math.random()*80;
-  btn.style.position="absolute";
-  btn.style.left=x+"vw";
-  btn.style.top=y+"vh";
-  btn.textContent=["Nope","Try again","Really?","Wrong button"][Math.floor(Math.random()*4)];
+/* flip typing */
+function flip(card,text){
+ if(card.classList.contains("flip")) return;
+ card.classList.add("flip");
+ const el=card.querySelector(".back span");
+ let k=0;
+ const t=setInterval(()=>{
+  el.textContent+=text[k++];
+  if(k>=text.length) clearInterval(t);
+ },22);
 }
 
-/* --- hold heart promise --- */
-let holdTimer;
-function startHold(){
-  document.getElementById("holdMsg").innerText="Holding...";
-  holdTimer=setTimeout(next,1200);
-}
-function cancelHold(){
-  clearTimeout(holdTimer);
-  document.getElementById("holdMsg").innerText="";
+/* hold */
+let ht;
+function startHold(){ht=setTimeout(nextPage,1200);}
+function cancelHold(){clearTimeout(ht);}
+
+/* no button nudges */
+function noNudge(btn){
+ let n=+(btn.dataset.n||0)+1;
+ btn.dataset.n=n;
+ btn.style.position="fixed";
+ btn.style.left=(10+Math.random()*70)+"vw";
+ btn.style.top=(20+Math.random()*60)+"vh";
+ btn.textContent=[
+  "No?",
+  "Think again",
+  "Try Yes 😌",
+  "Still No?",
+  "Button escaping…"
+ ][Math.min(n-1,4)];
 }
 
-/* --- passkey --- */
-function unlock(){
-  if(document.getElementById("key").value==="alwaysyours"){
-    next();
-  } else {
-    document.getElementById("wrong").innerText="Wrong key";
-  }
-}
-
-/* --- final hearts --- */
+/* finale hearts */
 function bigLove(){
-  next();
-  for(let n=0;n<40;n++){
-    let h=document.createElement("div");
-    h.className="heart";
-    h.innerText="♥";
-    h.style.left=Math.random()*100+"vw";
-    h.style.animationDuration=4+Math.random()*4+"s";
-    h.style.fontSize=16+Math.random()*30+"px";
-    h.style.color=["#ff8fab","#ffc2d1","#ffb3c6","#ffd6e0"][Math.floor(Math.random()*4)];
-    document.body.appendChild(h);
-  }
+ nextPage();
+ for(let k=0;k<60;k++){
+  let h=document.createElement("div");
+  h.className="bgHeart";
+  h.textContent="♥";
+  h.style.left=Math.random()*100+"vw";
+  h.style.fontSize=(16+Math.random()*28)+"px";
+  h.style.animationDuration=(4+Math.random()*5)+"s";
+  document.body.appendChild(h);
+ }
 }
 </script>
 
