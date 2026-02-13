@@ -3,59 +3,31 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Valentine Journey v4</title>
+<title>Valentine Journey v5</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400;600&family=Patrick+Hand&display=swap" rel="stylesheet">
 
 <style>
-body{
-margin:0;
-background:#fff0f5;
-font-family:Poppins,sans-serif;
-overflow:hidden;
-transition:background .6s;
-}
-
+body{margin:0;background:#fff0f5;font-family:Poppins,sans-serif;overflow:hidden;}
 .page{display:none;height:100vh;padding:20px;position:relative;}
 .page.active{display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;}
-
 h1{font-family:"Dancing Script";font-size:42px;margin:10px 0;}
 p{font-size:18px;max-width:760px;line-height:1.5;}
 
 button{
-font-size:18px;
-padding:14px 26px;
-margin:10px;
-border-radius:28px;
-border:none;
-background:#ff4d6d;
-color:white;
-cursor:pointer;
-z-index:5;
+font-size:18px;padding:14px 26px;margin:10px;border-radius:28px;
+border:none;background:#ff4d6d;color:white;cursor:pointer;z-index:5;
 }
 
-/* BIG STICKERS */
 .sticker{
-position:absolute;
-width:26vw;
-max-width:300px;
-min-width:150px;
-z-index:3;
-pointer-events:none;
+position:absolute;width:26vw;max-width:300px;min-width:150px;
+z-index:3;pointer-events:none;
 }
 
-/* meter */
 .meter{
-position:fixed;
-top:10px;
-left:50%;
-transform:translateX(-50%);
-width:220px;
-height:18px;
-border-radius:20px;
-background:#ffd6e0;
-overflow:hidden;
-z-index:9;
+position:fixed;top:10px;left:50%;transform:translateX(-50%);
+width:220px;height:18px;border-radius:20px;background:#ffd6e0;
+overflow:hidden;z-index:9;
 }
 .fill{height:100%;width:0%;background:#ff4d6d;}
 
@@ -63,10 +35,14 @@ canvas{position:absolute;inset:0;pointer-events:none;z-index:0;}
 
 .bgHeart{
 position:absolute;
-color:#ffd1dc;
-font-size:28px;
-animation:float 6s linear infinite;
+width:18px;height:18px;
+background:#ffb6c1;
+border-radius:50%;
+opacity:.6;
+animation:float 7s linear infinite;
 }
+
+#love{background:#ffc0cb;}
 
 @keyframes float{
 from{transform:translateY(110vh)}
@@ -80,20 +56,19 @@ to{transform:translateY(-10vh)}
 <div class="meter"><div class="fill" id="fill"></div></div>
 <canvas id="draw"></canvas>
 
-<!-- PAGE 0 -->
+<!-- START -->
 <div class="page active">
 <h1>Our Valentine Journey</h1>
-<p>This is not just a single day celebration — it is a walk through moments, feelings, memories, and gentle promises. Each page carries a small piece of affection, honesty, playfulness, and care. If you walk through all of them with me, you will see how much intention and warmth is placed here for you.</p>
+<p>Walk each day with me through this small journey of warmth, sincerity, playfulness, and honest affection. Every page carries intention, not just decoration. Move step by step and experience each feeling slowly.</p>
 <button onclick="next()">Start</button>
 </div>
 
 <!-- ROSE -->
 <div class="page">
 <h1>Rose Day</h1>
-<p>A rose is not given for beauty alone. It is given as a symbol of respect, admiration, and gentle emotional offering. When I give you this rose in this journey, it carries appreciation for your presence, your nature, your calm energy, and the quiet comfort you bring into conversations and moments we share.</p>
+<p>A rose stands for admiration and gentle emotional offering. This is not just a flower moment — it is appreciation for your presence, your calmness, and the comfort you bring into simple conversations and shared time.</p>
 <button onclick="next()">Yes</button>
-<button onclick="noPrank(this,1)">No</button>
-
+<button onclick="noPrank(this)">No</button>
 <img class="sticker" style="left:3%;top:8%" src="https://media.giphy.com/media/gFGu7R9BCTdgWwmgeD/giphy.gif">
 <img class="sticker" style="right:3%;bottom:6%" src="https://media.giphy.com/media/Z6DLUfUZWRVvuJ0Goc/giphy.gif">
 </div>
@@ -101,10 +76,9 @@ to{transform:translateY(-10vh)}
 <!-- PROPOSE -->
 <div class="page">
 <h1>Propose Day</h1>
-<p>Proposing is not only about asking once — it is about choosing again and again. Choosing conversation, choosing patience, choosing honesty, choosing emotional safety. If I could propose something, it would be this: let us keep choosing sincerity over ego and warmth over distance every single time.</p>
+<p>Proposing is choosing someone repeatedly with honesty and patience. It is not a one-time question but a continuing decision to stay sincere, respectful, and emotionally open across days and moods.</p>
 <button onclick="next()">Yes</button>
-<button onclick="noPrank(this,2)">No</button>
-
+<button onclick="noPrank(this)">No</button>
 <img class="sticker" style="left:2%;top:10%" src="https://media.giphy.com/media/Z9msLU4IPUyicOmmyw/giphy.gif">
 <img class="sticker" style="right:2%;bottom:8%" src="https://media.giphy.com/media/cLS1cfxvGOPVpf9g3y/giphy.gif">
 </div>
@@ -112,10 +86,9 @@ to{transform:translateY(-10vh)}
 <!-- CHOCOLATE -->
 <div class="page">
 <h1>Chocolate Day</h1>
-<p>Chocolate is sweet, but what makes it special is sharing it. Sweetness grows when it is given, not stored. This page is about shared joy — laughter that is mutual, kindness that is exchanged, and small moments that feel lighter simply because they are experienced together.</p>
+<p>Sweetness feels better when shared. This page is about mutual joy — laughter that is exchanged, kindness that is returned, and moments that feel lighter because they are experienced together.</p>
 <button onclick="next()">Yes</button>
-<button onclick="noPrank(this,3)">No</button>
-
+<button onclick="noPrank(this)">No</button>
 <img class="sticker" style="left:1%;bottom:5%" src="https://media.giphy.com/media/GH0vPYrev5AcfMYn7C/giphy.gif">
 <img class="sticker" style="right:1%;top:6%" src="https://media.giphy.com/media/g4TE8HgHOK98k6jXpS/giphy.gif">
 </div>
@@ -123,10 +96,9 @@ to{transform:translateY(-10vh)}
 <!-- TEDDY -->
 <div class="page">
 <h1>Teddy Day</h1>
-<p>A teddy is comfort without words. It represents emotional safety, warmth, and softness that stays even when days feel heavy. If I say I want to be your teddy, it means I want to be someone who brings reassurance, calm support, and gentle presence whenever needed.</p>
+<p>Comfort matters more than grand gestures. Being emotionally safe, gentle, and dependable creates real closeness. That is the meaning carried here — warmth that stays without needing explanation.</p>
 <button onclick="next()">Yes</button>
-<button onclick="noPrank(this,4)">No</button>
-
+<button onclick="noPrank(this)">No</button>
 <img class="sticker" style="left:3%;top:6%" src="https://media.giphy.com/media/aq67AZfVdTuFmIdLTA/giphy.gif">
 <img class="sticker" style="right:3%;bottom:6%" src="https://media.giphy.com/media/ewZ0wwPq7JKnfv1isY/giphy.gif">
 </div>
@@ -134,10 +106,9 @@ to{transform:translateY(-10vh)}
 <!-- HUG -->
 <div class="page">
 <h1>Hug Day</h1>
-<p>A hug is silent communication. It says you are safe, you are valued, you are not alone. Some feelings cannot be explained clearly in words, but they are understood instantly through warmth and closeness. This page carries that meaning — reassurance without explanation.</p>
+<p>A hug communicates reassurance without words. It tells someone they are valued and safe. Some feelings are understood best through warmth instead of explanation.</p>
 <button onclick="next()">Yes</button>
-<button onclick="noPrank(this,5)">No</button>
-
+<button onclick="noPrank(this)">No</button>
 <img class="sticker" style="left:3%;bottom:8%" src="https://media.giphy.com/media/fvN5KrNcKKUyX7hNIA/giphy.gif">
 <img class="sticker" style="right:3%;top:6%" src="https://media.giphy.com/media/gdspgdOIV1HxhnxQOH/giphy.gif">
 </div>
@@ -145,10 +116,9 @@ to{transform:translateY(-10vh)}
 <!-- KISS -->
 <div class="page">
 <h1>Kiss Day</h1>
-<p>A kiss is not only affection — it is trust and closeness expressed gently. It represents emotional acceptance and comfort between two people who feel safe being real with each other. It is not about drama — it is about tenderness and sincerity.</p>
+<p>Tenderness represents trust and emotional closeness. It is about gentle sincerity, not drama. A quiet expression of care carries more depth than loud gestures.</p>
 <button onclick="next()">Yes</button>
-<button onclick="noPrank(this,6)">No</button>
-
+<button onclick="noPrank(this)">No</button>
 <img class="sticker" style="left:3%;top:6%" src="https://media.giphy.com/media/euW6JDwrMn0BqyNC8t/giphy.gif">
 <img class="sticker" style="right:3%;bottom:6%" src="https://media.giphy.com/media/oB5lm0TCuUlYW697Zi/giphy.gif">
 </div>
@@ -172,7 +142,7 @@ to{transform:translateY(-10vh)}
 <div class="page">
 <h1>Will you be my Valentine?</h1>
 <button id="yesBtn" onclick="bigLove()">YES</button>
-<button onclick="noPrank(this,7)">No</button>
+<button onclick="noPrank(this)">No</button>
 </div>
 
 <div class="page" id="love">
@@ -189,119 +159,127 @@ pages[i].classList.remove("active");
 i++;
 pages[i].classList.add("active");
 fill.style.width=(i/(pages.length-1))*100+"%";
-drawPageDoodles(i);
-if(i===pages.length-3) startTyping();
-if(i===pages.length-2) launchRocket();
+drawDoodles(i);
+if(i===pages.length-3) typeLetter();
 }
 
+/* passkey unchanged */
 function unlock(){
 if(key.value==="alwaysyours") next();
 else wrong.innerText="wrong key";
 }
 
-function noPrank(btn,t){
+/* multi nudge texts */
+const nudges=[
+"Button shy 😄","Try the other one","Heart disagrees",
+"System says Yes only","Nice try","No is tired",
+"Still no? really?","Destiny voting Yes"
+];
+let noCount=0;
+function noPrank(btn){
 btn.style.position="absolute";
 btn.style.left=Math.random()*80+"vw";
 btn.style.top=Math.random()*80+"vh";
-btn.textContent=["Not allowed","Try Yes","Wrong choice","Heart says no-no","System refuses","Destiny says Yes","Button escaped"][t%7];
+btn.textContent=nudges[noCount++%nudges.length];
 }
 
+/* final hearts */
 function bigLove(){
 next();
-for(let n=0;n<40;n++){
+for(let n=0;n<60;n++){
 let h=document.createElement("div");
 h.className="bgHeart";
-h.innerText="♥";
 h.style.left=Math.random()*100+"vw";
-h.style.animationDuration=4+Math.random()*4+"s";
+h.style.animationDuration=5+Math.random()*4+"s";
 document.body.appendChild(h);
 }
 }
 
-/* -------- LETTER TYPING -------- */
+/* 150 words letter */
+const letterText=`From the moment you entered my life quietly, something inside me became softer and calmer. Ordinary days began to feel warmer and simple talks started staying longer in my thoughts. Your natural honesty, small reactions, and gentle way of expressing yourself matter to me more than big gestures. Real connection grows through sincerity, patience, and emotional safety, and I feel those qualities whenever we talk. 
 
-const letterText=`From the moment you quietly entered my life, something inside me began to soften in a way I never expected. Ordinary days started carrying warmth and even routine moments felt meaningful... (keep your 250+ word letter here)`;
+To me, love is not constant excitement. It is steadiness, respect, listening fully, remembering details, and choosing the same person again even on quiet days. You make time feel lighter and worries feel smaller. There is comfort in being understood without pretending, and with you I feel that ease. 
 
-function startTyping(){
+Whatever the future calls this bond, my care is genuine, my intention is clear, and my choice remains you, in simple moments and meaningful ones alike.`;
+
+function typeLetter(){
 let el=document.getElementById("typedLetter");
 let n=0;
 (function loop(){
 if(n<letterText.length){
 el.textContent+=letterText[n++];
-setTimeout(loop,18);
+setTimeout(loop,16);
 }
 })();
 }
 
-/* -------- CANVAS DOODLE ENGINE -------- */
+/* -------- MANY HAND-DRAWN DOODLES -------- */
 
 const c=document.getElementById("draw");
 const x=c.getContext("2d");
 function resize(){c.width=innerWidth;c.height=innerHeight}
 resize(); onresize=resize;
 
-function rand(a,b){return Math.random()*(b-a)+a}
+function r(a,b){return Math.random()*(b-a)+a}
 
-function sketch(fn){
-for(let k=0;k<3;k++){fn(rand(-2,2),rand(-2,2));}
+function scribble(fn){
+for(let k=0;k<3;k++) fn(r(-2,2),r(-2,2));
 }
 
-function heart(cx,cy,s){
-sketch((dx,dy)=>{
+function heart(px,py,s){
+scribble((dx,dy)=>{
 x.beginPath();
-x.moveTo(cx+dx,cy+dy);
-x.bezierCurveTo(cx-s+dx,cy-s+dy,cx-1.4*s+dx,cy+.5*s+dy,cx+dx,cy+1.2*s+dy);
-x.bezierCurveTo(cx+1.4*s+dx,cy+.5*s+dy,cx+s+dx,cy-s+dy,cx+dx,cy+dy);
+x.moveTo(px+dx,py+dy);
+x.bezierCurveTo(px-s,py-s,px-1.4*s,py+.5*s,px,py+1.2*s);
+x.bezierCurveTo(px+1.4*s,py+.5*s,px+s,py-s,px,py);
 x.stroke();
 });
 }
 
-function star(cx,cy,s){
+function star(px,py,s){
 for(let i=0;i<5;i++){
 let a=i*2*Math.PI/5;
 let b=(i+2)*2*Math.PI/5;
-sketch((dx,dy)=>{
+scribble((dx,dy)=>{
 x.beginPath();
-x.moveTo(cx+Math.cos(a)*s+dx,cy+Math.sin(a)*s+dy);
-x.lineTo(cx+Math.cos(b)*s+dx,cy+Math.sin(b)*s+dy);
+x.moveTo(px+Math.cos(a)*s+dx,py+Math.sin(a)*s+dy);
+x.lineTo(px+Math.cos(b)*s+dx,py+Math.sin(b)*s+dy);
 x.stroke();
 });
 }
 }
 
-function arrow(cx,cy,s){
-sketch((dx,dy)=>{
+function arrow(px,py,s){
+scribble((dx,dy)=>{
 x.beginPath();
-x.moveTo(cx+dx,cy+dy);
-x.lineTo(cx+s+dx,cy+dy);
+x.moveTo(px+dx,py+dy);
+x.lineTo(px+s,py);
 x.stroke();
 });
 }
 
-const pageSets=[
-["heart","spark"],
+const sets=[
 ["heart","star"],
-["arrow","heart"],
-["star","spark"],
 ["heart"],
+["star","arrow"],
+["heart","arrow"],
 ["star"],
-["heart","star"],
-["arrow"],
-["heart"]
+["heart","star","arrow"]
 ];
 
-function drawPageDoodles(pi){
+function drawDoodles(pi){
 x.clearRect(0,0,c.width,c.height);
-x.strokeStyle="#ff8fab";
+x.strokeStyle="#ff6b81";
 x.lineWidth=3;
 
-let set=pageSets[pi%pageSets.length];
+let set=sets[pi%sets.length];
+let count = 12 + pi*2;   // increases per page
 
-for(let n=0;n<10;n++){
+for(let n=0;n<count;n++){
 let t=set[Math.floor(Math.random()*set.length)];
-let px=rand(60,c.width-60);
-let py=rand(60,c.height-60);
-let s=rand(12,30);
+let px=r(60,c.width-60);
+let py=r(60,c.height-60);
+let s=r(12,28);
 
 if(t==="heart") heart(px,py,s);
 if(t==="star") star(px,py,s);
@@ -309,25 +287,7 @@ if(t==="arrow") arrow(px,py,s);
 }
 }
 
-function launchRocket(){
-let yes=document.getElementById("yesBtn");
-let r={x:40,y:c.height-40};
-let box=yes.getBoundingClientRect();
-let tx=box.left+40, ty=box.top;
-
-(function anim(){
-x.strokeStyle="#ff4d6d";
-x.beginPath();
-x.moveTo(r.x,r.y);
-x.lineTo(r.x,r.y-18);
-x.stroke();
-r.x+=(tx-r.x)*.08;
-r.y+=(ty-r.y)*.08;
-if(Math.abs(r.x-tx)>2) requestAnimationFrame(anim);
-})();
-}
-
-drawPageDoodles(0);
+drawDoodles(0);
 </script>
 
 </body>
