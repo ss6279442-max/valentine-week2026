@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Valentine Journey v3.4</title>
+<title>Valentine Journey v3.5</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400;600&family=Patrick+Hand&display=swap" rel="stylesheet">
 
@@ -50,7 +50,6 @@ cursor:pointer;
 z-index:5;
 }
 
-/* BIG RESPONSIVE STICKERS */
 .sticker{
 position:absolute;
 width:26vw;
@@ -60,7 +59,6 @@ z-index:3;
 pointer-events:none;
 }
 
-/* SVG DOODLES */
 .doodle{
 position:absolute;
 width:30vw;
@@ -69,7 +67,6 @@ opacity:.18;
 z-index:1;
 }
 
-/* canvas doodle */
 canvas{
 position:absolute;
 inset:0;
@@ -79,17 +76,22 @@ z-index:0;
 
 /* heart meter */
 .meter{
-width:200px;
+position:fixed;
+top:10px;
+left:50%;
+transform:translateX(-50%);
+width:220px;
 height:18px;
 border-radius:20px;
 background:#ffd6e0;
 overflow:hidden;
-margin-top:10px;
+z-index:9;
 }
 .fill{
 height:100%;
 width:0%;
 background:#ff4d6d;
+transition:.4s;
 }
 
 /* final hearts bg */
@@ -104,96 +106,83 @@ animation:float 6s linear infinite;
 from{transform:translateY(110vh)}
 to{transform:translateY(-10vh)}
 }
+
+/* rocket */
+#rocket{
+position:absolute;
+font-size:30px;
+display:none;
+z-index:6;
+transition:1.2s linear;
+}
+
+@media (max-width:600px){
+h1{font-size:32px}
+p{font-size:16px}
+.sticker{width:38vw;min-width:120px}
+}
 </style>
 </head>
 
 <body>
 
 <canvas id="draw"></canvas>
+<div class="meter"><div class="fill" id="fill"></div></div>
+<div id="rocket">🚀</div>
 
 <!-- PAGE 0 -->
 <div class="page active">
 <h1>Our Valentine Journey</h1>
-<p>Walk each day with me?</p>
+<p>Walk each day with me through this little journey of feelings, fun, and honest affection? Each step is small, but each one carries a bit of care, warmth, and intention. No pressure, only sincerity. Just tap start and let this unfold one sweet moment at a time.</p>
 <button onclick="next()">Start</button>
 </div>
 
 <!-- ROSE -->
 <div class="page">
 <h1>Rose Day</h1>
-<p>Will you accept this rose?</p>
+<p>This rose is more than a flower — it is a small sign of appreciation and gentle admiration. Some people brighten spaces loudly, but you do it quietly and naturally. That kind of presence is rare. If I could, I would offer you a fresh rose every day just to remind you that you are noticed and valued. Will you accept this rose from me?</p>
 <button onclick="next()">Yes</button>
 <button onclick="noPrank(this,1)">No</button>
-
-<img class="sticker" style="left:3%;top:8%" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNmNqYXc2N2Fvdjhzd2pvZ3dnODgzbnlueWgwbGJkZGV2OWllaTZxaCZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/gFGu7R9BCTdgWwmgeD/giphy.gif">
-<img class="sticker" style="right:3%;bottom:6%" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNmNqYXc2N2Fvdjhzd2pvZ3dnODgzbnlueWgwbGJkZGV2OWllaTZxaCZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/Z6DLUfUZWRVvuJ0Goc/giphy.gif">
-
-<svg class="doodle" style="left:-5%;bottom:-5%" viewBox="0 0 200 200">
-<path d="M20 100 Q100 10 180 100" stroke="#ff4d6d" fill="none" stroke-width="6"/>
-</svg>
 </div>
 
 <!-- PROPOSE -->
 <div class="page">
 <h1>Propose Day</h1>
-<p>Can I keep proposing forever?</p>
+<p>If I could propose one thing repeatedly, it would be choosing you in small ways — through respect, attention, patience, and shared laughter. Not a dramatic promise, but a steady one that shows up daily. Bonds are built through consistency, not speeches. Would you allow me to keep choosing you again and again in all the ordinary moments ahead?</p>
 <button onclick="next()">Yes</button>
 <button onclick="noPrank(this,2)">No</button>
-
-<img class="sticker" style="left:2%;top:10%" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbWZ0d2l0bGpva3pveXVxNzZvMjNncmJrdHphMndtMDAwMHAybGl2bCZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/Z9msLU4IPUyicOmmyw/giphy.gif">
-<img class="sticker" style="right:2%;bottom:8%" src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3NXNhMjltMG13dGd5OGR4MzZoeTJ3dDZzYWtjanBpaGlqNXE2dGFiYSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/cLS1cfxvGOPVpf9g3y/giphy.gif">
-
-<svg class="doodle" style="right:-6%;top:-6%" viewBox="0 0 200 200">
-<path d="M40 40 L160 160 M160 40 L40 160" stroke="#ff8fab" stroke-width="6"/>
-</svg>
 </div>
 
 <!-- CHOCOLATE -->
 <div class="page">
 <h1>Chocolate Day</h1>
-<p>Share chocolates with me?</p>
+<p>Sweet things are always better when shared, and that includes more than chocolates. It includes jokes, stories, random thoughts, and even silly cravings. Treats disappear quickly, but shared moments stay longer in memory. Think of this as an invitation to share both the sweet days and the imperfect ones too. Will you share the sweetness with me?</p>
 <button onclick="next()">Yes</button>
 <button onclick="noPrank(this,3)">No</button>
-
-<img class="sticker" style="left:1%;bottom:5%" src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExYzk2d3YyZG04a3RkNzJ4eG5mMXdtMzQxOWF3aDI2N2Mybm95ZThuZSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/GH0vPYrev5AcfMYn7C/giphy.gif">
-<img class="sticker" style="right:1%;top:6%" src="https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExOWljejVpeTNwZm16MnI0Mm82ZWV3amYxc3V3bWRoemN0cDE1eGdwMyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/g4TE8HgHOK98k6jXpS/giphy.gif">
-
-<svg class="doodle" style="left:-5%;top:-5%" viewBox="0 0 200 200">
-<circle cx="100" cy="100" r="70" stroke="#ffb3c6" fill="none" stroke-width="6"/>
-</svg>
 </div>
 
 <!-- TEDDY -->
 <div class="page">
 <h1>Teddy Day</h1>
-<p>Can I be your teddy?</p>
+<p>A teddy is soft, reliable, and comforting without asking questions. That is exactly the kind of presence I try to be — supportive, calm, and safe to lean on. Everyone needs a comfort place in human form sometimes. If dependable warmth could be a role, I would gladly take it. Can I be your comfort teddy whenever you need one?</p>
 <button onclick="next()">Yes</button>
 <button onclick="noPrank(this,4)">No</button>
-
-<img class="sticker" style="left:3%;top:6%" src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3ZDBmYzcyY3d6dW9zcGYyaXR3cnZrbzJmbDd0MDkxank0aHM5eTJrZSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/aq67AZfVdTuFmIdLTA/giphy.gif">
-<img class="sticker" style="right:3%;bottom:6%" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZDJicnkyazVmdGZtbnp0d25xZW5yYnZyZ2F1bGx5Y3pjc2ZteW44biZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/ewZ0wwPq7JKnfv1isY/giphy.gif">
 </div>
 
 <!-- HUG -->
 <div class="page">
 <h1>Hug Day</h1>
-<p>Hugs forever?</p>
+<p>A genuine hug communicates reassurance, care, and emotional safety without needing long explanations. It says you’re supported and not alone. If I could send one right now, it would be steady and peaceful — the kind that slows overthinking and brings calm. Consider this a virtual version filled with warmth. May I reserve unlimited hug rights with you?</p>
 <button onclick="next()">Yes</button>
 <button onclick="noPrank(this,5)">No</button>
-
-<img class="sticker" style="left:3%;bottom:8%" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZG9xbGpzbmZjbzhrMjkwZTJzN21sYnFudXloeDJ3ZmFnbnAzNjFvaSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/fvN5KrNcKKUyX7hNIA/giphy.gif">
-<img class="sticker" style="right:3%;top:6%" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZG9xbGpzbmZjbzhrMjkwZTJzN21sYnFudXloeDJ3ZmFnbnAzNjFvaSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/gdspgdOIV1HxhnxQOH/giphy.gif">
 </div>
 
 <!-- KISS -->
 <div class="page">
 <h1>Kiss Day</h1>
-<p>One kiss?</p>
+<p>A kiss symbolizes closeness, trust, and gentle affection more than drama. It is about emotional nearness and mutual comfort. Even the thought of it carries warmth when it comes from sincerity. Think of this as a respectful, symbolic gesture of fondness rather than impulse. May I keep at least one heartfelt kiss worth of affection reserved for you?</p>
 <button onclick="next()">Yes</button>
 <button onclick="noPrank(this,6)">No</button>
-
-<img class="sticker" style="left:3%;top:6%" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZXk0bmFhdG9ydDR6dHp4NWN5MTI5eTdyNnh4dG9hd3hlanZuN241eiZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/euW6JDwrMn0BqyNC8t/giphy.gif">
-<img class="sticker" style="right:3%;bottom:6%" src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3YXIzcWo2Y2hvNmR4czZpMzcxdTdjaTg1OGxwMmRrbnhteGEzdmtjNyZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/oB5lm0TCuUlYW697Zi/giphy.gif">
 </div>
 
 <!-- PASSKEY -->
@@ -204,31 +193,18 @@ to{transform:translateY(-10vh)}
 <p id="wrong"></p>
 </div>
 
-<!-- LOVE LETTER (250 words exactly) -->
+<!-- LETTER -->
 <div class="page">
 <h1>My Letter</h1>
-<p style="font-family:'Patrick Hand';font-size:22px;line-height:1.6;background:white;padding:26px;border-radius:18px">
-
-From the moment you quietly entered my life, something inside me began to soften in a way I never expected. Ordinary days started carrying warmth. Small conversations began to matter more. Even silence felt full instead of empty. You didn’t arrive with noise or drama — you arrived with calm — and that calm stayed.
-
-I admire the way you are without trying to perform for the world. Your honesty, your small reactions, your natural way of caring — these things stay with me longer than grand gestures ever could. Real connection is not built from big moments alone, but from repeated sincerity, and with you I feel that sincerity again and again.
-
-Love, to me, is not constant excitement. It is comfort, steadiness, patience, and choosing the same person even on quiet days. It is remembering details, respecting space, listening fully, and showing up gently. When I think about that definition, my thoughts keep returning to you.
-
-You make conversations feel lighter and time feel faster. You make worries feel manageable and happiness feel shared. There is a rare safety in being understood, and with you I never feel like I must pretend.
-
-If life asked me what kind of bond I want beside me as years pass, I would choose one built like this — calm, playful, sincere, and real. Not perfect, but true.
-
-Whatever name the future gives to what we are becoming, my care is genuine, my intention is steady, and my choice remains you — today, tomorrow, and in every quiet moment between.
-
-</p>
+<p id="typedLetter" style="font-family:'Patrick Hand';font-size:22px;line-height:1.6;background:white;padding:26px;border-radius:18px"></p>
 <button onclick="next()">Continue</button>
 </div>
 
 <!-- FINAL -->
 <div class="page">
 <h1>Will you be my Valentine?</h1>
-<button onclick="bigLove()">YES</button>
+<p>This little journey was never about buttons alone — it was about expressing care in playful steps. Every page carried a small truth: I value you, I enjoy your presence, and I appreciate the connection we share. No pressure, only honesty. So here is the real question, asked gently and clearly — will you be my Valentine?</p>
+<button id="yesBtn" onclick="bigLove()">YES</button>
 <button onclick="noPrank(this,7)">No</button>
 </div>
 
@@ -239,26 +215,73 @@ Whatever name the future gives to what we are becoming, my care is genuine, my i
 <script>
 const pages=document.querySelectorAll(".page");
 let i=0;
-function next(){pages[i++].classList.remove("active");pages[i].classList.add("active");}
+const fill=document.getElementById("fill");
+
+function next(){
+if(i<pages.length-1){
+pages[i].classList.remove("active");
+i++;
+pages[i].classList.add("active");
+fill.style.width=(i/(pages.length-1))*100+"%";
+
+if(pages[i].querySelector("#typedLetter")) startTyping();
+if(pages[i].innerText.includes("Will you be my Valentine")) launchRocket();
+}
+}
 
 function unlock(){
-if(key.value==="alwaysyours") next();
-else wrong.innerText="wrong key";
+const keyInput=document.getElementById("key");
+const wrongMsg=document.getElementById("wrong");
+if(keyInput.value.trim().toLowerCase()==="alwaysyours") next();
+else wrongMsg.innerText="wrong key";
 }
 
-/* DIFFERENT NO PRANKS */
+/* different NO pranks */
 function noPrank(btn,t){
 btn.style.position="absolute";
-btn.style.left=Math.random()*80+"vw";
-btn.style.top=Math.random()*80+"vh";
-btn.textContent=[
-"Not allowed","Try Yes","Wrong choice","Heart says no-no",
-"System refuses","Destiny says Yes","Button escaped"
-][t%7];
+if(t===1||t===7){
+btn.style.left=Math.random()*70+"vw";
+btn.style.top=Math.random()*70+"vh";
+}
+else if(t===2){
+btn.style.transform="scale(1.4)";
+}
+else if(t===3){
+btn.style.transform="rotate("+(Math.random()*90-45)+"deg)";
+}
+else if(t===4){
+btn.style.left=Math.random()*70+"vw";
+}
+else if(t===5){
+btn.style.top=Math.random()*70+"vh";
+}
+else if(t===6){
+btn.style.opacity=.3;
+setTimeout(()=>btn.style.opacity=1,400);
+}
+btn.textContent=["Nope","Try Yes","Wrong choice","Not today","System says yes","Nice try","Button escaped"][t%7];
 }
 
-/* FINAL HEART BG */
+/* rocket */
+function launchRocket(){
+const r=document.getElementById("rocket");
+const yes=document.getElementById("yesBtn");
+if(!yes) return;
+const box=yes.getBoundingClientRect();
+r.style.display="block";
+r.style.left="10px";
+r.style.top=(innerHeight-60)+"px";
+setTimeout(()=>{
+r.style.left=box.left+"px";
+r.style.top=box.top+"px";
+},100);
+}
+
+/* hearts */
+let hearts=false;
 function bigLove(){
+if(hearts) return;
+hearts=true;
 next();
 for(let n=0;n<40;n++){
 let h=document.createElement("div");
@@ -270,22 +293,61 @@ document.body.appendChild(h);
 }
 }
 
-/* CANVAS DOODLE DRAW */
+/* 250+ word letter auto typing */
+const letterText = `From the moment you quietly entered my life, something inside me began to change in the most gentle and unexpected way. Ordinary days started feeling warmer, small conversations started feeling important, and even simple moments carried a strange kind of happiness. You didn’t arrive with noise or drama — you arrived with calm energy — and somehow that calm stayed and settled around my thoughts.
+
+What I admire most about you is how natural you are. You never try too hard to impress, yet you leave an impression that lasts. Your reactions, your honesty, your way of caring without announcing it — all of that feels rare. Real connection is not built from grand gestures alone; it grows from repeated sincerity, and with you I feel that sincerity again and again.
+
+To me, love is not constant excitement or endless fireworks. It is comfort, patience, respect, and choosing the same person even on quiet days. It is remembering details, listening fully, giving space when needed, and showing up consistently. When I think about that definition, my thoughts keep returning to you without effort.
+
+You make time feel lighter and conversations feel easy. You make worries feel smaller and laughter feel shared. There is a deep comfort in being understood without explaining everything, and with you I never feel like I must pretend to be someone else.
+
+If life asked me what kind of bond I want beside me as years pass, I would choose something built like this — steady, playful, honest, and real. Not perfect, but true. Whatever name the future gives to what we are becoming, my care is genuine, my intention is clear, and my choice remains you — today, tomorrow, and in every quiet moment in between.`;
+
+function startTyping(){
+const el=document.getElementById("typedLetter");
+if(el.dataset.done) return;
+el.dataset.done=1;
+let n=0;
+(function type(){
+if(n<letterText.length){
+el.textContent+=letterText[n++];
+setTimeout(type,20);
+}
+})();
+}
+
+/* canvas doodles */
 const c=document.getElementById("draw");
 const x=c.getContext("2d");
 function resize(){c.width=innerWidth;c.height=innerHeight}
 resize(); onresize=resize;
+
 let t=0;
 function loop(){
 x.clearRect(0,0,c.width,c.height);
 x.strokeStyle="#ffb3c6";
 x.lineWidth=3;
+
+/* waves */
 x.beginPath();
 for(let k=0;k<6;k++){
 x.moveTo(50+k*120,120);
 x.quadraticCurveTo(110+k*120,60+Math.sin(t)*20,170+k*120,120);
 }
 x.stroke();
+
+/* extra cute hearts */
+for(let h=0;h<4;h++){
+let px=100+h*220;
+let py=200+Math.sin(t+h)*30;
+x.beginPath();
+x.moveTo(px,py);
+x.bezierCurveTo(px-25,py-25,px-50,py+15,px,py+35);
+x.bezierCurveTo(px+50,py+15,px+25,py-25,px,py);
+x.stroke();
+}
+
 t+=.05;
 requestAnimationFrame(loop);
 }
@@ -294,3 +356,4 @@ loop();
 
 </body>
 </html>
+
