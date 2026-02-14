@@ -3,49 +3,152 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Valentine Journey v5 - Upgraded</title>
+<title>Valentine Journey v6 - Glow Edition</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400;600&family=Patrick+Hand&display=swap" rel="stylesheet">
 
 <style>
-body{margin:0;background:#fff0f5;font-family:Poppins,sans-serif;overflow:hidden;}
-.page{display:none;height:100vh;padding:20px;position:relative;}
-.page.active{display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;}
-h1{font-family:"Dancing Script";font-size:42px;margin:10px 0;}
-p{font-size:18px;max-width:760px;line-height:1.5;}
-
-button{
-font-size:18px;padding:14px 26px;margin:10px;border-radius:28px;
-border:none;background:#ff4d6d;color:white;cursor:pointer;z-index:5;
+body {
+  margin:0;
+  background:#fff0f5;
+  font-family:Poppins,sans-serif;
+  overflow:hidden;
 }
-#yesBtn{animation:yesPulse 2.2s infinite;}
-@keyframes yesPulse{0%{box-shadow:0 0 0 #ff4d6d}50%{box-shadow:0 0 22px #ff4d6d}100%{box-shadow:0 0 0 #ff4d6d}}
-
-.sticker{
-position:absolute;width:26vw;max-width:300px;min-width:150px;z-index:10;pointer-events:none;
-animation:popIn 0.4s ease;
+.page {
+  display:none;
+  height:100vh;
+  padding:20px;
+  position:relative;
 }
-@keyframes popIn{0%{transform:scale(0);opacity:0}100%{transform:scale(1);opacity:1}}
-
-.meter{position:fixed;top:10px;left:50%;transform:translateX(-50%);width:220px;height:18px;border-radius:20px;background:#ffd6e0;overflow:hidden;z-index:9;}
-.fill{height:100%;width:0%;background:#ff4d6d;}
-
-canvas{position:absolute;inset:0;pointer-events:none;z-index:0;}
-
-.bgHeart{
-position:absolute;width:18px;height:18px;background:#ffb6c1;border-radius:50%;opacity:.6;animation:float 7s linear infinite;
+.page.active {
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  animation:fadeIn 0.8s ease;
 }
-#love{background:#ffc0cb;}
-#love h1{font-size:72px;color:white;text-shadow:0 0 20px #ff4d6d;}
+@keyframes fadeIn {
+  0% {opacity:0; transform:translateY(20px);}
+  100% {opacity:1; transform:translateY(0);}
+}
 
-@keyframes float{from{transform:translateY(110vh)}to{transform:translateY(-10vh)}}
+h1 {
+  font-family:"Dancing Script";
+  font-size:42px;
+  margin:10px 0;
+}
+p {
+  font-size:18px;
+  max-width:760px;
+  line-height:1.6;
+}
+
+button {
+  font-size:18px;
+  padding:14px 28px;
+  margin:10px;
+  border-radius:28px;
+  border:none;
+  background:#ff4d6d;
+  color:white;
+  cursor:pointer;
+  z-index:5;
+  box-shadow:0 4px 12px rgba(255,77,109,0.4);
+  transition:0.2s all;
+}
+button:hover {transform:scale(1.08); box-shadow:0 6px 16px rgba(255,77,109,0.6);}
+#yesBtn {
+  animation:yesPulse 2.2s infinite;
+}
+@keyframes yesPulse {
+  0%,100%{box-shadow:0 0 0 #ff4d6d;}
+  50%{box-shadow:0 0 22px #ff4d6d;}
+}
+
+.sticker {
+  position:absolute;
+  width:26vw;
+  max-width:300px;
+  min-width:150px;
+  z-index:10;
+  pointer-events:none;
+  animation:popIn 0.5s ease;
+}
+@keyframes popIn {
+  0%{transform:scale(0); opacity:0;}
+  100%{transform:scale(1); opacity:1;}
+}
+
+.meter {
+  position:fixed;
+  top:10px;
+  left:50%;
+  transform:translateX(-50%);
+  width:220px;
+  height:18px;
+  border-radius:20px;
+  background:#ffd6e0;
+  overflow:hidden;
+  z-index:9;
+}
+.fill {
+  height:100%;
+  width:0%;
+  background:#ff4d6d;
+  transition:0.4s width ease;
+}
+
+canvas {
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  z-index:0;
+}
+
+/* Floating bg hearts */
+.bgHeart {
+  position:absolute;
+  width:18px;
+  height:18px;
+  background:#ffb6c1;
+  border-radius:50%;
+  opacity:.6;
+  animation:float 7s linear infinite;
+  filter:drop-shadow(0 0 8px #ff4d6d);
+}
+@keyframes float {
+  from{transform:translateY(110vh);}
+  to{transform:translateY(-10vh);}
+}
 
 /* Glow Heart for final page */
-.glowHeart{
-position:absolute;width:60px;height:60px;background:#ff4d6d;border-radius:50%;
-filter:blur(14px);opacity:.9;transform:translate(-50%,-50%) scale(0);animation:glowPop .8s forwards;pointer-events:none;
+.glowHeart {
+  position:absolute;
+  width:60px;
+  height:60px;
+  background:#ff4d6d;
+  border-radius:50%;
+  filter:blur(14px) drop-shadow(0 0 12px #ff6b81);
+  opacity:.9;
+  transform:translate(-50%,-50%) scale(0);
+  animation:glowPop .8s forwards;
+  pointer-events:none;
 }
-@keyframes glowPop{60%{transform:translate(-50%,-50%) scale(3)}100%{opacity:0;transform:translate(-50%,-50%) scale(3.5)}}
+@keyframes glowPop {
+  60% {transform:translate(-50%,-50%) scale(3);}
+  100% {opacity:0; transform:translate(-50%,-50%) scale(3.5);}
+}
+
+/* Smooth input and messages */
+input {
+  padding:12px 18px;
+  font-size:16px;
+  border-radius:16px;
+  border:2px solid #ffb6c1;
+  outline:none;
+}
+input:focus {border-color:#ff4d6d; box-shadow:0 0 12px rgba(255,77,109,0.4);}
 </style>
 </head>
 <body>
@@ -125,13 +228,13 @@ filter:blur(14px);opacity:.9;transform:translate(-50%,-50%) scale(0);animation:g
 <h1>Secret Letter</h1>
 <input id="key" placeholder="passkey">
 <button onclick="unlock()">Unlock</button>
-<p id="wrong"></p>
+<p id="wrong" style="color:#ff4d6d; margin-top:10px;"></p>
 </div>
 
 <!-- LETTER -->
 <div class="page">
 <h1>My Letter</h1>
-<p id="typedLetter" style="font-family:'Patrick Hand';font-size:22px;line-height:1.6;background:white;padding:26px;border-radius:18px"></p>
+<p id="typedLetter" style="font-family:'Patrick Hand';font-size:22px;line-height:1.6;background:white;padding:26px;border-radius:18px;"></p>
 <button onclick="next()">Continue</button>
 </div>
 
@@ -147,27 +250,29 @@ filter:blur(14px);opacity:.9;transform:translate(-50%,-50%) scale(0);animation:g
 </div>
 
 <script>
-const pages=document.querySelectorAll(".page");
-const fill=document.getElementById("fill");
-let i=0;
+const pages = document.querySelectorAll(".page");
+const fill = document.getElementById("fill");
+let i = 0;
 
 function next(){
-pages[i].classList.remove("active");
-i++;
-pages[i].classList.add("active");
-fill.style.width=(i/(pages.length-1))*100+"%";
-drawDoodles(i);
-if(i===pages.length-3) typeLetter();
+  pages[i].classList.remove("active");
+  i++;
+  pages[i].classList.add("active");
+  fill.style.width = (i/(pages.length-1))*100+"%";
+  drawDoodles(i);
+  if(i===pages.length-3) typeLetter();
 }
 
 /* Unlock */
 function unlock(){
-if(key.value==="alwaysyours") next();
-else wrong.innerText="wrong key";
+  const key = document.getElementById("key");
+  const wrong = document.getElementById("wrong");
+  if(key.value==="alwaysyours") next();
+  else wrong.innerText="wrong key";
 }
 
 /* NO prank with stickers */
-const nudges=["Button shy 😄","Try the other one","Heart disagrees","System says Yes only","Nice try","No is tired"];
+const nudges = ["Button shy 😄","Try the other one","Heart disagrees","System says Yes only","Nice try","No is tired"];
 let noCount=0;
 const noStickers=[
 "https://media.giphy.com/media/N6qf8E9YixiG2qa5DU/giphy.gif",
@@ -176,94 +281,124 @@ const noStickers=[
 "https://media.giphy.com/media/Cqq2DvlmbNo8izMrWO/giphy.gif"
 ];
 function noPrank(btn){
-btn.style.position="absolute";
-btn.style.left=Math.random()*80+"vw";
-btn.style.top=Math.random()*80+"vh";
-btn.textContent=nudges[noCount%nudges.length];
+  btn.style.position="absolute";
+  btn.style.left=Math.random()*80+"vw";
+  btn.style.top=Math.random()*80+"vh";
+  btn.textContent=nudges[noCount%nudges.length];
 
-let img=document.createElement("img");
-img.src=noStickers[noCount%noStickers.length];
-img.className="sticker";
-img.style.left=(btn.offsetLeft + 60 + Math.random()*40)+"px";
-img.style.top=(btn.offsetTop + Math.random()*40 - 20)+"px";
-document.body.appendChild(img);
-setTimeout(()=>img.remove(),3000);
-
-noCount++;
+  let img = document.createElement("img");
+  img.src = noStickers[noCount%noStickers.length];
+  img.className = "sticker";
+  img.style.left = (btn.offsetLeft + 60 + Math.random()*40) + "px";
+  img.style.top = (btn.offsetTop + Math.random()*40 - 20) + "px";
+  document.body.appendChild(img);
+  setTimeout(()=>img.remove(),3000);
+  noCount++;
 }
 
 /* Final I LOVE YOU */
 function bigLove(){
-next();
-for(let n=0;n<90;n++){
-let h=document.createElement("div");
-h.className="bgHeart";
-h.style.left=Math.random()*100+"vw";
-h.style.animationDuration=4+Math.random()*4+"s";
-document.body.appendChild(h);
-}
+  next();
+  for(let n=0; n<120; n++){
+    let h = document.createElement("div");
+    h.className = "bgHeart";
+    h.style.left=Math.random()*100+"vw";
+    h.style.animationDuration=3+Math.random()*4+"s";
+    document.body.appendChild(h);
+  }
 
-/* Interactive tap hearts */
-const lovePage=document.getElementById("love");
-lovePage.addEventListener("click",e=>{
-let g=document.createElement("div");
-g.className="glowHeart";
-g.style.left=e.clientX+"px";
-g.style.top=e.clientY+"px";
-document.body.appendChild(g);
-setTimeout(()=>g.remove(),900);
-});
+  const lovePage = document.getElementById("love");
+  lovePage.addEventListener("click", e => {
+    let g = document.createElement("div");
+    g.className="glowHeart";
+    g.style.left=e.clientX+"px";
+    g.style.top=e.clientY+"px";
+    g.style.width = g.style.height = (60 + Math.random()*40) + "px";
+    document.body.appendChild(g);
+    setTimeout(()=>g.remove(),1000);
+  });
 }
 
 /* Letter */
 const letterText=`From the moment you entered my life quietly, something inside me became softer and calmer. Ordinary days began to feel warmer and simple talks started staying longer in my thoughts. Your natural honesty, small reactions, and gentle way of expressing yourself matter to me more than big gestures. Real connection grows through sincerity, patience, and emotional safety, and I feel those qualities whenever we talk. To me, love is not constant excitement. It is steadiness, respect, listening fully, remembering details, and choosing the same person again even on quiet days. You make time feel lighter and worries feel smaller. There is comfort in being understood without pretending, and with you I feel that ease. Whatever the future calls this bond, my care is genuine, my intention is clear, and my choice remains you, in simple moments and meaningful ones alike.`;
 
 function typeLetter(){
-let el=document.getElementById("typedLetter");
-let n=0;
-(function loop(){
-if(n<letterText.length){
-el.textContent+=letterText[n++];
-setTimeout(loop,16);
-}
-})();
+  let el = document.getElementById("typedLetter");
+  let n = 0;
+  (function loop(){
+    if(n < letterText.length){
+      el.textContent += letterText[n++];
+      setTimeout(loop,16);
+    }
+  })();
 }
 
 /* Canvas Doodles */
-const c=document.getElementById("draw");
-const x=c.getContext("2d");
+const c = document.getElementById("draw");
+const x = c.getContext("2d");
 function resize(){c.width=innerWidth;c.height=innerHeight}
-resize();onresize=resize;
+resize();
+onresize = resize;
 
 function r(a,b){return Math.random()*(b-a)+a}
-function scribble(fn){for(let k=0;k<3;k++) fn(r(-2,2),r(-2,2));}
+function scribble(fn){for(let k=0;k<4;k++) fn(r(-2,2),r(-2,2));}
 
+/* Glowing doodle shapes */
 function heart(px,py,s){scribble((dx,dy)=>{
-x.beginPath();x.moveTo(px+dx,py+dy);x.bezierCurveTo(px-s,py-s,px-1.4*s,py+.5*s,px,py+1.2*s);
-x.bezierCurveTo(px+1.4*s,py+.5*s,px+s,py-s,px,py);x.stroke();
+  x.beginPath();
+  x.moveTo(px+dx,py+dy);
+  x.bezierCurveTo(px-s,py-s,px-1.4*s,py+.5*s,px,py+1.2*s);
+  x.bezierCurveTo(px+1.4*s,py+.5*s,px+s,py-s,px,py);
+  x.strokeStyle = "rgba(255,107,129,0.9)";
+  x.shadowColor="#ff4d6d";
+  x.shadowBlur=6;
+  x.lineWidth=2.5;
+  x.stroke();
 })}
 
-function star(px,py,s){for(let i=0;i<5;i++){
-let a=i*2*Math.PI/5; let b=(i+2)*2*Math.PI/5;
-scribble((dx,dy)=>{x.beginPath();x.moveTo(px+Math.cos(a)*s+dx,py+Math.sin(a)*s+dy);
-x.lineTo(px+Math.cos(b)*s+dx,py+Math.sin(b)*s+dy);x.stroke();})}}
+function star(px,py,s){
+  for(let i=0;i<5;i++){
+    let a=i*2*Math.PI/5;
+    let b=(i+2)*2*Math.PI/5;
+    scribble((dx,dy)=>{
+      x.beginPath();
+      x.moveTo(px+Math.cos(a)*s+dx, py+Math.sin(a)*s+dy);
+      x.lineTo(px+Math.cos(b)*s+dx, py+Math.sin(b)*s+dy);
+      x.strokeStyle = "rgba(255,182,193,0.9)";
+      x.shadowColor="#ffb6c1";
+      x.shadowBlur=4;
+      x.lineWidth=2;
+      x.stroke();
+    })
+  }
+}
 
-function arrow(px,py,s){scribble((dx,dy)=>{x.beginPath();x.moveTo(px+dx,py+dy);x.lineTo(px+s,py);x.stroke();})}
+function arrow(px,py,s){
+  scribble((dx,dy)=>{
+    x.beginPath();
+    x.moveTo(px+dx,py+dy);
+    x.lineTo(px+s,py);
+    x.strokeStyle="rgba(255,77,109,0.9)";
+    x.shadowColor="#ff4d6d";
+    x.shadowBlur=5;
+    x.lineWidth=2;
+    x.stroke();
+  })
+}
 
-const sets=[["heart","star"],["heart"],["star","arrow"],["heart","arrow"],["star"],["heart","star","arrow"]];
+const sets=[["heart","star","arrow"],["heart","arrow"],["star","arrow","heart"],["heart","star"],["star"],["heart","star","arrow","arrow"]];
 
 function drawDoodles(pi){
-x.clearRect(0,0,c.width,c.height);
-x.strokeStyle="#ff6b81";x.lineWidth=3;
-let set=sets[pi%sets.length];
-let count=12+pi*2;
-for(let n=0;n<count;n++){
-let t=set[Math.floor(Math.random()*set.length)];
-let px=r(60,c.width-60); let py=r(60,c.height-60); let s=r(12,28);
-if(t==="heart") heart(px,py,s);
-if(t==="star") star(px,py,s);
-if(t==="arrow") arrow(px,py,s);
-}
+  x.clearRect(0,0,c.width,c.height);
+  let set = sets[pi%sets.length];
+  let count = 18 + pi*3; // more doodles
+  for(let n=0;n<count;n++){
+    let t=set[Math.floor(Math.random()*set.length)];
+    let px=r(60,c.width-60); let py=r(60,c.height-60); let s=r(14,30);
+    if(t==="heart") heart(px,py,s);
+    if(t==="star") star(px,py,s);
+    if(t==="arrow") arrow(px,py,s);
+  }
 }
 drawDoodles(0);
 </script>
