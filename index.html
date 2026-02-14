@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Valentine Journey v5 - Final Stable</title>
+<title>Valentine Journey FINAL</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400;600&family=Patrick+Hand&display=swap" rel="stylesheet">
 
@@ -13,18 +13,16 @@ margin:0;
 background:#fff0f5;
 font-family:Poppins,sans-serif;
 overflow:hidden;
-transition:background .6s ease;
 }
 
-/* PAGE TRANSITION */
+/* Pages */
 .page{
 display:none;
 height:100vh;
 padding:20px;
-position:relative;
 opacity:0;
 transform:scale(.98);
-transition:opacity .6s ease, transform .6s ease;
+transition:.6s;
 }
 .page.active{
 display:flex;
@@ -36,8 +34,8 @@ opacity:1;
 transform:scale(1);
 }
 
-h1{font-family:"Dancing Script";font-size:42px;margin:10px 0;}
-p{font-size:18px;max-width:760px;line-height:1.5;}
+h1{font-family:"Dancing Script";font-size:42px;}
+p{font-size:18px;max-width:760px;}
 
 button{
 font-size:18px;
@@ -48,89 +46,79 @@ border:none;
 background:#ff4d6d;
 color:white;
 cursor:pointer;
-z-index:5;
-transition:transform .3s ease, box-shadow .3s ease;
 }
-button:hover{transform:translateY(-3px) scale(1.08);}
 
-#yesBtn{animation:yesPulse 2.2s infinite;}
+#yesBtn{animation:yesPulse 2s infinite;}
 @keyframes yesPulse{
-0%{box-shadow:0 0 0px #ff4d6d}
 50%{box-shadow:0 0 22px #ff4d6d}
-100%{box-shadow:0 0 0px #ff4d6d}
 }
 
-.sticker{
-position:absolute;
-width:26vw;
-max-width:300px;
-min-width:150px;
-z-index:3;
-pointer-events:none;
-}
-
+/* Meter */
 .meter{
 position:fixed;
 top:10px;
 left:50%;
 transform:translateX(-50%);
 width:220px;height:18px;border-radius:20px;
-background:#ffd6e0;overflow:hidden;z-index:9;
+background:#ffd6e0;
+z-index:9;
 }
 .fill{height:100%;width:0%;background:#ff4d6d;}
 
-canvas{position:absolute;inset:0;pointer-events:none;z-index:0;}
+/* Random Big Sticker */
+.bigSticker{
+position:absolute;
+width:260px;
+z-index:4;
+animation:popFade 2.5s forwards;
+}
+@keyframes popFade{
+0%{transform:scale(0);opacity:0}
+20%{transform:scale(1);opacity:1}
+80%{opacity:1}
+100%{opacity:0;transform:scale(.8)}
+}
 
-.bgHeart{
-position:absolute;width:18px;height:18px;
-background:#ffb6c1;border-radius:50%;
-opacity:.6;animation:float 7s linear infinite;
+/* Rocket */
+.rocket{
+position:absolute;
+font-size:34px;
+animation:rocketFly .9s forwards;
+}
+@keyframes rocketFly{
+from{transform:translate(-60px,60px);opacity:0}
+to{transform:translate(0,0);opacity:1}
+}
+
+/* Canvas */
+canvas{
+position:absolute;
+inset:0;
+pointer-events:none;
+}
+
+/* Glow Hearts Final */
+.glowHeart{
+position:absolute;
+width:70px;
+height:70px;
+background:#ff4d6d;
+border-radius:50%;
+filter:blur(16px);
+animation:glowPop .9s forwards;
+}
+@keyframes glowPop{
+60%{transform:scale(3)}
+100%{opacity:0;transform:scale(3.6)}
 }
 
 #love{
 background:#ffc0cb;
-animation:lovePulse 4s infinite ease-in-out;
 }
 #love h1{
 font-size:72px;
 color:white;
-text-shadow:0 0 20px #ff4d6d,0 0 40px #ff6b81;
-animation:glow 2.5s infinite ease-in-out;
-}
-
-@keyframes lovePulse{
-0%{background:#ffc0cb}
-50%{background:#ffb6c1}
-100%{background:#ffc0cb}
-}
-@keyframes glow{
-0%{transform:scale(1)}
-50%{transform:scale(1.05)}
-100%{transform:scale(1)}
-}
-@keyframes float{
-from{transform:translateY(110vh)}
-to{transform:translateY(-10vh)}
-}
-
-.noSticker{
-position:absolute;
-width:200px;
-bottom:10%;
-right:6%;
-z-index:6;
-animation:popIn .4s ease;
-}
-@keyframes popIn{
-0%{transform:scale(0);opacity:0}
-100%{transform:scale(1);opacity:1}
-}
-
-.nudgePop{animation:nudge .35s ease;}
-@keyframes nudge{
-0%{transform:scale(1)}
-50%{transform:scale(1.25)}
-100%{transform:scale(1)}
+text-shadow:0 0 25px #ff4d6d;
 }
 </style>
 </head>
@@ -140,89 +128,33 @@ animation:popIn .4s ease;
 <div class="meter"><div class="fill" id="fill"></div></div>
 <canvas id="draw"></canvas>
 
-<!-- START -->
+<!-- Pages -->
 <div class="page active">
 <h1>Our Valentine Journey</h1>
-<p>Walk each day with me through this small journey of warmth, sincerity, playfulness, and honest affection. Every page carries intention, not just decoration. Move step by step and experience each feeling slowly.</p>
+<p>Walk each day with me through warmth and affection.</p>
 <button onclick="next()">Start</button>
 </div>
 
-<!-- ROSE -->
-<div class="page">
-<h1>Rose Day</h1>
-<p>A rose stands for admiration and gentle emotional offering. This is not just a flower moment — it is appreciation for your presence, your calmness, and the comfort you bring into simple conversations and shared time.</p>
-<button onclick="next()">Yes</button>
-<button onclick="noPrank(this)">No</button>
-<img class="sticker" style="left:3%;top:8%" src="https://media.giphy.com/media/gFGu7R9BCTdgWwmgeD/giphy.gif">
-<img class="sticker" style="right:3%;bottom:6%" src="https://media.giphy.com/media/Z6DLUfUZWRVvuJ0Goc/giphy.gif">
-</div>
+<div class="page"><h1>Rose Day</h1><button onclick="next()">Yes</button><button onclick="noPrank(this)">No</button></div>
+<div class="page"><h1>Propose Day</h1><button onclick="next()">Yes</button><button onclick="noPrank(this)">No</button></div>
+<div class="page"><h1>Chocolate Day</h1><button onclick="next()">Yes</button><button onclick="noPrank(this)">No</button></div>
+<div class="page"><h1>Teddy Day</h1><button onclick="next()">Yes</button><button onclick="noPrank(this)">No</button></div>
+<div class="page"><h1>Hug Day</h1><button onclick="next()">Yes</button><button onclick="noPrank(this)">No</button></div>
+<div class="page"><h1>Kiss Day</h1><button onclick="next()">Yes</button><button onclick="noPrank(this)">No</button></div>
 
-<!-- PROPOSE -->
-<div class="page">
-<h1>Propose Day</h1>
-<p>Proposing is choosing someone repeatedly with honesty and patience. It is not a one-time question but a continuing decision to stay sincere, respectful, and emotionally open across days and moods.</p>
-<button onclick="next()">Yes</button>
-<button onclick="noPrank(this)">No</button>
-<img class="sticker" style="left:2%;top:10%" src="https://media.giphy.com/media/Z9msLU4IPUyicOmmyw/giphy.gif">
-<img class="sticker" style="right:2%;bottom:8%" src="https://media.giphy.com/media/cLS1cfxvGOPVpf9g3y/giphy.gif">
-</div>
-
-<!-- CHOCOLATE -->
-<div class="page">
-<h1>Chocolate Day</h1>
-<p>Sweetness feels better when shared. This page is about mutual joy — laughter that is exchanged, kindness that is returned, and moments that feel lighter because they are experienced together.</p>
-<button onclick="next()">Yes</button>
-<button onclick="noPrank(this)">No</button>
-<img class="sticker" style="left:1%;bottom:5%" src="https://media.giphy.com/media/GH0vPYrev5AcfMYn7C/giphy.gif">
-<img class="sticker" style="right:1%;top:6%" src="https://media.giphy.com/media/g4TE8HgHOK98k6jXpS/giphy.gif">
-</div>
-
-<!-- TEDDY -->
-<div class="page">
-<h1>Teddy Day</h1>
-<p>Comfort matters more than grand gestures. Being emotionally safe, gentle, and dependable creates real closeness. That is the meaning carried here — warmth that stays without needing explanation.</p>
-<button onclick="next()">Yes</button>
-<button onclick="noPrank(this)">No</button>
-<img class="sticker" style="left:3%;top:6%" src="https://media.giphy.com/media/aq67AZfVdTuFmIdLTA/giphy.gif">
-<img class="sticker" style="right:3%;bottom:6%" src="https://media.giphy.com/media/ewZ0wwPq7JKnfv1isY/giphy.gif">
-</div>
-
-<!-- HUG -->
-<div class="page">
-<h1>Hug Day</h1>
-<p>A hug communicates reassurance without words. It tells someone they are valued and safe. Some feelings are understood best through warmth instead of explanation.</p>
-<button onclick="next()">Yes</button>
-<button onclick="noPrank(this)">No</button>
-<img class="sticker" style="left:3%;bottom:8%" src="https://media.giphy.com/media/fvN5KrNcKKUyX7hNIA/giphy.gif">
-<img class="sticker" style="right:3%;top:6%" src="https://media.giphy.com/media/gdspgdOIV1HxhnxQOH/giphy.gif">
-</div>
-
-<!-- KISS -->
-<div class="page">
-<h1>Kiss Day</h1>
-<p>Tenderness represents trust and emotional closeness. It is about gentle sincerity, not drama. A quiet expression of care carries more depth than loud gestures.</p>
-<button onclick="next()">Yes</button>
-<button onclick="noPrank(this)">No</button>
-<img class="sticker" style="left:3%;top:6%" src="https://media.giphy.com/media/euW6JDwrMn0BqyNC8t/giphy.gif">
-<img class="sticker" style="right:3%;bottom:6%" src="https://media.giphy.com/media/oB5lm0TCuUlYW697Zi/giphy.gif">
-</div>
-
-<!-- PASSKEY -->
 <div class="page">
 <h1>Secret Letter</h1>
-<input id="key" placeholder="passkey">
+<input id="key">
 <button onclick="unlock()">Unlock</button>
 <p id="wrong"></p>
 </div>
 
-<!-- LETTER -->
 <div class="page">
 <h1>My Letter</h1>
-<p id="typedLetter" style="font-family:'Patrick Hand';font-size:22px;line-height:1.6;background:white;padding:26px;border-radius:18px"></p>
+<p id="typedLetter" style="font-family:'Patrick Hand';font-size:22px;"></p>
 <button onclick="next()">Continue</button>
 </div>
 
-<!-- FINAL -->
 <div class="page">
 <h1>Will you be my Valentine?</h1>
 <button id="yesBtn" onclick="bigLove()">YES</button>
@@ -235,7 +167,7 @@ animation:popIn .4s ease;
 
 <script>
 
-/* Navigation */
+/* NAVIGATION */
 const pages=document.querySelectorAll(".page");
 const fill=document.getElementById("fill");
 let i=0;
@@ -245,72 +177,104 @@ pages[i].classList.remove("active");
 i++;
 pages[i].classList.add("active");
 fill.style.width=(i/(pages.length-1))*100+"%";
-drawDoodles(i);
+
+spawnRandomSticker();
+spawnDoodles(i);
+
 if(i===pages.length-3) typeLetter();
 }
 
+/* PASSKEY */
 function unlock(){
 if(key.value==="alwaysyours") next();
 else wrong.innerText="wrong key";
 }
 
-/* NO stickers */
-const noStickers=[ /* your 9 links here */ 
-"https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3aTlxejhzdXpudXdtcjBkN2p1MXFrdzNrNGxmcW56NGdmc3ZxN2MwZCZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/N6qf8E9YixiG2qa5DU/giphy.gif",
-"https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYjY1ZGp2NWlvZ2Y0dWF6eHE2aG01Y29laW1wcmlsYWdidnVnODNncSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/kxl3evWZtDDZIHoZ72/giphy.gif",
-"https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYjY1ZGp2NWlvZ2Y0dWF6eHE2aG01Y29laW1wcmlsYWdidnVnODNncSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/TsXuQJSf9jHwvrALZ0/giphy.gif",
-"https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYjY1ZGp2NWlvZ2Y0dWF6eHE2aG01Y29laW1wcmlsYWdidnVnODNncSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/Cqq2DvlmbNo8izMrWO/giphy.gif",
-"https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3cG5pZnc4ZXpzZ3NmczBxbTd1dmV3M2tsNjB2Mmwxd29uNDQxZTRibSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/ScoLw0ZvSBAfJTGIAX/giphy.gif",
-"https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3cG5pZnc4ZXpzZ3NmczBxbTd1dmV3M2tsNjB2Mmwxd29uNDQxZTRibSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/RO9rR0FGALRlJJhyUY/giphy.gif",
-"https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3azZweTYxbmV1aDdxbjIzeHViOTR1NTZtdG9rZ2I0ZHFnMHA5YzcxYyZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/WvfMDUdGqDuQs4xBjO/giphy.gif",
-"https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3N3Z0bzhiOTFlcmRlNGV6c2Q3cnAyMG1peGN3Y2QyYWhmNmdzanBpOSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/yKSNXy9t6C135P6PE8/giphy.gif",
-"https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3YjhidDl4YzBkMjEwZHF1OTRkb3Y0NnRkeTkybXF4dXpvdjFxNXNjMiZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/f8W1VYgiA6gBEfEPPl/giphy.gif"
+/* 9 STICKERS */
+const noStickers=[
+"https://media.giphy.com/media/N6qf8E9YixiG2qa5DU/giphy.gif",
+"https://media.giphy.com/media/kxl3evWZtDDZIHoZ72/giphy.gif",
+"https://media.giphy.com/media/TsXuQJSf9jHwvrALZ0/giphy.gif",
+"https://media.giphy.com/media/Cqq2DvlmbNo8izMrWO/giphy.gif",
+"https://media.giphy.com/media/ScoLw0ZvSBAfJTGIAX/giphy.gif",
+"https://media.giphy.com/media/RO9rR0FGALRlJJhyUY/giphy.gif",
+"https://media.giphy.com/media/WvfMDUdGqDuQs4xBjO/giphy.gif",
+"https://media.giphy.com/media/yKSNXy9t6C135P6PE8/giphy.gif",
+"https://media.giphy.com/media/f8W1VYgiA6gBEfEPPl/giphy.gif"
 ];
 
 const nudges=[
-"Button shy 😄","Try the other one","Heart disagrees",
-"System says Yes only","Nice try","No is tired",
-"Still no? really?","Destiny voting Yes"
+"Nice try 😄","Heart says Yes only",
+"System locked to Yes",
+"No button shy today",
+"Try again sweetheart",
+"Destiny chose Yes",
+"Are you sure??",
+"Still pressing No??",
+"Mission failed — choose Yes"
 ];
 
 let noCount=0;
+
 function noPrank(btn){
 btn.style.position="absolute";
 btn.style.left=Math.random()*80+"vw";
 btn.style.top=Math.random()*80+"vh";
 btn.textContent=nudges[noCount%nudges.length];
-btn.classList.add("nudgePop");
-setTimeout(()=>btn.classList.remove("nudgePop"),300);
 
-let old=document.querySelector(".noSticker");
-if(old) old.remove();
-
-let img=document.createElement("img");
-img.src=noStickers[noCount%noStickers.length];
-img.className="noSticker";
-document.body.appendChild(img);
-
+spawnSticker(noStickers[noCount%noStickers.length]);
 noCount++;
 }
 
-/* Final hearts */
+/* RANDOM BIG STICKERS NORMAL PAGES */
+function spawnRandomSticker(){
+if(Math.random()<0.7){
+spawnSticker(noStickers[Math.floor(Math.random()*noStickers.length)]);
+}
+}
+
+function spawnSticker(url){
+let img=document.createElement("img");
+img.src=url;
+img.className="bigSticker";
+img.style.left=Math.random()*80+"vw";
+img.style.top=Math.random()*70+"vh";
+document.body.appendChild(img);
+setTimeout(()=>img.remove(),2500);
+}
+
+/* ROCKET YES */
+document.addEventListener("mouseover",e=>{
+if(e.target.id==="yesBtn"){
+let r=document.createElement("div");
+r.className="rocket";
+r.innerHTML="🚀";
+r.style.left=e.target.offsetLeft-40+"px";
+r.style.top=e.target.offsetTop-40+"px";
+document.body.appendChild(r);
+setTimeout(()=>r.remove(),900);
+}
+});
+
+/* FINAL LOVE */
 function bigLove(){
 next();
-for(let n=0;n<100;n++){
-let h=document.createElement("div");
-h.className="bgHeart";
-h.style.left=Math.random()*100+"vw";
-h.style.animationDuration=4+Math.random()*4+"s";
-document.body.appendChild(h);
-}
+setInterval(()=>{
+spawnGlowHeart(Math.random()*innerWidth,Math.random()*innerHeight);
+},120);
 }
 
-/* 150 word letter */
-const letterText=`From the moment you entered my life quietly, something inside me became softer and calmer. Ordinary days began to feel warmer and simple talks started staying longer in my thoughts. Your natural honesty, small reactions, and gentle way of expressing yourself matter to me more than big gestures. Real connection grows through sincerity, patience, and emotional safety, and I feel those qualities whenever we talk.
+function spawnGlowHeart(x,y){
+let g=document.createElement("div");
+g.className="glowHeart";
+g.style.left=x+"px";
+g.style.top=y+"px";
+document.body.appendChild(g);
+setTimeout(()=>g.remove(),900);
+}
 
-To me, love is not constant excitement. It is steadiness, respect, listening fully, remembering details, and choosing the same person again even on quiet days. You make time feel lighter and worries feel smaller. There is comfort in being understood without pretending, and with you I feel that ease.
-
-Whatever the future calls this bond, my care is genuine, my intention is clear, and my choice remains you, in simple moments and meaningful ones alike.`;
+/* 150 WORD LETTER */
+const letterText=`From the moment you entered my life quietly, something inside me became calmer and more certain. Your presence feels steady, warm, and safe in a way that words struggle to explain. I admire your kindness, your patience, and the way you bring comfort even in simple conversations. Being around you feels natural, like a peaceful place I can return to after any long or tiring day. I don’t promise perfection, but I promise honesty, effort, and emotional sincerity. I will stand with you during easy days and difficult ones. I will listen when you speak, support when you need strength, and celebrate when you are happy. You are not just someone special to me — you are someone I choose, again and again, without hesitation. Whatever life brings, I want to experience it beside you, growing together, learning together, and building something meaningful with you, step by step, every single day we share together.`;
 
 function typeLetter(){
 let el=document.getElementById("typedLetter");
@@ -323,32 +287,55 @@ setTimeout(loop,14);
 })();
 }
 
-/* Scribble doodles restored */
+/* DOODLE SYSTEM */
 const c=document.getElementById("draw");
-const x=c.getContext("2d");
+const ctx=c.getContext("2d");
+
 function resize(){c.width=innerWidth;c.height=innerHeight}
 resize();onresize=resize;
-function r(a,b){return Math.random()*(b-a)+a}
-function scribble(fn){for(let k=0;k<3;k++) fn(r(-2,2),r(-2,2));}
-function heart(px,py,s){
-scribble((dx,dy)=>{
-x.beginPath();
-x.moveTo(px+dx,py+dy);
-x.bezierCurveTo(px-s,py-s,px-1.4*s,py+.5*s,px,py+1.2*s);
-x.bezierCurveTo(px+1.4*s,py+.5*s,px+s,py-s,px,py);
-x.stroke();
+
+let doodles=[];
+
+function spawnDoodles(page){
+let density=20+page*8;
+for(let k=0;k<density;k++){
+doodles.push({
+x:Math.random()*c.width,
+y:Math.random()*c.height,
+vx:-1+Math.random()*2,
+vy:-1+Math.random()*2,
+life:120,
+size:10+Math.random()*25
 });
 }
-function drawDoodles(pi){
-x.clearRect(0,0,c.width,c.height);
-x.strokeStyle="#ff6b81";
-x.lineWidth=3;
-for(let n=0;n<18+pi*3;n++){
-heart(r(60,c.width-60),r(60,c.height-60),r(12,28));
 }
+
+function drawHeart(x,y,s){
+ctx.beginPath();
+ctx.moveTo(x,y);
+ctx.bezierCurveTo(x-s,y-s,x-2*s,y+s,x,y+2*s);
+ctx.bezierCurveTo(x+2*s,y+s,x+s,y-s,x,y);
+ctx.strokeStyle="#ff6b81";
+ctx.lineWidth=2;
+ctx.stroke();
 }
-drawDoodles(0);
+
+function animate(){
+ctx.clearRect(0,0,c.width,c.height);
+
+for(let d of doodles){
+drawHeart(d.x,d.y,d.size/20);
+d.x+=d.vx;
+d.y+=d.vy;
+d.life--;
+}
+
+doodles=doodles.filter(d=>d.life>0);
+requestAnimationFrame(animate);
+}
+animate();
 
 </script>
+
 </body>
 </html>
