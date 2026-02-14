@@ -3,17 +3,25 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Valentine Journey v6 - Glow Edition</title>
+<title>Valentine Journey v7 - Glow Edition</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400;600&family=Patrick+Hand&display=swap" rel="stylesheet">
 
 <style>
 body {
   margin:0;
-  background:#fff0f5;
   font-family:Poppins,sans-serif;
   overflow:hidden;
+  background: linear-gradient(135deg, #fff0f5, #ffe6f0);
+  background-size: 400% 400%;
+  animation: gradientShift 20s ease infinite;
 }
+@keyframes gradientShift {
+  0% {background-position:0% 50%;}
+  50% {background-position:100% 50%;}
+  100% {background-position:0% 50%;}
+}
+
 .page {
   display:none;
   height:100vh;
@@ -37,6 +45,7 @@ h1 {
   font-family:"Dancing Script";
   font-size:42px;
   margin:10px 0;
+  text-shadow: 0 0 10px #ff4d6d;
 }
 p {
   font-size:18px;
@@ -56,11 +65,10 @@ button {
   z-index:5;
   box-shadow:0 4px 12px rgba(255,77,109,0.4);
   transition:0.2s all;
+  position:relative;
 }
-button:hover {transform:scale(1.08); box-shadow:0 6px 16px rgba(255,77,109,0.6);}
-#yesBtn {
-  animation:yesPulse 2.2s infinite;
-}
+button:hover {transform:scale(1.1); box-shadow:0 6px 18px rgba(255,77,109,0.6);}
+#yesBtn {animation:yesPulse 2.2s infinite;}
 @keyframes yesPulse {
   0%,100%{box-shadow:0 0 0 #ff4d6d;}
   50%{box-shadow:0 0 22px #ff4d6d;}
@@ -106,16 +114,19 @@ canvas {
   z-index:0;
 }
 
-/* Floating bg hearts */
-.bgHeart {
+/* Floating hearts for background */
+.bgHeart, .sparkle {
   position:absolute;
-  width:18px;
-  height:18px;
-  background:#ffb6c1;
   border-radius:50%;
   opacity:.6;
+  pointer-events:none;
+}
+.bgHeart {
+  width:16px;
+  height:16px;
+  background:#ffb6c1;
   animation:float 7s linear infinite;
-  filter:drop-shadow(0 0 8px #ff4d6d);
+  filter: drop-shadow(0 0 8px #ff4d6d);
 }
 @keyframes float {
   from{transform:translateY(110vh);}
@@ -125,8 +136,6 @@ canvas {
 /* Glow Heart for final page */
 .glowHeart {
   position:absolute;
-  width:60px;
-  height:60px;
   background:#ff4d6d;
   border-radius:50%;
   filter:blur(14px) drop-shadow(0 0 12px #ff6b81);
@@ -260,6 +269,7 @@ function next(){
   pages[i].classList.add("active");
   fill.style.width = (i/(pages.length-1))*100+"%";
   drawDoodles(i);
+  createFloatingHearts(i);
   if(i===pages.length-3) typeLetter();
 }
 
@@ -271,7 +281,7 @@ function unlock(){
   else wrong.innerText="wrong key";
 }
 
-/* NO prank with stickers */
+/* NO prank with improved bounds */
 const nudges = ["Button shy 😄","Try the other one","Heart disagrees","System says Yes only","Nice try","No is tired"];
 let noCount=0;
 const noStickers=[
@@ -281,10 +291,12 @@ const noStickers=[
 "https://media.giphy.com/media/Cqq2DvlmbNo8izMrWO/giphy.gif"
 ];
 function noPrank(btn){
+  const vw = window.innerWidth - btn.offsetWidth - 20;
+  const vh = window.innerHeight - btn.offsetHeight - 20;
   btn.style.position="absolute";
-  btn.style.left=Math.random()*80+"vw";
-  btn.style.top=Math.random()*80+"vh";
-  btn.textContent=nudges[noCount%nudges.length];
+  btn.style.left = Math.random()*vw + "px";
+  btn.style.top = Math.random()*vh + "px";
+  btn.textContent = nudges[noCount%nudges.length];
 
   let img = document.createElement("img");
   img.src = noStickers[noCount%noStickers.length];
@@ -343,7 +355,6 @@ onresize = resize;
 function r(a,b){return Math.random()*(b-a)+a}
 function scribble(fn){for(let k=0;k<4;k++) fn(r(-2,2),r(-2,2));}
 
-/* Glowing doodle shapes */
 function heart(px,py,s){scribble((dx,dy)=>{
   x.beginPath();
   x.moveTo(px+dx,py+dy);
@@ -391,7 +402,7 @@ const sets=[["heart","star","arrow"],["heart","arrow"],["star","arrow","heart"],
 function drawDoodles(pi){
   x.clearRect(0,0,c.width,c.height);
   let set = sets[pi%sets.length];
-  let count = 18 + pi*3; // more doodles
+  let count = 20 + pi*3; // more doodles
   for(let n=0;n<count;n++){
     let t=set[Math.floor(Math.random()*set.length)];
     let px=r(60,c.width-60); let py=r(60,c.height-60); let s=r(14,30);
@@ -401,7 +412,19 @@ function drawDoodles(pi){
   }
 }
 drawDoodles(0);
-</script>
 
+/* Floating hearts for every page */
+function createFloatingHearts(pi){
+  for(let n=0;n<8;n++){
+    let h = document.createElement("div");
+    h.className="bgHeart";
+    h.style.left = Math.random()*100+"vw";
+    h.style.top = Math.random()*100+"vh";
+    h.style.animationDuration = 5 + Math.random()*5+"s";
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(), 8000);
+  }
+}
+</script>
 </body>
 </html>
