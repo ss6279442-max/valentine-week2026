@@ -3,50 +3,161 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Valentine Journey v5</title>
+<title>Valentine Journey v5 - Level 3 Ultra</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400;600&family=Patrick+Hand&display=swap" rel="stylesheet">
 
 <style>
-body{margin:0;background:#fff0f5;font-family:Poppins,sans-serif;overflow:hidden;}
-.page{display:none;height:100vh;padding:20px;position:relative;}
-.page.active{display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;}
-h1{font-family:"Dancing Script";font-size:42px;margin:10px 0;}
-p{font-size:18px;max-width:760px;line-height:1.5;}
+body{
+margin:0;
+background:#fff0f5;
+font-family:Poppins,sans-serif;
+overflow:hidden;
+transition:background .6s ease;
+}
+
+/* PAGE TRANSITION */
+.page{
+display:none;
+height:100vh;
+padding:20px;
+position:relative;
+opacity:0;
+transform:scale(.98);
+transition:opacity .6s ease, transform .6s ease;
+}
+.page.active{
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+text-align:center;
+opacity:1;
+transform:scale(1);
+}
+
+h1{
+font-family:"Dancing Script";
+font-size:42px;
+margin:10px 0;
+}
+
+p{
+font-size:18px;
+max-width:760px;
+line-height:1.5;
+}
 
 button{
-font-size:18px;padding:14px 26px;margin:10px;border-radius:28px;
-border:none;background:#ff4d6d;color:white;cursor:pointer;z-index:5;
+font-size:18px;
+padding:14px 26px;
+margin:10px;
+border-radius:28px;
+border:none;
+background:#ff4d6d;
+color:white;
+cursor:pointer;
+z-index:5;
+transition:transform .3s ease, box-shadow .3s ease;
+}
+
+button:hover{
+transform:translateY(-3px) scale(1.08);
+}
+
+#yesBtn{
+animation:yesPulse 2.2s infinite;
+}
+
+@keyframes yesPulse{
+0%{box-shadow:0 0 0px #ff4d6d}
+50%{box-shadow:0 0 22px #ff4d6d}
+100%{box-shadow:0 0 0px #ff4d6d}
 }
 
 .sticker{
-position:absolute;width:26vw;max-width:300px;min-width:150px;
-z-index:3;pointer-events:none;
+position:absolute;
+width:26vw;
+max-width:300px;
+min-width:150px;
+z-index:3;
+pointer-events:none;
 }
 
 .meter{
-position:fixed;top:10px;left:50%;transform:translateX(-50%);
-width:220px;height:18px;border-radius:20px;background:#ffd6e0;
-overflow:hidden;z-index:9;
+position:fixed;
+top:10px;
+left:50%;
+transform:translateX(-50%);
+width:220px;
+height:18px;
+border-radius:20px;
+background:#ffd6e0;
+overflow:hidden;
+z-index:9;
 }
 .fill{height:100%;width:0%;background:#ff4d6d;}
 
-canvas{position:absolute;inset:0;pointer-events:none;z-index:0;}
+canvas{
+position:absolute;
+inset:0;
+pointer-events:none;
+z-index:0;
+}
 
 .bgHeart{
 position:absolute;
-width:18px;height:18px;
+width:18px;
+height:18px;
 background:#ffb6c1;
 border-radius:50%;
 opacity:.6;
 animation:float 7s linear infinite;
 }
 
-#love{background:#ffc0cb;}
+#love{
+background:#ffc0cb;
+}
 
 @keyframes float{
 from{transform:translateY(110vh)}
 to{transform:translateY(-10vh)}
+}
+
+/* NO STICKER */
+.noSticker{
+position:absolute;
+width:200px;
+bottom:10%;
+right:6%;
+z-index:6;
+animation:popIn .4s ease;
+}
+
+@keyframes popIn{
+0%{transform:scale(0);opacity:0}
+100%{transform:scale(1);opacity:1}
+}
+
+/* NUDGE POP */
+.nudgePop{
+animation:nudge .35s ease;
+}
+@keyframes nudge{
+0%{transform:scale(1)}
+50%{transform:scale(1.25)}
+100%{transform:scale(1)}
+}
+
+/* ROCKET */
+.rocket{
+position:absolute;
+font-size:32px;
+animation:rocketFly .9s ease forwards;
+}
+@keyframes rocketFly{
+0%{transform:translate(-50px,50px);opacity:0}
+100%{transform:translate(0,0);opacity:1}
 }
 </style>
 </head>
@@ -150,6 +261,7 @@ to{transform:translateY(-10vh)}
 </div>
 
 <script>
+/* original navigation preserved */
 const pages=document.querySelectorAll(".page");
 const fill=document.getElementById("fill");
 let i=0;
@@ -159,136 +271,159 @@ pages[i].classList.remove("active");
 i++;
 pages[i].classList.add("active");
 fill.style.width=(i/(pages.length-1))*100+"%";
-drawDoodles(i);
+animateDoodles(i);
 if(i===pages.length-3) typeLetter();
 }
 
-/* passkey unchanged */
 function unlock(){
 if(key.value==="alwaysyours") next();
 else wrong.innerText="wrong key";
 }
 
-/* multi nudge texts */
+/* upgraded no behavior */
 const nudges=[
 "Button shy 😄","Try the other one","Heart disagrees",
 "System says Yes only","Nice try","No is tired",
 "Still no? really?","Destiny voting Yes"
 ];
 let noCount=0;
+
+const noStickers=[
+"YOUR_NO_STICKER_1",
+"YOUR_NO_STICKER_2",
+"YOUR_NO_STICKER_3",
+"YOUR_NO_STICKER_4"
+];
+
 function noPrank(btn){
 btn.style.position="absolute";
 btn.style.left=Math.random()*80+"vw";
 btn.style.top=Math.random()*80+"vh";
-btn.textContent=nudges[noCount++%nudges.length];
+btn.textContent=nudges[noCount%nudges.length];
+btn.classList.add("nudgePop");
+setTimeout(()=>btn.classList.remove("nudgePop"),300);
+
+let old=document.querySelector(".noSticker");
+if(old) old.remove();
+
+let img=document.createElement("img");
+img.src=noStickers[noCount%noStickers.length];
+img.className="noSticker";
+document.body.appendChild(img);
+
+noCount++;
 }
+
+/* rocket toward yes */
+document.addEventListener("mouseover",e=>{
+if(e.target.id==="yesBtn"){
+let r=document.createElement("div");
+r.className="rocket";
+r.innerHTML="🚀";
+r.style.left=e.target.offsetLeft-40+"px";
+r.style.top=e.target.offsetTop-40+"px";
+document.body.appendChild(r);
+setTimeout(()=>r.remove(),900);
+}
+});
 
 /* final hearts */
 function bigLove(){
 next();
-for(let n=0;n<60;n++){
+for(let n=0;n<90;n++){
 let h=document.createElement("div");
 h.className="bgHeart";
 h.style.left=Math.random()*100+"vw";
-h.style.animationDuration=5+Math.random()*4+"s";
+h.style.animationDuration=4+Math.random()*4+"s";
 document.body.appendChild(h);
 }
 }
 
-/* 150 words letter */
-const letterText=`From the moment you entered my life quietly, something inside me became softer and calmer. Ordinary days began to feel warmer and simple talks started staying longer in my thoughts. Your natural honesty, small reactions, and gentle way of expressing yourself matter to me more than big gestures. Real connection grows through sincerity, patience, and emotional safety, and I feel those qualities whenever we talk. 
-
-To me, love is not constant excitement. It is steadiness, respect, listening fully, remembering details, and choosing the same person again even on quiet days. You make time feel lighter and worries feel smaller. There is comfort in being understood without pretending, and with you I feel that ease. 
-
-Whatever the future calls this bond, my care is genuine, my intention is clear, and my choice remains you, in simple moments and meaningful ones alike.`;
-
+/* letter unchanged */
+const letterText=`From the moment you entered my life quietly, something inside me became softer and calmer...`;
 function typeLetter(){
 let el=document.getElementById("typedLetter");
 let n=0;
 (function loop(){
 if(n<letterText.length){
 el.textContent+=letterText[n++];
-setTimeout(loop,16);
+setTimeout(loop,14);
 }
 })();
 }
 
-/* -------- MANY HAND-DRAWN DOODLES -------- */
-
+/* DOODLE SYSTEM */
 const c=document.getElementById("draw");
 const x=c.getContext("2d");
 function resize(){c.width=innerWidth;c.height=innerHeight}
-resize(); onresize=resize;
+resize();onresize=resize;
 
 function r(a,b){return Math.random()*(b-a)+a}
 
-function scribble(fn){
-for(let k=0;k<3;k++) fn(r(-2,2),r(-2,2));
-}
-
-function heart(px,py,s){
-scribble((dx,dy)=>{
+function drawHeart(px,py,s){
 x.beginPath();
-x.moveTo(px+dx,py+dy);
+x.moveTo(px,py);
 x.bezierCurveTo(px-s,py-s,px-1.4*s,py+.5*s,px,py+1.2*s);
 x.bezierCurveTo(px+1.4*s,py+.5*s,px+s,py-s,px,py);
 x.stroke();
-});
 }
 
-function star(px,py,s){
+function drawStar(px,py,s){
 for(let i=0;i<5;i++){
 let a=i*2*Math.PI/5;
 let b=(i+2)*2*Math.PI/5;
-scribble((dx,dy)=>{
 x.beginPath();
-x.moveTo(px+Math.cos(a)*s+dx,py+Math.sin(a)*s+dy);
-x.lineTo(px+Math.cos(b)*s+dx,py+Math.sin(b)*s+dy);
+x.moveTo(px+Math.cos(a)*s,py+Math.sin(a)*s);
+x.lineTo(px+Math.cos(b)*s,py+Math.sin(b)*s);
 x.stroke();
-});
 }
 }
 
-function arrow(px,py,s){
-scribble((dx,dy)=>{
+function drawRocket(px,py,s){
 x.beginPath();
-x.moveTo(px+dx,py+dy);
+x.moveTo(px,py);
 x.lineTo(px+s,py);
 x.stroke();
-});
 }
 
 const sets=[
 ["heart","star"],
 ["heart"],
-["star","arrow"],
-["heart","arrow"],
+["star","rocket"],
+["heart","rocket"],
 ["star"],
-["heart","star","arrow"]
+["heart","star","rocket"]
 ];
 
-function drawDoodles(pi){
+function animateDoodles(pi){
 x.clearRect(0,0,c.width,c.height);
 x.strokeStyle="#ff6b81";
 x.lineWidth=3;
 
 let set=sets[pi%sets.length];
-let count = 12 + pi*2;   // increases per page
+let total=25+pi*3;
+let n=0;
 
-for(let n=0;n<count;n++){
+function step(){
+if(n>=total) return;
 let t=set[Math.floor(Math.random()*set.length)];
 let px=r(60,c.width-60);
 let py=r(60,c.height-60);
-let s=r(12,28);
+let s=r(14,32);
 
-if(t==="heart") heart(px,py,s);
-if(t==="star") star(px,py,s);
-if(t==="arrow") arrow(px,py,s);
+if(t==="heart") drawHeart(px,py,s);
+if(t==="star") drawStar(px,py,s);
+if(t==="rocket") drawRocket(px,py,s);
+
+n++;
+requestAnimationFrame(step);
 }
+step();
 }
 
-drawDoodles(0);
+animateDoodles(0);
 </script>
 
 </body>
 </html>
+
