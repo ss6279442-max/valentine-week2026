@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Valentine Journey v7 - Glow Edition</title>
+<title>Valentine Journey v8 - Interactive</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400;600&family=Patrick+Hand&display=swap" rel="stylesheet">
 
@@ -15,6 +15,7 @@ body {
   background: linear-gradient(135deg, #fff0f5, #ffe6f0);
   background-size: 400% 400%;
   animation: gradientShift 20s ease infinite;
+  cursor:none;
 }
 @keyframes gradientShift {
   0% {background-position:0% 50%;}
@@ -27,6 +28,8 @@ body {
   height:100vh;
   padding:20px;
   position:relative;
+  opacity:0;
+  transition: opacity 0.8s ease;
 }
 .page.active {
   display:flex;
@@ -34,18 +37,14 @@ body {
   justify-content:center;
   align-items:center;
   text-align:center;
-  animation:fadeIn 0.8s ease;
-}
-@keyframes fadeIn {
-  0% {opacity:0; transform:translateY(20px);}
-  100% {opacity:1; transform:translateY(0);}
+  opacity:1;
 }
 
 h1 {
   font-family:"Dancing Script";
   font-size:42px;
   margin:10px 0;
-  text-shadow: 0 0 10px #ff4d6d;
+  text-shadow: 0 0 8px #ff4d6d;
 }
 p {
   font-size:18px;
@@ -114,42 +113,33 @@ canvas {
   z-index:0;
 }
 
-/* Floating hearts for background */
-.bgHeart, .sparkle {
+/* Floating hearts */
+.bgHeart, .cursorHeart {
   position:absolute;
   border-radius:50%;
-  opacity:.6;
   pointer-events:none;
 }
 .bgHeart {
   width:16px;
   height:16px;
-  background:#ffb6c1;
-  animation:float 7s linear infinite;
-  filter: drop-shadow(0 0 8px #ff4d6d);
+  background:#ff4d6d;
+  opacity:0.6;
+  animation:float 6s linear infinite;
 }
 @keyframes float {
   from{transform:translateY(110vh);}
   to{transform:translateY(-10vh);}
 }
 
-/* Glow Heart for final page */
-.glowHeart {
-  position:absolute;
+/* Glow hearts removed - plain bright hearts now */
+.cursorHeart {
+  width:12px;
+  height:12px;
   background:#ff4d6d;
-  border-radius:50%;
-  filter:blur(14px) drop-shadow(0 0 12px #ff6b81);
-  opacity:.9;
-  transform:translate(-50%,-50%) scale(0);
-  animation:glowPop .8s forwards;
-  pointer-events:none;
-}
-@keyframes glowPop {
-  60% {transform:translate(-50%,-50%) scale(3);}
-  100% {opacity:0; transform:translate(-50%,-50%) scale(3.5);}
+  opacity:0.8;
 }
 
-/* Smooth input and messages */
+/* Input and message styling */
 input {
   padding:12px 18px;
   font-size:16px;
@@ -157,7 +147,7 @@ input {
   border:2px solid #ffb6c1;
   outline:none;
 }
-input:focus {border-color:#ff4d6d; box-shadow:0 0 12px rgba(255,77,109,0.4);}
+input:focus {border-color:#ff4d6d; box-shadow:0 0 8px rgba(255,77,109,0.4);}
 </style>
 </head>
 <body>
@@ -249,13 +239,13 @@ input:focus {border-color:#ff4d6d; box-shadow:0 0 12px rgba(255,77,109,0.4);}
 
 <!-- FINAL -->
 <div class="page">
-<h1>Will you be my Valentine?</h1>
+<h1 style="font-family:'Patrick Hand';font-size:48px;color:#ff4d6d;">Will you be my Valentine?</h1>
 <button id="yesBtn" onclick="bigLove()">YES</button>
 <button onclick="noPrank(this)">No</button>
 </div>
 
 <div class="page" id="love">
-<h1>I LOVE YOU</h1>
+<h1 style="font-family:'Patrick Hand';font-size:72px;color:#ff4d6d;">I LOVE YOU</h1>
 </div>
 
 <script>
@@ -281,7 +271,7 @@ function unlock(){
   else wrong.innerText="wrong key";
 }
 
-/* NO prank with improved bounds */
+/* NO button logic fully fixed */
 const nudges = ["Button shy 😄","Try the other one","Heart disagrees","System says Yes only","Nice try","No is tired"];
 let noCount=0;
 const noStickers=[
@@ -308,27 +298,18 @@ function noPrank(btn){
   noCount++;
 }
 
-/* Final I LOVE YOU */
+/* Final page with hearts */
 function bigLove(){
   next();
-  for(let n=0; n<120; n++){
+  for(let n=0;n<80;n++){
     let h = document.createElement("div");
-    h.className = "bgHeart";
+    h.className="bgHeart";
+    h.style.width = h.style.height = (12+Math.random()*16)+"px";
     h.style.left=Math.random()*100+"vw";
-    h.style.animationDuration=3+Math.random()*4+"s";
+    h.style.top=Math.random()*100+"vh";
+    h.style.animationDuration = 4 + Math.random()*4 +"s";
     document.body.appendChild(h);
   }
-
-  const lovePage = document.getElementById("love");
-  lovePage.addEventListener("click", e => {
-    let g = document.createElement("div");
-    g.className="glowHeart";
-    g.style.left=e.clientX+"px";
-    g.style.top=e.clientY+"px";
-    g.style.width = g.style.height = (60 + Math.random()*40) + "px";
-    document.body.appendChild(g);
-    setTimeout(()=>g.remove(),1000);
-  });
 }
 
 /* Letter */
@@ -353,59 +334,47 @@ resize();
 onresize = resize;
 
 function r(a,b){return Math.random()*(b-a)+a}
-function scribble(fn){for(let k=0;k<4;k++) fn(r(-2,2),r(-2,2));}
+function scribble(fn){for(let k=0;k<3;k++) fn(r(-1.5,1.5),r(-1.5,1.5));}
 
 function heart(px,py,s){scribble((dx,dy)=>{
   x.beginPath();
   x.moveTo(px+dx,py+dy);
   x.bezierCurveTo(px-s,py-s,px-1.4*s,py+.5*s,px,py+1.2*s);
   x.bezierCurveTo(px+1.4*s,py+.5*s,px+s,py-s,px,py);
-  x.strokeStyle = "rgba(255,107,129,0.9)";
-  x.shadowColor="#ff4d6d";
-  x.shadowBlur=6;
-  x.lineWidth=2.5;
+  x.strokeStyle = "#ff4d6d";
+  x.lineWidth=2;
   x.stroke();
 })}
-
-function star(px,py,s){
-  for(let i=0;i<5;i++){
-    let a=i*2*Math.PI/5;
-    let b=(i+2)*2*Math.PI/5;
-    scribble((dx,dy)=>{
-      x.beginPath();
-      x.moveTo(px+Math.cos(a)*s+dx, py+Math.sin(a)*s+dy);
-      x.lineTo(px+Math.cos(b)*s+dx, py+Math.sin(b)*s+dy);
-      x.strokeStyle = "rgba(255,182,193,0.9)";
-      x.shadowColor="#ffb6c1";
-      x.shadowBlur=4;
-      x.lineWidth=2;
-      x.stroke();
-    })
-  }
-}
-
-function arrow(px,py,s){
+function star(px,py,s){for(let i=0;i<5;i++){
+  let a=i*2*Math.PI/5;
+  let b=(i+2)*2*Math.PI/5;
   scribble((dx,dy)=>{
     x.beginPath();
-    x.moveTo(px+dx,py+dy);
-    x.lineTo(px+s,py);
-    x.strokeStyle="rgba(255,77,109,0.9)";
-    x.shadowColor="#ff4d6d";
-    x.shadowBlur=5;
+    x.moveTo(px+Math.cos(a)*s+dx, py+Math.sin(a)*s+dy);
+    x.lineTo(px+Math.cos(b)*s+dx, py+Math.sin(b)*s+dy);
+    x.strokeStyle="#ff99aa";
     x.lineWidth=2;
     x.stroke();
   })
-}
+}}
+function arrow(px,py,s){scribble((dx,dy)=>{
+  x.beginPath();
+  x.moveTo(px+dx,py+dy);
+  x.lineTo(px+s,py);
+  x.strokeStyle="#ff4d6d";
+  x.lineWidth=2;
+  x.stroke();
+})}
 
-const sets=[["heart","star","arrow"],["heart","arrow"],["star","arrow","heart"],["heart","star"],["star"],["heart","star","arrow","arrow"]];
+const sets=[["heart","star","arrow"],["heart","arrow"],["star","arrow","heart"],["heart","star"],["star"],["heart","star","arrow"]];
 
 function drawDoodles(pi){
   x.clearRect(0,0,c.width,c.height);
   let set = sets[pi%sets.length];
-  let count = 20 + pi*3; // more doodles
+  let count = 25 + pi*3;
   for(let n=0;n<count;n++){
     let t=set[Math.floor(Math.random()*set.length)];
-    let px=r(60,c.width-60); let py=r(60,c.height-60); let s=r(14,30);
+    let px=r(60,c.width-60); let py=r(60,c.height-60); let s=r(12,28);
     if(t==="heart") heart(px,py,s);
     if(t==="star") star(px,py,s);
     if(t==="arrow") arrow(px,py,s);
@@ -413,18 +382,29 @@ function drawDoodles(pi){
 }
 drawDoodles(0);
 
-/* Floating hearts for every page */
+/* Floating hearts per page */
 function createFloatingHearts(pi){
-  for(let n=0;n<8;n++){
+  for(let n=0;n<6;n++){
     let h = document.createElement("div");
     h.className="bgHeart";
-    h.style.left = Math.random()*100+"vw";
-    h.style.top = Math.random()*100+"vh";
-    h.style.animationDuration = 5 + Math.random()*5+"s";
+    h.style.left=Math.random()*100+"vw";
+    h.style.top=Math.random()*100+"vh";
+    h.style.animationDuration = 4+Math.random()*4+"s";
     document.body.appendChild(h);
-    setTimeout(()=>h.remove(), 8000);
+    setTimeout(()=>h.remove(),7000);
   }
 }
+
+/* Cursor hearts */
+document.addEventListener("mousemove", e=>{
+  let h = document.createElement("div");
+  h.className="cursorHeart";
+  h.style.left = e.clientX+"px";
+  h.style.top = e.clientY+"px";
+  h.style.width = h.style.height = (6 + Math.random()*10)+"px";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),1000);
+});
 </script>
 </body>
 </html>
